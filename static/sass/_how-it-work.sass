@@ -1,0 +1,39 @@
+.how-it-work
+  &-wrapper
+    display: grid
+    grid-template-columns: 1fr 1fr
+    grid-gap: 40px
+  &-item
+    &-icon
+      width: 110px
+      height: 110px
+      display: flex
+      align-items: center
+      justify-content: center
+      transform: rotate(45deg)
+      border: 2px dashed $color-red
+      margin: 0 0 40px 25px
+      img
+        transform: rotate(315deg)
+        user-select: none
+  h4
+    position: relative
+    font-size: 20px
+    font-weight: 600
+    color: #000
+    margin-bottom: 15px
+    &::after
+      position: absolute
+      content: ''
+      width: 40px
+      height: 3px
+      background: $color-red
+      bottom: -5px
+      left: 0
+  p
+    margin-bottom: 5px
+    a
+      color: $color-link
+      text-decoration: underline
+
+

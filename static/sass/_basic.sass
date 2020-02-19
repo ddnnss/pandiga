@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald:300,400,600,700&display=swap')
+//light 300
+//regular 400
+//semi-bold 600
+//bold 700
+
+$color-bg-grey: #e8e8e8
+$color-bg-dark: #333
+$color-btn-bg: #800
+$color-link: #800
+$color-btn-border: #f80000
+$color-red: #ff0000
+$color-text: #333
+$color-text-grey: #686868
+$color-border: #686868
+
+body
+  font: 16px 'Oswald',sans-serif
+  font-weight: 400
+  color: $color-text
+
+
+button
+  border: none
+  font-family: 'Oswald',sans-serif
+  background: none
+  padding: 0
+  margin: 0
+  box-sizing: border-box
+input
+  box-sizing: border-box
+  width: 100%
+  border-radius: 2px
+  height: 50px
+  padding: 0 10px
+  &:focus
+    outline: none !important
+    border: 1px solid $color-btn-border !important
+    box-shadow: 0 0 10px $color-btn-bg
+
+section
+  padding: 40px 0
+  margin-bottom: 30px
+
+.container
+  max-width: 1140px
+  padding: 0 15px
+  margin: 0 auto
+
+.mb-10
+  margin-bottom: 10px !important
+.mb-20
+  margin-bottom: 20px !important
+.mb-30
+  margin-bottom: 30px !important
+.mb-40
+  margin-bottom: 40px !important
+
+.color-white
+  color: #ffffff !important
+.by-center
+  margin: 0 auto
+.section-header
+  text-align: center
+  margin-bottom: 60px
+  h3
+    text-transform: uppercase
+    position: relative
+    font-size: 30px
+    font-weight: 600
+    color: #000
+    display: inline-block
+    &::before
+      position: absolute
+      content: ''
+      width: 40px
+      height: 3px
+      left: -55px
+      top: 23px
+      background: $color-red
+    &::after
+      position: absolute
+      content: ''
+      width: 40px
+      height: 3px
+      right: -55px
+      top: 23px
+      background: $color-red
+
+
+.btn
+  display: block
+  text-align: center
+  color: #ffffff
+  text-transform: uppercase
+  background: $color-btn-bg
+  border: 1px solid $color-btn-border
+  padding: 10px 0
+  width: 100%
+  cursor: pointer
+  border-radius: 2px
+  font-weight: 600
+
+  &.btn-link
+    max-width: 320px
+    font-size: 14px
+    font-weight: 400
+  &:hover
+    box-shadow: 0 0 10px $color-btn-border
+
+  &.btn-outline
+    position: relative
+    background: none
+    color: $color-text
+    max-width: 320px
+    &::before
+      position: absolute
+      content: ''
+      background: $color-btn-bg
+      left: 0
+      z-index: -1
+      width: 0
+      height: 100%
+      top: 0
+      transition: all .1s ease-in
+    &:hover
+      color: #ffffff
+      transition: all .1s ease-in
+    &:hover::before
+      width: 100%
+      transition: all .1s ease-in-out
+
+.link-with-arrow
+  position: relative
+  color: $color-link
+  &::after
+    position: absolute
+    font-family: FontAwesome
+    content: '\f105'
+    right: -15px
+    top: 6px
+    transition: all .2s linear
+  &::before
+    position: absolute
+    font-family: FontAwesome
+    content: '\f105'
+    right: -15px
+    top: 6px
+    transition: all .2s linear
+  &:hover
+    &::after
+      transition: all .2s linear
+      right: -20px
+    &::before
+      transition: all .2s linear
+      right: -25px
