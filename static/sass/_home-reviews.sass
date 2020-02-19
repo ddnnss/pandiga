@@ -1,0 +1,43 @@
+.home-reviews
+  background: $color-bg-grey
+  margin-bottom: 0
+  &-wrapper
+    display: grid
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr))
+    grid-gap: 20px
+  &-item
+    background: #fefefe
+    padding: 10px
+    border: 1px solid #d5d5d5
+    box-sizing: border-box
+    &-user
+      display: flex
+
+      margin-bottom: 20px
+      img
+        clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%)
+        margin-right: 20px
+
+      &-info
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        justify-content: center
+        p:nth-child(1)
+          color: #000000
+          font-size: 20px
+          font-weight: 600
+          line-height: 20px
+          margin-bottom: 5px
+        p:nth-child(2)
+          font-size: 15px
+          margin-bottom: 10px
+        span
+          display: inline-block
+          font-weight: 300
+
+
+    &-description
+      p
+        font-weight: 300
+        font-size: 15px

@@ -1,0 +1,60 @@
+.footer
+  &-top
+    padding: 30px 0
+    background: $color-bg-dark
+    &-wrapper
+      display: flex
+      justify-content: space-between
+    &-contacts
+      p,a
+       color: #ffffff
+      text-transform: uppercase
+      a:hover
+        color: $color-red
+      i
+        margin-right: 10px
+        font-size: 20px
+      &-logo
+        margin-bottom: 15px
+      &-mobile
+        width: 130px
+    &-menu
+      p
+        color: #ffffff
+        text-transform: uppercase
+        margin-bottom: 10px
+      ul
+        li
+          a
+            color: #979797
+            font-weight: 300
+            transition: color .2s linear
+            &:hover
+              color: #ffffff
+              transition: color .2s linear
+
+  &-bottom
+    background: #000
+    padding: 10px 0
+    &-wrapper
+      display: flex
+      align-items: center
+      justify-content: space-between
+      flex-wrap: wrap
+      p,a
+        color: #ffffff
+    &-social
+      display: flex
+      align-items: center
+      p
+        margin-right: 15px
+      a
+        margin-right: 15px
+        transition: color .2s linear
+        &:last-child
+          margin-right: 0
+        &:hover
+          transition: color .2s linear
+          color: $color-red
+
+
