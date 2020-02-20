@@ -12,12 +12,13 @@ $color-btn-border: #f80000
 $color-red: #ff0000
 $color-text: #333
 $color-text-grey: #686868
-$color-border: #686868
+$color-border: #d5d5d5
 
 body
   font: 16px 'Oswald',sans-serif
   font-weight: 400
   color: $color-text
+  background: $color-bg-grey
 
 
 button
@@ -40,7 +41,7 @@ input
 
 section
   padding: 40px 0
-  margin-bottom: 30px
+
 
 .container
   max-width: 1140px
@@ -55,6 +56,7 @@ section
   margin-bottom: 30px !important
 .mb-40
   margin-bottom: 40px !important
+
 
 .color-white
   color: #ffffff !important
@@ -165,3 +167,27 @@ section
     background: $color-red
     bottom: -5px
     left: 0
+
+.breadcrumbs
+
+  ul
+    display: flex
+    li
+      position: relative
+      text-transform: uppercase
+      margin-right: 30px
+      &::after
+        position: absolute
+        font-family: FontAwesome
+        content: '\f0c8'
+        font-size: 7px
+        right: -19px
+        color: $color-link
+        top: 8px
+      &:last-child
+        margin-right: 0
+        &::after
+          content: none
+      a
+        text-transform: uppercase
+        color: $color-link
