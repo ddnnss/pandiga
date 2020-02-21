@@ -16,47 +16,47 @@
   &-logo
 
   &-nav
-    ul
+    &-wrapper
       display: flex
       align-items: center
       justify-content: space-between
-      li
-        margin-right: 20px
-        &:last-child
-          margin-left: 50px
-        a
-          position: relative
-          font-size: 14px
-          text-transform: uppercase
-          color: #fff
-          opacity: .8
-          transition: all .2s linear
-          &::after
-            position: absolute
-            content: ''
-            width: 0
-            height: 1px
-            background: #ffffff
-            bottom: -2px
-            left: 50%
-            opacity: 1
-            transition: all .2s linear
-          &:hover
-            opacity: 1
-            transition: all .2s linear
-          &:hover::after
-            width: 100%
-            transition: all .2s linear
-            left: 0
-            opacity: 1
+    &-item
+      margin-right: 20px
+      &:last-child
+        margin-left: 50px
+    &-link
+      position: relative
+      font-size: 14px
+      text-transform: uppercase
+      color: #fff
+      opacity: .8
+      transition: all .2s linear
+      &::after
+        position: absolute
+        content: ''
+        width: 0
+        height: 1px
+        background: #ffffff
+        bottom: -2px
+        left: 50%
+        opacity: 1
+        transition: all .2s linear
+      &:hover
+        opacity: 1
+        transition: all .2s linear
+      &:hover::after
+        width: 100%
+        transition: all .2s linear
+        left: 0
+        opacity: 1
 
 .user-menu
   position: relative
   background: rgba(0, 0, 0, 0.25)
   padding: 18px 30px
   box-sizing: border-box
-  a
-    opacity: 1 !important
+  &-link
+    color: #ffffff
     margin-right: 30px
     &:last-child
       margin-right: 0
@@ -79,11 +79,17 @@
         left: 10px
         top: -10px
         border-radius: 50%
+  &:hover > .user-menu-dropdown
+    opacity: 1
+    pointer-events: all
+
+
 .user-menu-dropdown
-  padding: 5px
+  padding: 10px
   box-sizing: border-box
   position: absolute
-  top: 63px
+  border-radius: 2px
+  top: 60px
   left: 0
   background: #ffffff
   width: 100%
@@ -91,17 +97,48 @@
     display: flex
     align-items: center
     justify-content: space-between
+    border: 1px solid $color-btn-border
+    border-radius: 2px
+    box-sizing: border-box
   &-toggle
+    text-transform: uppercase
+    font-size: 13px
+    font-weight: 400
+    line-height: 30px
     display: inline-block
     text-align: center
-    margin-right: 0 !important
-    color: $color-text !important
     flex-basis: 49%
     box-sizing: border-box
-    border: 1px solid $color-border
-    font-size: 13px !important
+    color: $color-text
+    &.user-menu-active
+      background: $color-btn-bg
+      color: #ffffff
+
+.user-menu-dropdown
+  opacity: 0
+  pointer-events: none
+  &-wrapper
+    padding: 5px 10px
+  &-item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 5px
+
+  &-link
+    text-transform: uppercase
+    color: $color-text
+    font-weight: 400
+    font-size: 15px
+    transition: color .2s linear
+    &.link-small
+      font-weight: 300
+      color: $color-link
+      font-size: 12px
     &:hover
-      border-bottom: $color-btn-border
+      transition: color .2s linear
+      color: $color-link
+
 
 
 

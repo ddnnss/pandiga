@@ -1,0 +1,83 @@
+.technique-form
+  form
+    max-width: 800px
+    margin: 0 auto
+
+.form-row
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  margin-bottom: 20px
+  &-group
+    flex-grow: 1
+    display: grid
+    grid-template-columns: 1fr 1fr
+    grid-gap: 10px
+
+  label
+    text-transform: uppercase
+    flex-basis: 15%
+  input,select
+    border: 1px solid $color-border
+    flex-grow: 1
+    width: auto !important
+    background: $color-bg-light
+    &:focus
+      background: #fff
+      outline: none !important
+      border: 1px solid $color-bg-grey !important
+      box-shadow: 0 0 10px #cacaca
+
+.upload-wrapper
+  display: flex
+  flex-basis: 85%
+
+.upload-label
+  border: 1px solid $color-border
+  position: relative
+  background: $color-bg-light
+  box-sizing: border-box
+  border-radius: 2px
+  width: 55px
+  height: 50px
+  padding-top: 0 !important
+  flex-basis: 0 !important
+  cursor: pointer
+  margin-right: 10px
+  transition: color .2s linear
+  &::before
+    position: absolute
+    font-family: FontAwesome
+    content: '\f067'
+    font-size: 20px
+    left: 5px
+    top: 15px
+    color: $color-red
+    z-index: 1
+    transition: color .2s linear
+  &::after
+    position: absolute
+    font-family: FontAwesome
+    content: '\f1c5'
+    font-size: 30px
+    left: 16px
+    top: 8px
+    color: $color-text-grey
+    transition: color .2s linear
+  &:hover
+    background: #ffffff
+    transition: color .2s linear
+    &::after
+      color: $color-red
+      transition: color .2s linear
+    &::before
+      color: $color-text-grey
+      transition: color .2s linear
+  input
+    visibility: hidden
+
+.images-preview
+  img
+    margin-right: 10px
+    &:last-child
+      margin: 0

@@ -1,0 +1,33 @@
+.main-catalog
+  &-wrapper
+    display: grid
+    grid-template-columns: repeat(auto-fill,minmax(360px,1fr))
+    grid-gap: 20px
+  &-item
+
+    &-image
+      position: relative
+      background-size: cover !important
+      background-repeat: no-repeat !important
+      background-position: center !important
+      height: 225px
+      border-radius: 2px
+    &-inner
+      position: absolute
+      display: flex
+      align-items: center
+      justify-content: center
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      background: rgba(0, 0, 0, 0.40)
+      transition: background-color .2s linear
+      p
+        color: #ffffff
+        text-transform: uppercase
+        font-weight: 600
+        font-size: 25px
+      &:hover
+        background: rgba(0, 0, 0, 0.10)
+        transition: background-color .2s linear

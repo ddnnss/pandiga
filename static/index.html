@@ -23,30 +23,107 @@
             <img src="img/logo.png" alt="">
         </div>
         <div class="header-nav">
-            <ul>
-                <li><a class="menu-link-active" href="#">добавить свою технику</a></li>
-                <li><a href="#">каталог техники</a></li>
-                <li><a href="#">работа</a></li>
-                <li><a href="#">для владельцев техники</a></li>
-                <li><a href="#">вход</a></li>
-                <li class="user-menu"><a href="javascript: void(0)">Скиба Дмитрий</a><a class="user-menu-mail" href=""><i class="fa fa-envelope"><span>1</span></i></a>
+            <ul class="header-nav-wrapper">
+                <li class="header-nav-item"><a class="menu-link-active header-nav-link" href="#">добавить свою технику</a></li>
+                <li class="header-nav-item"><a class="header-nav-link" href="#">каталог техники</a></li>
+                <li class="header-nav-item"><a class="header-nav-link" href="#">работа</a></li>
+                <li class="header-nav-item"><a class="header-nav-link" href="#">для владельцев техники</a></li>
+                <li class="header-nav-item"><a class="header-nav-link" href="#">вход</a></li>
+                <li class="user-menu">
+                    <a class="user-menu-link" href="javascript: void(0)">Скиба Дмитрий</a>
+                    <a class="user-menu-link user-menu-mail" href="">
+                        <i class="fa fa-envelope">
+                            <span>1</span>
+                        </i>
+                    </a>
                     <div class="user-menu-dropdown">
                         <div class="user-menu-dropdown-group">
                             <a href="" class="user-menu-dropdown-toggle">заказчик</a>
-                            <a href="" class="user-menu-dropdown-toggle">исполнитель</a>
+                            <a href="" class="user-menu-dropdown-toggle user-menu-active">исполнитель</a>
                         </div>
 
-                        <ul>
-                            <li><a href="">Баланс: </a><span>пополнить</span></li>
-                        </ul>
+                        <ul style="display: none" class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">баланс: 100 <i class="fa fa-rub"></i></a>
+                                <a class="user-menu-dropdown-link link-small" href="">пополнить</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">тариф: pro </a>
+                                <a class="user-menu-dropdown-link link-small" href="">изменить</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                            </li>
+                             <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">моя техника (0)</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">отклики на заявки (0)</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">отклики на работу (0)</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                            </li>
+                             <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">мой профиль</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">настройки</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">выйти</a>
+                            </li>
+
+                        </ul><!-- меню исполнителя-->
+                           <ul class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
+
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                            </li>
+                                 <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">избранное (<span>1</span>)</a>
+                            </li>
+                             <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">мои заявки на технику (0)</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">мои заявки на работу (0)</a>
+                            </li>
+
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                            </li>
+                             <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">мой профиль</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">настройки</a>
+                            </li>
+                            <li class="user-menu-dropdown-item">
+                                <a  class="user-menu-dropdown-link" href="">выйти</a>
+                            </li>
+
+                        </ul><!-- меню заказчика-->
                     </div>
 
                 </li>
             </ul>
         </div><!-- //header-nav-->
-        <div class="header-user-menu">
 
-        </div><!-- //header-user-menu-->
         <div class="header-mobile">
             <div class="header-mobile-toggle"></div><!-- //header-mobile-toggle-->
             <div class="header-mobile-menu">
@@ -76,7 +153,7 @@
 <div class="main">
     <section class="features">
         <div class="container">
-            <div class="section-header"><h3>НАШИ ВОЗМОЖНОСТИ</h3></div>
+            <div class="section-header mb-60"><h3>НАШИ ВОЗМОЖНОСТИ</h3></div>
             <div class="features-wrapper">
                 <div class="features-item">
                     <div class="features-item-icon">
@@ -172,7 +249,7 @@
     </section><!--//home-catalog-->
     <section class="how-it-work">
         <div class="container">
-            <div class="section-header"><h3>КАК ЭТО РАБОТАЕТ</h3></div>
+            <div class="section-header mb-60"><h3>КАК ЭТО РАБОТАЕТ</h3></div>
             <div class="how-it-work-wrapper">
                 <div class="how-it-work-item">
                     <div class="how-it-work-item-icon">
@@ -460,7 +537,7 @@
                         <li><a href="#">Для исполнителей</a></li>
                         <li><a href="#">Контакты</a></li>
                     </ul>
-                 </div>
+                </div>
                 <div class="footer-top-menu">
                     <p>каталог техники</p>
                     <ul>
@@ -478,36 +555,36 @@
                         <li><a href="#/search-technique/12/Строительные инструменты">Строительные инструменты</a></li>
                     </ul>
                 </div>
-                  <div class="footer-top-menu">
+                <div class="footer-top-menu">
                     <p>география работ</p>
-                   <ul>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Москва">Москва</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Санкт-Петербург">Санкт-Петербург</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Новосибирск">Новосибирск</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Екатеринбург">Екатеринбург</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Нижний Новгород">Нижний Новгород</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Казань">Казань</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Челябинск">Челябинск</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Омск">Омск</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Самара">Самара</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Ростов-на-Дону">Ростов-на-Дону</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=Уфа">Уфа</a></li>
-    <li><a href="#/search-technique/0/Поиск%20техники/?city=0">И еще 123 города РФ</a></li>
-</ul>
+                    <ul>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Москва">Москва</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Санкт-Петербург">Санкт-Петербург</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Новосибирск">Новосибирск</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Екатеринбург">Екатеринбург</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Нижний Новгород">Нижний Новгород</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Казань">Казань</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Челябинск">Челябинск</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Омск">Омск</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Самара">Самара</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Ростов-на-Дону">Ростов-на-Дону</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Уфа">Уфа</a></li>
+                        <li><a href="#/search-technique/0/Поиск%20техники/?city=0">И еще 123 города РФ</a></li>
+                    </ul>
                 </div>
 
             </div>
         </div>
     </div>
-     <div class="footer-bottom">
+    <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-wrapper">
                 <p>PANDIGA © 2020. All rights reserved.</p>
                 <div class="footer-bottom-social">
                     <p>Мы в соц. сетях</p>
                     <a href="" rel="nofollow"><i class="fa fa-facebook"></i></a>
-                     <a href="" rel="nofollow"><i class="fa fa-google-plus-official"></i></a>
-                     <a href="" rel="nofollow"><i class="fa fa-vk"></i></a>
+                    <a href="" rel="nofollow"><i class="fa fa-google-plus-official"></i></a>
+                    <a href="" rel="nofollow"><i class="fa fa-vk"></i></a>
                 </div>
             </div>
         </div>
