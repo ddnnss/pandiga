@@ -55,6 +55,7 @@
             <div class="section-header"><h1>название категории</h1></div>
             <div class="items-block-wrapper">
                 <div class="items-block-left">
+
                     <div class="item-filter">
                         <form action="">
                             <p>Поиск по категории</p>
@@ -77,6 +78,38 @@
                         </form>
 
 
+                    </div>
+                    <div class="category-menu">
+                        <ul class="category-menu-wrapper">
+                            <li class="category-menu-item" >Lorem ipsum.
+                                <div  class="category-menu-inner">
+                                    <ul class="category-menu-inner-wrapper">
+                                        <li class="category-menu-inner-item">1
+                                            <div  class="category-menu-inner">
+                                                <ul class="category-menu-inner-wrapper">
+                                                     <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
+                                                     <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="category-menu-inner-item">2</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="category-menu-item" >Lorem ipsum.
+                                <div class="category-menu-inner">
+                                    <ul class="category-menu-inner-wrapper">
+                                        <li class="category-menu-inner-item">33</li>
+                                        <li class="category-menu-inner-item">444</li>
+                                        <li class="category-menu-inner-item link-item"><a href="#">Lorem ipsum.</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="category-menu-item">Lorem ipsum.</li>
+                            <li class="category-menu-item">Lorem ipsum.</li>
+                            <li class="category-menu-item">Lorem ipsum.</li>
+                            <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
+                        </ul>
                     </div>
                 </div><!--//items-block-left-->
                 <div class="items-block-right">
@@ -213,7 +246,35 @@
         </section><!--//items-->
     </div><!--//container-->
 </div><!--//main-->
+<script>
+    let acc = document.getElementsByClassName("accordion");
+    let i;
+    let lastActive = null
+    let lastPanel = null
 
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            console.log(lastActive)
+            if (lastActive){
+                lastActive.classList.remove('active')
+                lastPanel.classList.remove('panel-active')
+                lastPanel.style.maxHeight = null;
+            }
+            this.classList.toggle("active");
+            lastActive=this
+            let panel = this.nextElementSibling;
+            lastPanel = panel
+            if (panel.style.maxHeight) {
+
+                panel.style.maxHeight = null;
+                panel.classList.remove('panel-active')
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.classList.add('panel-active')
+            }
+        });
+    }
+</script>
 <footer class="footer">
     <div class="footer-top">
         <div class="container">

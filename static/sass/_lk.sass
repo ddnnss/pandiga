@@ -1,0 +1,249 @@
+.lk
+  &-wrapper
+    display: grid
+    grid-template-columns: 1fr 3fr
+    grid-gap: 20px
+  &-menu
+    background: $color-bg-light
+    padding: 10px
+    border: 1px solid $color-border
+    border-radius: 2px
+    height: fit-content
+    ul
+      li
+        text-transform: uppercase
+        margin-bottom: 10px
+        cursor: pointer
+        &:last-child
+          margin-bottom: 20px
+        &:hover
+          transition: color .2s linear
+          color: $color-link
+        &.link-active
+          color: $color-link
+          font-weight: 600
+        span
+          color: $color-link
+          font-size: 13px
+
+
+.lk-tab
+  display: none
+  animation: fadeEffect 1s
+  &-content-bg
+    background: $color-bg-light
+    padding: 10px
+  &-content-tarif
+    display: grid
+    grid-template-columns: repeat(auto-fill,minmax(265px,1fr))
+    grid-gap: 20px
+
+
+.tarif-item
+  border: 1px solid $color-border
+  box-sizing: border-box
+  background: $color-bg-light
+  padding: 10px
+  &-header
+    text-align: center
+    margin-bottom: 10px
+    text-transform: uppercase
+    font-size: 18px
+    font-weight: 600
+    color: $color-link
+  &-price
+    text-align: center
+    margin-bottom: 10px
+    color: $color-link
+    font-size: 22px
+  &-name
+    text-align: center
+    margin-bottom: 10px
+  &-feature
+    margin-bottom: 20px
+    &-item
+      font-size: 15px
+
+.lk-tab-chat
+  position: relative
+  height: 100%
+  ul
+    margin-bottom: 30px
+    li
+      margin-bottom: 15px
+      &:last-child
+        margin-bottom: 0
+  p
+    font: 16px 'GR', Sans-Serif
+    color: #969696
+    margin-bottom: 15px
+
+  &-item
+    cursor: pointer
+    display: flex
+    justify-content: space-between
+    background: #FFFFFF
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07)
+    border-radius: 2px
+    padding: 20px
+    &-img
+      position: relative
+      img
+        width: 50px
+        height: 50px
+        border-radius: 50%
+        margin-right: 20px
+      &.unread
+        &::after
+          position: absolute
+          content: attr(data-num)
+          right: 16px
+          color: #ffffff
+          background: #37D134
+          width: 20px
+          height: 20px
+          padding: 2px 6px
+          border-radius: 50%
+
+    &-user
+      flex-grow: 1
+      p
+        font: 16px 'GB', Sans-Serif
+        color: $color-text-grey
+        margin-bottom: 10px
+      span
+        color: #838383
+    &-close
+      a
+        color: $color-link
+        font-size: 30px
+        opacity: 0.8
+        &:hover
+          opacity: 1
+
+.lk-tab-chat-messages
+  display: block
+  position: absolute
+  border: 1px solid $color-border
+  background: $color-bg-light
+  box-sizing: border-box
+  box-shadow: inset 0px 2px 20px rgba(0, 0, 0, 0.02)
+  border-radius: 2px
+  height: 100%
+  top: 0
+  &-top
+    display: flex
+    justify-content: space-between
+    align-items: center
+    background: $color-bg-light
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07)
+    border-radius: 2px
+    padding: 20px
+    &-img
+      position: relative
+      img
+        width: 50px
+        height: 50px
+        border-radius: 50%
+        margin-right: 20px
+      &.unread
+        &::after
+          position: absolute
+          content: attr(data-num)
+          right: 16px
+          color: #ffffff
+          background: $color-link
+          width: 20px
+          height: 20px
+          padding: 2px 6px
+          border-radius: 50%
+
+    &-user
+      flex-grow: 1
+      p
+        font: 16px 'GB', Sans-Serif
+        color: $color-text-grey
+        margin-bottom: 10px
+      span
+        color: #838383
+  &-bottom
+    border: 1px solid $color-border
+    padding: 60px 20px
+    overflow-y: auto
+    //max-height: 50%
+    &__message-to-me
+      width: 70%
+      display: flex
+      p
+        font: 16px 'GR', Sans-Serif
+        color: #000
+        padding: 10px 20px
+        background: #F6F6F6
+        border-radius: 20px
+        flex-basis: 85%
+        max-width: fit-content
+      span
+        font: 12px 'GR', Sans-Serif
+        color: #838383
+        flex-basis: 15%
+    &__message-from-me
+      width: 70%
+      display: flex
+      margin-left: auto
+      justify-content: flex-end
+      p
+        order: 2
+        font: 16px 'GR', Sans-Serif
+        padding: 10px 20px
+        background: #447CFA
+        border-radius: 20px
+        flex-basis: 85%
+        color: #ffffff
+        max-width: fit-content
+      span
+        order: 1
+        flex-basis: 15%
+        font: 12px 'GR', Sans-Serif
+        color: #838383
+  &-new-message
+    position: relative
+    background: $color-bg-light
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07)
+    border-radius: 2px
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 13px 25px
+    z-index: 999
+    textarea
+      border: none
+      display:  block
+      flex-basis: 95%
+      overflow: hidden
+      resize: none
+      height: 16px
+      &:focus
+        outline: 0
+        box-shadow: none
+
+    &-button
+      margin-bottom: auto
+      a
+        color: #447CFA
+        font-size: 30px
+  &.show-messages
+    display: block
+
+
+
+@-webkit-keyframes fadeEffect
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+@keyframes fadeEffect
+  from
+    opacity: 0
+  to
+    opacity: 1

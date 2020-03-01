@@ -148,6 +148,7 @@
   background: $color-bg-light
   border: 1px solid $color-border
   border-radius: 2px
+  margin-bottom: 10px
   input,select
     width: 100% !important
     margin-bottom: 10px
@@ -155,3 +156,92 @@
   p
     margin-bottom: 5px
     font-size: 14px
+
+.category-menu
+  border: 1px solid $color-border
+  box-sizing: border-box
+  &-wrapper
+    width: 100%
+    height: 100%
+    background: #ffffff
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+  &-item
+    position: relative
+    padding: 15px 35px
+    border-bottom: 1px solid $color-border
+    box-sizing: border-box
+    cursor: pointer
+    background: $color-bg-light
+    transition: background-color .2s linear
+    &:last-child
+      border-bottom: none
+    a
+      color: $color-text
+    &::after
+      position: absolute
+      font-family: 'FontAwesome'
+      content: '\f105'
+      right: 35px
+      top: 20px
+    &:hover
+      color: $color-link
+      background: #ffffff
+      transition: background-color .2s linear
+    &:hover > div
+        opacity: 1
+        pointer-events: all
+      
+.category-menu-inner
+  border: 1px solid $color-border
+  box-sizing: border-box
+  position: absolute
+  left: 100%
+  width: 100%
+  top: 0
+  opacity: 0
+  border-left: 2px solid $color-link
+  pointer-events: none
+  z-index: 999
+.category-menu-inner-wrapper
+
+  width: 100%
+  height: 100%
+  background: #ffffff
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+.category-menu-inner-item
+  position: relative
+  padding: 15px 35px
+  border-bottom: 1px solid $color-border
+  box-sizing: border-box
+  font-size:
+  cursor: pointer
+  color: $color-text
+  transition: background-color .2s linear
+  background: $color-bg-light
+  &:last-child
+      border-bottom: none
+  a
+    color: $color-text
+    &:hover
+      color: $color-link
+  &::after
+    position: absolute
+    font-family: 'FontAwesome'
+    content: '\f105'
+    right: 35px
+    top: 20px
+  &:hover
+    color: $color-link
+    background: #ffffff
+    transition: background-color .2s linear
+  &:hover > div
+    opacity: 1
+    pointer-events: all
+
+.link-item::after
+  content: none

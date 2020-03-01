@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<!-- SKIBORG WAS HERE -->
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <title>index</title>
+
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header ">
+    <div class="header-wrapper">
+        <div class="header-dropdown">
+            <div class="header-dropdown-toggle"></div><!-- //header-dropdown-toggle-->
+            <div class="header-dropdown-menu">
+
+            </div><!-- //header-dropdown-menu-->
+        </div><!-- //header-dropdown-->
+        <div class="header-logo">
+            <img src="img/logo.png" alt="">
+        </div>
+        <div class="header-nav">
+            <ul>
+                <li><a class="menu-link-active" href="#">добавить свою технику</a></li>
+                <li><a href="#">каталог техники</a></li>
+                <li><a href="#">работа</a></li>
+                <li><a href="#">для владельцев техники</a></li>
+            </ul>
+        </div><!-- //header-nav-->
+        <div class="header-user-menu">
+
+        </div><!-- //header-user-menu-->
+        <div class="header-mobile">
+            <div class="header-mobile-toggle"></div><!-- //header-mobile-toggle-->
+            <div class="header-mobile-menu">
+
+            </div><!-- //header-mobile-menu-->
+        </div><!-- //header-mobile-->
+    </div>
+</header><!-- //header-->
+<div class="main">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ul>
+                <li><a href="/">главная</a></li>
+                <li>личный кабинет</li>
+            </ul>
+        </div><!--//breadcrumbs-->
+    </div><!--//container-->
+
+    <section class="lk">
+        <div class="container">
+            <div class="lk-wrapper">
+                <div class="lk-menu">
+                    <ul>
+                        <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: 0 р <span>пополнить</span></li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги (5 / 0)</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника (0)</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >отклики на заявки (0)</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >отклики на работу (0)</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-feedback', 'link-active')" >отзывы</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-profile', 'link-active')" >мой профиль</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-settings', 'link-active')" >настройки</li>
+                    </ul>
+                    <a href="" class="btn">выход</a>
+                </div><!--//lk-menu-->
+                <div class="lk-content">
+                    <div id="tab-balance" class="lk-tab ">
+                        <div class="section-header "><h3>пополнить баланс</h3></div>
+                        <div class="lk-tab-content-bg">
+                            fg
+                        </div>
+                    </div><!--//tab-balance-->
+                    <div id="tab-tarif" class="lk-tab ">
+                        <div class="section-header "><h3>тарифные планы</h3></div>
+                        <div class="lk-tab-content-tarif">
+                            <div class="tarif-item">
+                                <p class="tarif-item-header">pro</p>
+                                <p class="tarif-item-price">0 <i class="fa fa-rub"></i></p>
+                                <p class="tarif-item-name">Профессионал</p>
+                                <ul class="tarif-item-feature">
+                                    <li class="tarif-item-feature-item">Размещение техники в любой категории <span>5</span></li>
+                                    <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span>7</span></li>
+                                    <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span>5</span> минут после публикации</li>
+                                    <li class="tarif-item-feature-item">Доступ к разделу Работа <span>да</span></li>
+                                    <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span>да</span></li>
+                                    <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span>да</span></li>
+                                    <li class="tarif-item-feature-item">Возможность написать Работодателю <span>да</span></li>
+                                    <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span>15%</span></li>
+                                </ul>
+                                <a href="" class="btn btn-disabled">текущий тариф</a>
+
+                            </div>
+                            <div class="tarif-item">
+                                <p class="tarif-item-header">pro</p>
+                                <p class="tarif-item-price">0 <i class="fa fa-rub"></i></p>
+                                <p class="tarif-item-name">Профессионал</p>
+                                <ul class="tarif-item-feature">
+                                    <li class="tarif-item-feature-item">Размещение техники в любой категории <span>3</span></li>
+                                    <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span>5</span></li>
+                                    <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span>20</span> минут после публикации</li>
+                                    <li class="tarif-item-feature-item">Доступ к разделу Работа <span>да</span></li>
+                                    <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span>нет</span></li>
+                                    <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span>нет</span></li>
+                                    <li class="tarif-item-feature-item">Возможность написать Работодателю <span>да</span></li>
+                                    <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span>10%</span></li>
+                                </ul>
+                                <a href="" class="btn ">перейти</a>
+
+                            </div>
+                            <div class="tarif-item">
+                                <p class="tarif-item-header">pro</p>
+                                <p class="tarif-item-price">0 <i class="fa fa-rub"></i></p>
+                                <p class="tarif-item-name">Профессионал</p>
+                                <ul class="tarif-item-feature">
+                                    <li class="tarif-item-feature-item">Размещение техники в любой категории <span>1</span></li>
+                                    <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span>1</span></li>
+                                    <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span>40</span> минут после публикации</li>
+                                    <li class="tarif-item-feature-item">Доступ к разделу Работа <span>нет</span></li>
+                                    <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span>нет</span></li>
+                                    <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span>нет</span></li>
+                                    <li class="tarif-item-feature-item">Возможность написать Работодателю <span>нет</span></li>
+                                    <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span>5%</span></li>
+                                </ul>
+                                <a href="" class="btn ">перейти</a>
+
+                            </div>
+
+                        </div>
+                    </div><!--//tab-tarif-->
+                     <div id="tab-chat" class="lk-tab ">
+                        <div class="section-header "><h3>диалоги</h3></div>
+                        <div class="lk-tab-chat">
+                             <ul>
+
+                            <li>
+                                <div data-chat_id="3"  class="lk-tab-chat-item ">
+                                    <div class="lk-tab-chat-item-img">
+                                        <img src="http://placehold.it/100" alt="">
+                                    </div>
+
+                                    <div class="lk-tab-chat-item-user">
+                                        <p>Иван Сергеевич</p>
+                                        <span>Превью сообщения, короткий текст...</span>
+                                    </div>
+                                    <div class="lk-tab-chat-item-date">
+                                        <span>18:30; 01.01.2020 </span>
+                                    </div>
+                                </div>
+
+                        </ul>
+                        <div id="chat-messages" class="lk-tab-chat-messages">
+                            <div class="lk-tab-chat-messages-top ">
+                                <div data-num="2" class="lk-tab-chat-item-img unread">
+                                    <img src="img/user-photo.png" alt="">
+                                </div>
+
+                                <div class="lk-tab-chat-item-user">
+                                    <p>Иван Сергеевич</p>
+                                    <span>Превью сообщения, короткий текст...</span>
+                                </div>
+                                <div class="lk-tab-chat-item-close">
+                                    <a href="javascript:void(0)" onclick="closeChat()"><i class="fa fa-close"></i></a>
+                                </div>
+
+                            </div>
+                            <div class="lk-tab-chat-messages-bottom">
+                                <div class="lk-tab-chat-messages-bottom__message-to-me">
+                                    <p>Текст сообщения 1</p>
+                                    <span>15:30, 27.01</span>
+                                </div>
+                                <div class="lk-tab-chat-messages-bottom__message-from-me">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Fuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentium Fuga, iste officiis! Delectus eaque iure praesentium quibusdam, reiciendis unde vitae voluptate.</p>
+                                    <span>15:30, 27.01</span>
+                                </div>
+                                <div class="lk-tab-chat-messages-bottom__message-to-me">
+                                    <p>Текст сообщения 1</p>
+                                    <span>15:30, 27.01</span>
+                                </div>
+                                <div class="lk-tab-chat-messages-bottom__message-from-me">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Fuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentium Fuga, iste officiis! Delectus eaque iure praesentium quibusdam, reiciendis unde vitae voluptate.</p>
+                                    <span>15:30, 27.01</span>
+                                </div>
+                                <div class="lk-tab-chat-messages-bottom__message-to-me">
+                                    <p>Текст сообщения 1</p>
+                                    <span>15:30, 27.01</span>
+                                </div>
+                                <div class="lk-tab-chat-messages-bottom__message-from-me">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Fuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentium Fuga, iste officiis! Delectus eaque iure praesentium quibusdam, reiciendis unde vitae voluptate.</p>
+                                    <span>15:30, 27.01</span>
+                                </div>
+                            </div>
+                            <div class="lk-tab-chat-messages-new-message">
+                                <textarea></textarea>
+                                <div class="lk-tab-chat-messages-new-message-button"><a href="#"><i class="fa fa-telegram"></i></a></div>
+
+                            </div>
+                        </div>
+                        </div>
+                    </div><!--//tab-chat-->
+
+                </div><!--//lk-content-->
+            </div><!--//lk-wrapper-->
+        </div><!--//container-->
+    </section><!--//lk-->
+
+</div><!--//main-->
+   <script>
+        var tx = document.getElementsByTagName('textarea');
+        for (var i = 0; i < tx.length; i++) {
+            //tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
+            tx[i].addEventListener("input", OnInput, false);
+        }
+
+        function OnInput() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight )  + 'px';
+        }
+    </script>
+<script>
+
+    function opentab(evt, TabName, type) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("lk-tab");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(` ${type}`, "");
+        }
+        document.getElementById(TabName).style.display = "block";
+
+        console.log(evt)
+        evt.currentTarget.className += ` ${type}`;
+    }
+
+    // Get the element with id="defaultOpen" and click on it defaultOpenMobile
+    //   document.getElementById("defaultOpen").click();
+
+</script>
+
+
+
+
+
+</body>
+
+</html>
