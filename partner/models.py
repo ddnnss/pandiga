@@ -8,7 +8,7 @@ class ParnterCode(models.Model):
                              on_delete=models.CASCADE,
                              related_name='user',
                              verbose_name='Код пользователя')
-    
+
 
 class PartnerMoney(models.Model):
     """Начисления партеров"""
