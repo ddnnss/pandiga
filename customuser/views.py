@@ -23,7 +23,7 @@ def phone_login(request):
 def send_sms(request):
     request.session['user_phone'] = 'blueq'
     request.session['user_name'] = 'blueq'
-    
+
     return JsonResponse({'foo': 'bar'})
 
 
