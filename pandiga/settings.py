@@ -26,6 +26,9 @@ INSTALLED_APPS = [
     'social_django',
     'customuser.apps.CustomuserConfig',
     'staticPage.apps.StaticpageConfig',
+    'partner.apps.PartnerConfig',
+    'tariff.apps.TariffConfig',
+    'technique.apps.TechniqueConfig'
 ]
 
 AUTHENTICATION_BACKENDS = (

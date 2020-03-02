@@ -2286,6 +2286,7 @@ section {
   border: 1px solid #d5d5d5;
   padding: 60px 20px;
   overflow-y: auto;
+  height: calc(100vh / 3);
 }
 
 .lk-tab-chat-messages-bottom__message-to-me {
@@ -2367,7 +2368,6 @@ section {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding: 13px 25px;
   z-index: 999;
 }
 
