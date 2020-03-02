@@ -1,22 +1,32 @@
-from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from customuser.models import *
 from django.http import JsonResponse, HttpResponseRedirect
-# from .forms import SignUpForm , UpdateForm
-
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 
 
-
-def create_password():
+def create_random_string(digits=False, num=4):
     from random import choices
     import string
-    password = ''.join(choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=8))
-    return password
+    if digits:
+        random_string = ''.join(choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=num))
+    else:
+        random_string = ''.join(choices(string.digits, k=num))
+    return random_string
 
 def vk_login(request):
     pass
+
+
+def phone_login(request):
+    pass
+
+
+def send_sms(request):
+    request.session['user_phone'] = 'blueq'
+    request.session['user_name'] = 'blueq'
+    
+    return JsonResponse({'foo': 'bar'})
+
+
 
 def log_out(request):
     logout(request)

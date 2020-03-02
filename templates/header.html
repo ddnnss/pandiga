@@ -1,0 +1,145 @@
+{% load static %}
+<header class="header {% if indexPage %}home-header{% endif %}">
+    <div class="header-wrapper">
+        <div class="header-dropdown">
+            <div class="header-dropdown-toggle"></div><!-- //header-dropdown-toggle-->
+            <div class="header-dropdown-menu">
+
+            </div><!-- //header-dropdown-menu-->
+        </div><!-- //header-dropdown-->
+        <div class="header-logo">
+            <img src="img/logo.png" alt="">
+        </div>
+        <div class="header-nav">
+            <ul class="header-nav-wrapper">
+                <li class="header-nav-item"><a class="menu-link-active header-nav-link" href="#">добавить свою технику</a></li>
+                <li class="header-nav-item"><a class="header-nav-link" href="#">каталог техники</a></li>
+                <li class="header-nav-item"><a class="header-nav-link" href="#">работа</a></li>
+                <li class="header-nav-item"><a class="header-nav-link" href="#">для владельцев техники</a></li>
+
+                {% if request.user.is_authenticated %}
+                    <li class="user-menu">
+                        <a class="user-menu-link" href="javascript: void(0)">Скиба Дмитрий</a>
+                        <a class="user-menu-link user-menu-mail" href="">
+                            <i class="fa fa-envelope">
+                                <span>1</span>
+                            </i>
+                        </a>
+
+                        <div class="user-menu-dropdown">
+                            <div class="user-menu-dropdown-group">
+                                <a href="" class="user-menu-dropdown-toggle">заказчик</a>
+                                <a href="" class="user-menu-dropdown-toggle user-menu-active">исполнитель</a>
+                            </div>
+
+                            <ul style="display: none" class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">баланс: 100 <i class="fa fa-rub"></i></a>
+                                    <a class="user-menu-dropdown-link link-small" href="">пополнить</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">тариф: pro </a>
+                                    <a class="user-menu-dropdown-link link-small" href="">изменить</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">моя техника (0)</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">отклики на заявки (0)</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">отклики на работу (0)</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">мой профиль</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">настройки</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">выйти</a>
+                                </li>
+
+                            </ul><!-- меню исполнителя-->
+                            <ul class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
+
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">избранное (<span>1</span>)</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">мои заявки на технику (0)</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">мои заявки на работу (0)</a>
+                                </li>
+
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">мой профиль</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">настройки</a>
+                                </li>
+                                <li class="user-menu-dropdown-item">
+                                    <a  class="user-menu-dropdown-link" href="">выйти</a>
+                                </li>
+
+                            </ul><!-- меню заказчика-->
+                        </div>
+                        {% else %}
+                    <li class="header-nav-item"><a class="header-nav-link" href="{% url 'login_page' %}">вход</a></li>
+                {% endif %}
+
+                </li>
+            </ul>
+        </div><!-- //header-nav-->
+
+        <div class="header-mobile">
+            <div class="header-mobile-toggle"></div><!-- //header-mobile-toggle-->
+            <div class="header-mobile-menu">
+
+            </div><!-- //header-mobile-menu-->
+        </div><!-- //header-mobile-->
+    </div>
+    {% if indexPage %}
+        <div class="header-offer">
+
+            <div class="header-offer-wrapper">
+                <div class="header-offer-text">
+                    <h1>аренда техники для работы и отдыха</h1>
+                    <p>спецтехника, авто, мото, водная техника и много другое</p>
+                </div>
+                <div class="header-offer-form">
+                    <form action="">
+                        <input type="text" name="query" placeholder="Название техники или инструмента">
+                        <button class="btn" type="submit">найти</button>
+                    </form>
+                </div>
+            </div><!-- //header-offer-wrapper-->
+
+        </div><!-- //header-offer-->
+    {% endif %}
+</header><!-- //header-->

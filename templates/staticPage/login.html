@@ -1,0 +1,170 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="/">главная</a></li>
+                    <li>авторизация</li>
+                </ul>
+            </div><!--//breadcrumbs-->
+        </div><!--//container-->
+
+        <section class="login">
+            <div class="container">
+                <div class="section-header"><h1>авторизация</h1></div>
+                <div class="login-wrapper">
+                    <div class="login-left">
+                        <p class="login-header">через аккаунт в соц.сети</p>
+                        <span class="btn btn-link by-center mb-20" onclick="loginRequest('vk')"><i class="fa fa-vk"></i> ВКонтакте </span>
+                        <span class="btn btn-link by-center mb-20" onclick="loginRequest('fb')"><i class="fa fa-facebook"></i> facebook </span>
+                        <span class="btn btn-link by-center mb-20" onclick="loginRequest('gg')"><i class="fa fa-google-plus"></i> google </span>
+                        <p class="login-header">или заполните форму</p>
+                        <div class="login-form">
+                            <input class="mb-10" id="user_name" type="text" placeholder="Ваше имя">
+                            <input type="tel" id="user_phone"  class="masked-phone mb-10"  data-phonemask="+7(___)___-__-__" />
+                            <span class="btn btn-link by-center mb-20" onclick="loginRequest('phone')">авторизация</span>
+                            <label class="custom-checkbox">Согласен с <a href="#">правилами сервиса</a>
+                                <input type="checkbox" id="agree">
+                                <span class="checkmark"></span>
+                            </label>
+
+
+                        </div>
+
+                    </div><!--//login-left-->
+                    <div class="login-right">
+                        <p class="login-header">что дает авторизация</p>
+                        <p class="login-small-header">Для заказчиков</p>
+                        <ul class="login-list">
+                            <li>В каталоге техники Вам станут доступны контакты владельцев</li>
+                            <li>Бесплатное размещение заявки на необходимую технику</li>
+                            <li>Мгновенное оповещение всех владельцев техники о Вашей заявки</li>
+                            <li>Бесплатное размещение заявки на выполнение любого вида работ</li>
+                            <li>Общение в клубном онлайн чате</li>
+                        </ul>
+                        <p class="login-small-header">Для исполнителей</p>
+                        <ul class="login-list">
+                            <li>Размещение своей Техники в Каталоге клуба без ограничения по количеству предложения и сроку размещения</li>
+                            <li>Мгновенное получение уведомлений о новых заявках на технику после их публикации</li>
+                            <li>Получение уведомлений о новых заявках на выполнения робот</li>
+                            <li>Общение в клубном онлайн чате</li>
+                        </ul>
+                        <p class="login-small-header">Для всех</p>
+                        <ul class="login-list">
+                            <li>Возможность зарабатывать по Партнерской программе</li>
+                        </ul>
+                    </div><!--//login-right-->
+
+                </div><!--//login-wrapper-->
+            </div><!--//container-->
+        </section><!--//login-->
+
+    </div><!--//main-->
+    <div id="openModal" class="modal">
+        <div id="modal_login" class="modal-dialog " >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal_title" class="modal-title section-header"></h3>
+                    <a href="#close" title="Close" class="close">×</a>
+                </div>
+                <div id="modal_body" class="modal-body">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/phone-mask.min.js' %}"></script>
+    <script>
+        let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+        let num1 = document.getElementById("num1"),
+            num2 = document.getElementById("num2"),
+            num3 = document.getElementById("num3"),
+            num4 = document.getElementById("num4");
+        num1.onkeyup = function() {
+            if (this.value.length === parseInt(this.attributes["maxlength"].value)) {
+                num2.focus();
+            }
+        }
+        num2.onkeyup = function() {
+            if (this.value.length === parseInt(this.attributes["maxlength"].value)) {
+                num3.focus();
+            }
+        }
+        num3.onkeyup = function() {
+            if (this.value.length === parseInt(this.attributes["maxlength"].value)) {
+                num4.focus();
+            }
+        }
+
+
+        function openModal() {
+            document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
+        }
+        function loginRequest(type) {
+            console.log('Login request', type)
+
+            let agreeCB = document.getElementById('agree')
+            let modalTitle = document.getElementById('modal_title')
+            let modalBody = document.getElementById('modal_body')
+            let userName = document.getElementById('user_name')
+            let userPhone = document.getElementById('user_phone')
+
+            userName.classList.remove('error-field')
+            userPhone.classList.remove('error-field')
+            modalTitle.innerHTML = ''
+            modalBody.innerHTML = ''
+
+            if (!agreeCB.checked){
+                console.log('agreeCB not checked')
+                modalTitle.innerHTML = 'Ошибка'
+                modalBody.innerHTML = `<p class="modal-error-text">Вы должны согласиться с правилами сервиса</p>
+                                    <span class="btn btn-link by-center mb-20" onclick="openModal()">закрыть</span>`
+                openModal()
+            }else{
+                console.log('agreeCB checked')
+                if (type === 'phone'){
+                    if (!userName.value){
+                        userName.classList.add('error-field')
+                    }
+                    if (userPhone.value.includes('_')){
+                        userPhone.classList.add('error-field')
+                        return
+                    }
+
+                    let body = {
+                        phone: userPhone.value
+                    }
+                    fetch('/user/send_sms/', {
+                        method: 'post',
+                        body: JSON.stringify(body),
+                        headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                        credentials: 'same-origin'
+                    }).then(res=>res.json())
+                        .then(res => {
+                            console.log(res)
+                            modalTitle.innerHTML = 'ПОДТВЕРДИТЕ НОМЕР'
+                            modalBody.innerHTML = `<div class="modal-phone-login">
+                            <p>на указанный номер телефона "${userPhone.value}" отправлен sms код, введите его</p>
+                            <div class="modal-phone-login-inputs">
+                                <input id="num1" type="number" placeholder="X" maxlength="1">
+                                <input id="num2" type="number" placeholder="X" maxlength="1">
+                                <input id="num3" type="number" placeholder="X" maxlength="1">
+                                <input id="num4" type="number" placeholder="X" maxlength="1">
+                            </div>
+                            <span class="btn btn-link by-center mb-20">подтвердить</span>
+                            <span>Не пришло SMS с кодом? Отправить код повторно можно через 60 сек</span>
+                             <a href="" class="link-with-arrow">Отправить код заново</a>
+                        </div>`
+                            openModal()
+                        })
+                }//type=phone
+            }
+        }
+    </script>
+{% endblock %}

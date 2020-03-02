@@ -9,6 +9,9 @@ class ParnterCode(models.Model):
                              related_name='user',
                              verbose_name='Код пользователя')
 
+    def __str__(self):
+        return self.code or ''
+
 
 class PartnerMoney(models.Model):
     """Начисления партеров"""
@@ -21,3 +24,6 @@ class PartnerMoney(models.Model):
                              related_name='from_user',
                              verbose_name='От пользователя')
     created_at = models.DateTimeField("Дата начисления", auto_now_add=True)
+
+    def __str__(self):
+        return self.code.code or ''

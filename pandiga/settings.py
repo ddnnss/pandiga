@@ -6,7 +6,7 @@ SECRET_KEY = '8yk!%k+hx)*e=sp6-pr%nc+z=s-ve^23%p)^(_c1p6apje7=c@'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'customuser.User'
 
 SOCIAL_AUTH_VK_OAUTH2_KEY = settings.VK_CLIENT_ID
@@ -69,9 +69,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'pandiga.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -82,15 +79,21 @@ DATABASES = {
 
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

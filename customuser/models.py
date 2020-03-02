@@ -41,7 +41,7 @@ class User(AbstractUser):
     first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
     last_name = models.CharField('Фамилия', max_length=50, blank=True, null=True)
     middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
-    fullname = models.CharField('Отчество', max_length=50, blank=True, null=True)
+    # fullname = models.CharField('Отчество', max_length=50, blank=True, null=True)
     phone = models.CharField('Телефон', max_length=50, blank=True, null=True, unique=True)
     email = models.EmailField('Эл. почта', blank=True, null=True, unique=True)
     birthday = models.DateField('День рождения', blank=True, null=True)
