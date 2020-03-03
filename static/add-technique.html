@@ -91,33 +91,31 @@
                 <div class="form-row">
                     <label for="">минимальное время аренды</label>
                     <div class="form-row-group">
-                        <select required name="" id="">
-                            <option value="">Lorem ipsum dolor sit.</option>
-                        </select> <select name="" id="">
-                        <option value="">Lorem ipsum dolor sit.</option>
-                    </select>
+                        <input type="number" min="1" required name="">
+                        <select name="" id="" onchange="changePrice(this)">
+                            <option selected value="hour" data-label="час">Часов</option>
+                            <option value="day" data-label="день">Дней</option>
+                        </select>
                     </div>
 
                 </div><!--//form-row-->
                 <div class="form-row">
                     <label for="">стоимость (руб)</label>
-                    <div class="form-row-group">
-                        <select required name="" id="">
-                            <option value="">Lorem ipsum dolor sit.</option>
-                        </select> <select name="" id="">
-                        <option value="">Lorem ipsum dolor sit.</option>
-                    </select>
+                    <div  class="form-row-group">
+                        <input type="number" min="1" required name="">
+                        <p  style="align-self: center;font-size: 20px">/ <span id="price_label">час</span></p>
+
                     </div>
 
                 </div><!--//form-row-->
-                 <div class="form-row">
+                <div class="form-row">
                     <label for="">описание</label>
-                     <textarea required name="" id="" cols="30" rows="10"></textarea>
+                    <textarea required name="" id="" cols="30" rows="10"></textarea>
 
                 </div><!--//form-row-->
-                 <div class="form-row">
+                <div class="form-row">
                     <label for="">характеристики</label>
-                     <textarea required name="" id="" cols="30" rows="10"></textarea>
+                    <textarea required name="" id="" cols="30" rows="10"></textarea>
 
                 </div><!--//form-row-->
                 <button type="submit" class="btn btn-link by-center">добавить технику</button>
@@ -128,7 +126,20 @@
     </section><!--//main-catalog-->
 
 </div><!--//main-->
-
+ <div id="openModal" class="modal">
+        <div id="modal_login" class="modal-dialog " >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title section-header">Ошибка</h3>
+                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                </div>
+                <div  class="modal-body">
+                    <p class="modal-error-text">Необходима регистрация</p>
+                    <a href="#" class="btn btn-link by-center mb-20" >закрыть</a>
+                </div>
+            </div>
+        </div>
+    </div>
 <footer class="footer">
     <div class="footer-top">
         <div class="container">
@@ -212,6 +223,10 @@
 </footer>
 <!-- preview images-->
 <script>
+    let priceLabel = document.getElementById('price_label')
+    function changePrice(el) {
+        priceLabel.innerText = el.options[el.selectedIndex].dataset.label
+    }
     function previewImages() {
         var preview = document.querySelector('#preview');
         preview.innerHTML = ''

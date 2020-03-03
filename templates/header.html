@@ -12,14 +12,14 @@
         </div>
         <div class="header-nav">
             <ul class="header-nav-wrapper">
-                <li class="header-nav-item"><a class="menu-link-active header-nav-link" href="#">добавить свою технику</a></li>
-                <li class="header-nav-item"><a class="header-nav-link" href="#">каталог техники</a></li>
+                <li class="header-nav-item"><a class="{{ addTechniqueActive }} header-nav-link" href="{% url 'add_technique' %}">добавить свою технику</a></li>
+                <li class="header-nav-item"><a class="{{ catalogTechniqueActive }} header-nav-link" href="{% url 'technique_catalog' %}">каталог техники</a></li>
                 <li class="header-nav-item"><a class="header-nav-link" href="#">работа</a></li>
                 <li class="header-nav-item"><a class="header-nav-link" href="#">для владельцев техники</a></li>
 
                 {% if request.user.is_authenticated %}
                     <li class="user-menu">
-                        <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }} {{ request.user.last_name }}</a>
+                        <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }}</a>
                         <a class="user-menu-link user-menu-mail" href="">
                             <i class="fa fa-envelope">
                                 <span>1</span>
@@ -110,7 +110,7 @@
                             </ul><!-- меню заказчика-->
                         </div>
                         {% else %}
-                    <li class="header-nav-item"><a class="header-nav-link" href="{% url 'login_page' %}">вход</a></li>
+                    <li class="header-nav-item"><a class="{{ loginActive }} header-nav-link" href="{% url 'login_page' %}">вход</a></li>
                 {% endif %}
 
                 </li>

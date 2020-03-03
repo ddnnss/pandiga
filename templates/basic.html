@@ -16,7 +16,14 @@
 {% block content %}
 {% endblock %}
 {% include 'footer.html' %}
+
 {% block js %}
+    <script>
+       function openModal() {
+            document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
+        }
+    </script>
+
 {% endblock %}
 </body>
 </html>

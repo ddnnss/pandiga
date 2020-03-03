@@ -1,0 +1,211 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="/">главная</a></li>
+                    <li>добавить технику в каталог</li>
+                </ul>
+            </div><!--//breadcrumbs-->
+        </div><!--//container-->
+
+        <section class="technique-form">
+            <div class="container">
+                <div class="section-header"><h1>добавить технику в каталог</h1></div>
+                <p class="text-center mb-30">Добавьте свою технику в базу клуба и начинайте зарабатывать уже сегодня.<br> Для этого заполните форму ниже, отредактировать информацию или удалить свою технику вы сможете в любое время.</p>
+                <form action="">
+                    <div class="form-row">
+                        <label for="">название</label>
+                        <input type="text" required name="">
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">фотографии</label>
+                        <div class="upload-wrapper">
+                            <label for="upload_img" class="upload-label">
+                                <input id="upload_img" required multiple accept="image/*"  type="file" >
+                            </label>
+                            <div id="preview" class="images-preview"></div>
+                        </div>
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">тип</label>
+                        <select id="type_select" required >
+                            <option selected disabled>Выбрать</option>
+                            {% for type in all_types %}
+                                <option value="{{ type.id }}">{{ type.name | capfirst }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">раздел</label>
+                        <select id="section_select" required >
+                            <option disabled selected class="section-name" >Выберите тип</option>
+
+                        </select>
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">подраздел</label>
+                        <select id="subsection_select" required name="">
+                            <option disabled selected class="subsection-name" >Выберите раздел</option>
+                        </select>
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">минимальное время аренды</label>
+                        <div class="form-row-group">
+                            <input type="number" min="1" required name="">
+                            <select name="" id="" onchange="changePrice(this)">
+                                <option selected value="hour" data-label="час">Часов</option>
+                                <option value="day" data-label="день">Дней</option>
+                            </select>
+                        </div>
+
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">стоимость (руб)</label>
+                        <div  class="form-row-group">
+                            <input type="number" min="1" required name="">
+                            <p  style="align-self: center;font-size: 20px">/ <span id="price_label">час</span></p>
+
+                        </div>
+
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">описание</label>
+                        <textarea required name="" id="" cols="30" rows="10"></textarea>
+
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">характеристики</label>
+                        <textarea required name="" id="" cols="30" rows="10"></textarea>
+
+                    </div><!--//form-row-->
+                    {% if request.user.is_authenticated %}
+                        <button type="submit" class="btn btn-link by-center">добавить технику</button>
+                    {% else %}
+                        <span class="btn btn-link by-center" onclick="openModal()">добавить технику</span>
+                    {% endif %}
+                </form>
+
+            </div><!--//container-->
+
+        </section><!--//main-catalog-->
+
+    </div><!--//main-->
+{% if not request.user.is_authenticated %}
+    <div id="openModal" class="modal">
+        <div id="modal_login" class="modal-dialog " >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title section-header">Ошибка</h3>
+                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                </div>
+                <div  class="modal-body">
+                    <p class="modal-error-text">Необходима регистрация</p>
+                    <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <!-- preview images-->
+    <script>
+        let priceLabel = document.getElementById('price_label')
+        function changePrice(el) {
+            priceLabel.innerText = el.options[el.selectedIndex].dataset.label
+        }
+        function previewImages() {
+            var preview = document.querySelector('#preview');
+            preview.innerHTML = ''
+            if (this.files) {
+                [].forEach.call(this.files, readAndPreview);
+            }
+            function readAndPreview(file) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function() {
+                    var image = new Image();
+                    image.height = 140;
+                    image.width = 140;
+                    image.title  = file.name;
+                    image.src    = this.result;
+                    preview.appendChild(image);
+                    // image.addEventListener("click", event => {
+                    //      console.log(file.name)
+                    //       console.log(allImages.files)
+                    //})
+                });
+                reader.readAsDataURL(file);
+            }
+        }
+        document.querySelector('#upload_img').addEventListener("change", previewImages);
+    </script>
+    <!-- preview images-->
+    <!-- get section && subsection-->
+    <script>
+        let typeSelect = document.getElementById('type_select')
+        let sectionSelect = document.getElementById('section_select')
+        let subsectionSelect = document.getElementById('subsection_select')
+        let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+        function clearSelect(el){
+            let elem = document.querySelectorAll(`.${el}`)
+            elem.forEach(function (i) {
+                console.log(i)
+                i.remove()
+            })
+        }
+        function createOption(id,name,target,ro) {
+            let option = document.createElement("option")
+            option.text = name
+            option.value = id
+            if (ro){
+                option.setAttribute('disabled','disabled')
+                option.setAttribute('selected','selected')
+            }
+            option.classList.add(`${target}-name`)
+            return option
+
+        }
+        function getSubcat(id,target) {
+            let body = {'type':id,'target':target}
+            fetch('/catalog/get_type_sublists/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                    if (target === 'section'){
+                        sectionSelect.appendChild(createOption('0','Выбрать',target,true))
+                        for (x of res) {
+                            //console.log(x['id'])
+                            sectionSelect.appendChild(createOption(x['id'],x['name'],target))
+                        }
+                    }
+                    if (target === 'subsection'){
+                        for (x of res) {
+                            //console.log(x['id'])
+                            subsectionSelect.appendChild(createOption(x['id'],x['name'],target))
+                        }
+                    }
+                })
+        }
+        typeSelect.addEventListener('change',()=>{
+            clearSelect('section-name')
+            clearSelect('subsection-name')
+            getSubcat(typeSelect.options[typeSelect.selectedIndex].value,'section')
+
+        })
+        sectionSelect.addEventListener('change',()=>{
+            clearSelect('subsection-name')
+            getSubcat(sectionSelect.options[sectionSelect.selectedIndex].value,'subsection')
+        })
+    </script>
+    <!-- get section && subsection-->
+{% endblock %}

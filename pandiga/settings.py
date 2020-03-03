@@ -9,6 +9,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'customuser.User'
 
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 SOCIAL_AUTH_VK_OAUTH2_KEY = settings.VK_CLIENT_ID
 SOCIAL_AUTH_VK_OAUTH2_SECRET = settings.VK_CLIENT_SECRET
 
@@ -24,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
+    'ckeditor',
     'customuser.apps.CustomuserConfig',
     'staticPage.apps.StaticpageConfig',
     'partner.apps.PartnerConfig',

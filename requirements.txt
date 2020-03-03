@@ -2,3 +2,6 @@ social-auth-app-django
 python-jose
 python-dotenv
 twilio
+django-ckeditor
+pillow
+pytils

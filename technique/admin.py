@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import *
 
-# Register your models here.
+admin.site.register(TechniqueType)
+admin.site.register(TechniqueSection)
+admin.site.register(TechniqueSubSection)

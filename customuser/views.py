@@ -79,7 +79,7 @@ def send_check_number(request):
             return JsonResponse({'result': 'ok'})
 
     else:
-        return JsonResponse({'result': 'error'})
+        return JsonResponse({'result': 'number_error'})
 
 
 

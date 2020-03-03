@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 
@@ -7,10 +8,9 @@ def index(request):
 
 
 def login_page(request):
-    try:
-        print(request.session['phone_for_verify'])
-    except:
-        pass
-    return render(request, 'staticPage/login.html', locals())
-
+    if not request.user.is_authenticated:
+        loginActive = 'menu-link-active '
+        return render(request, 'staticPage/login.html', locals())
+    else:
+        return HttpResponseRedirect('/')
 

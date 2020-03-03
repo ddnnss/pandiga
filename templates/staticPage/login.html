@@ -22,7 +22,7 @@
                         <span class="btn btn-link by-center mb-20" onclick="loginRequest('gg')"><i class="fa fa-google-plus"></i> google </span>
                         <p class="login-header">или заполните форму</p>
                         <div class="login-form">
-                            <input class="mb-10" id="user_name" type="text" placeholder="Ваше имя">
+                            <input  class="mb-10" id="user_name" type="text" placeholder="Ваше имя">
                             <input type="tel" id="user_phone"  class="masked-phone mb-10"  data-phonemask="+7(___)___-__-__" />
                             <span class="btn btn-link by-center mb-20" onclick="loginRequest('phone')">авторизация</span>
                             <label class="custom-checkbox">Согласен с <a href="#">правилами сервиса</a>
@@ -66,7 +66,7 @@
         <div id="modal_login" class="modal-dialog " >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 id="modal_title" class="modal-title section-header"></h3>
+                    <h3 id="modal_title"  class="modal-title section-header"></h3>
                     <a href="#close" title="Close" class="close">×</a>
                 </div>
                 <div id="modal_body" class="modal-body">
@@ -84,6 +84,8 @@
         let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
         let userName = document.getElementById('user_name')
         let userPhone = document.getElementById('user_phone')
+        let modalTitle = document.getElementById('modal_title')
+        let modalBody = document.getElementById('modal_body')
         let code = ''
         function checkNumbers(){
             let sendBtn = document.getElementById("send_btn")
@@ -103,12 +105,18 @@
 
             num1.focus();
             num1.onkeyup = function() {
+                if (this.value.length > 1){
+                    this.value = this.value.slice(0,1)
+                }
                 code= num1.value + num2.value + num3.value + num4.value
                 console.log(code)
                 num2.value = ''
                 num2.focus()
             }
             num2.onkeyup = function() {
+                  if (this.value.length > 1){
+                    this.value = this.value.slice(0,1)
+                }
                 code= num1.value + num2.value + num3.value + num4.value
                 console.log(code)
                 checkNumbers()
@@ -116,6 +124,9 @@
                 num3.focus();
             }
             num3.onkeyup = function() {
+                  if (this.value.length > 1){
+                    this.value = this.value.slice(0,1)
+                }
                 code= num1.value + num2.value + num3.value + num4.value
                 console.log(code)
                 checkNumbers()
@@ -123,6 +134,9 @@
                 num4.focus();
             }
             num4.onkeyup = function() {
+                 if (this.value.length > 1){
+                    this.value = this.value.slice(0,1)
+                }
                 code= num1.value + num2.value + num3.value + num4.value
                 checkNumbers()
                 console.log(code)
@@ -132,15 +146,12 @@
 
 
 
-        function openModal() {
-            document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
-        }
+
         function loginRequest(type) {
             console.log('Login request', type)
 
             let agreeCB = document.getElementById('agree')
-            let modalTitle = document.getElementById('modal_title')
-            let modalBody = document.getElementById('modal_body')
+
             let result = ''
 
 
@@ -193,10 +204,10 @@
                                 modalBody.innerHTML = `<div class="modal-phone-login">
                             <p>на указанный номер телефона "${userPhone.value}" отправлен sms код, введите его</p>
                             <div class="modal-phone-login-inputs">
-                                <input id="num1" class="check_num" type="number" placeholder="X" min="1" max="9">
-                                <input id="num2" class="check_num" type="number" placeholder="X" min="1" max="9">
-                                <input id="num3" class="check_num" type="number" placeholder="X" min="1" max="9">
-                                <input id="num4" class="check_num" type="number" placeholder="X" min="1" max="9">
+                                <input id="num1" class="check_num" type="number" placeholder="_" min="1" max="9">
+                                <input id="num2" class="check_num" type="number" placeholder="_" min="1" max="9">
+                                <input id="num3" class="check_num" type="number" placeholder="_" min="1" max="9">
+                                <input id="num4" class="check_num" type="number" placeholder="_" min="1" max="9">
                             </div>
                             <span id="send_btn" class="btn btn-disabled btn-link by-center mb-20" onclick="sendCheckNumber()">подтвердить</span>
                             <span>Не пришло SMS с кодом? Отправить код повторно можно через 60 сек</span>
@@ -225,7 +236,17 @@
                 credentials: 'same-origin'
             }).then(res=>res.json())
                 .then(res => {
-                    console.log(res)
+                   let result = res['result']
+                    console.log(result)
+                    if (result === 'ok'){
+                       location.href = '/'
+                    }
+                    if (result === 'number_error'){
+                        modalTitle.innerHTML = 'Ошибка'
+                        modalBody.innerHTML = `<p class="modal-error-text">Введен не корректный код </p>
+                                 <span class="btn btn-link by-center mb-20" onclick="openModal()">закрыть</span>`
+                    }
+
                 })
 
         }
