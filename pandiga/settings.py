@@ -33,7 +33,7 @@ INSTALLED_APPS = [
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend'
 )
 
 MIDDLEWARE = [

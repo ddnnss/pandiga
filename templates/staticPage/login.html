@@ -82,25 +82,54 @@
     <script src="{% static 'js/phone-mask.min.js' %}"></script>
     <script>
         let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
-        let num1 = document.getElementById("num1"),
-            num2 = document.getElementById("num2"),
-            num3 = document.getElementById("num3"),
-            num4 = document.getElementById("num4");
-        num1.onkeyup = function() {
-            if (this.value.length === parseInt(this.attributes["maxlength"].value)) {
-                num2.focus();
+        let userName = document.getElementById('user_name')
+        let userPhone = document.getElementById('user_phone')
+        let code = ''
+        function checkNumbers(){
+            let sendBtn = document.getElementById("send_btn")
+            if (code.length === 4){
+                sendBtn.classList.remove('btn-disabled')
+            }
+            else {
+                sendBtn.classList.add('btn-disabled')
             }
         }
-        num2.onkeyup = function() {
-            if (this.value.length === parseInt(this.attributes["maxlength"].value)) {
+        function checkSms(){
+            let num1 = document.getElementById("num1"),
+                num2 = document.getElementById("num2"),
+                num3 = document.getElementById("num3"),
+                num4 = document.getElementById("num4");
+            let sendBtn = document.getElementById("send_btn")
+
+            num1.focus();
+            num1.onkeyup = function() {
+                code= num1.value + num2.value + num3.value + num4.value
+                console.log(code)
+                num2.value = ''
+                num2.focus()
+            }
+            num2.onkeyup = function() {
+                code= num1.value + num2.value + num3.value + num4.value
+                console.log(code)
+                checkNumbers()
+                num3.value = ''
                 num3.focus();
             }
-        }
-        num3.onkeyup = function() {
-            if (this.value.length === parseInt(this.attributes["maxlength"].value)) {
+            num3.onkeyup = function() {
+                code= num1.value + num2.value + num3.value + num4.value
+                console.log(code)
+                checkNumbers()
+                num4.value = ''
                 num4.focus();
             }
+            num4.onkeyup = function() {
+                code= num1.value + num2.value + num3.value + num4.value
+                checkNumbers()
+                console.log(code)
+                sendBtn.focus();
+            }
         }
+
 
 
         function openModal() {
@@ -112,8 +141,8 @@
             let agreeCB = document.getElementById('agree')
             let modalTitle = document.getElementById('modal_title')
             let modalBody = document.getElementById('modal_body')
-            let userName = document.getElementById('user_name')
-            let userPhone = document.getElementById('user_phone')
+            let result = ''
+
 
             userName.classList.remove('error-field')
             userPhone.classList.remove('error-field')
@@ -139,9 +168,9 @@
                         userPhone.classList.add('error-field')
                         return
                     }
-
                     let body = {
-                        phone: userPhone.value
+                        phone: userPhone.value,
+                        name: userName.value
                     }
                     fetch('/user/send_sms/', {
                         method: 'post',
@@ -151,23 +180,60 @@
                     }).then(res=>res.json())
                         .then(res => {
                             console.log(res)
-                            modalTitle.innerHTML = 'ПОДТВЕРДИТЕ НОМЕР'
-                            modalBody.innerHTML = `<div class="modal-phone-login">
+                            result = res['result']
+                            console.log(result)
+                            if (result === 'send_error'){
+                                modalTitle.innerHTML = 'Ошибка'
+                                modalBody.innerHTML = `<p class="modal-error-text">Введен не корректный номер телефона</p>
+                                 <span class="btn btn-link by-center mb-20" onclick="openModal()">закрыть</span>`
+                            }
+                            console.log('df')
+                            if (result === 'send_ok'){
+                                modalTitle.innerHTML = 'ПОДТВЕРДИТЕ НОМЕР'
+                                modalBody.innerHTML = `<div class="modal-phone-login">
                             <p>на указанный номер телефона "${userPhone.value}" отправлен sms код, введите его</p>
                             <div class="modal-phone-login-inputs">
-                                <input id="num1" type="number" placeholder="X" maxlength="1">
-                                <input id="num2" type="number" placeholder="X" maxlength="1">
-                                <input id="num3" type="number" placeholder="X" maxlength="1">
-                                <input id="num4" type="number" placeholder="X" maxlength="1">
+                                <input id="num1" class="check_num" type="number" placeholder="X" min="1" max="9">
+                                <input id="num2" class="check_num" type="number" placeholder="X" min="1" max="9">
+                                <input id="num3" class="check_num" type="number" placeholder="X" min="1" max="9">
+                                <input id="num4" class="check_num" type="number" placeholder="X" min="1" max="9">
                             </div>
-                            <span class="btn btn-link by-center mb-20">подтвердить</span>
+                            <span id="send_btn" class="btn btn-disabled btn-link by-center mb-20" onclick="sendCheckNumber()">подтвердить</span>
                             <span>Не пришло SMS с кодом? Отправить код повторно можно через 60 сек</span>
-                             <a href="" class="link-with-arrow">Отправить код заново</a>
+                             <a style="display: none" id="resend_sms" href="" class="link-with-arrow">Отправить код заново</a>
                         </div>`
-                            openModal()
+                                openModal()
+                                checkSms()
+                            }
                         })
+
+
+
                 }//type=phone
             }
+        } //loginRequest
+        function sendCheckNumber() {
+            let body = {
+                number: code,
+
+            }
+            console.log(body)
+            fetch('/user/send_check_number/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                })
+
         }
+
+
+
+
+
     </script>
 {% endblock %}
+

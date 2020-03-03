@@ -55,17 +55,19 @@ class User(AbstractUser):
     is_blocked = models.BooleanField('Заблокирован?', default=False)
     is_phone_verified = models.BooleanField('Телефон подтвержден?', default=False)
     is_email_verified = models.BooleanField('EMail подтвержден?', default=False)
-    vkId = models.CharField('vkID', max_length=50, blank=True, null=True)
-    fbId = models.CharField('fbID', max_length=50, blank=True, null=True)
-    ggId = models.CharField('ggID', max_length=50, blank=True, null=True)
     city = models.CharField('Город', max_length=50, blank=True, null=True)
     verify_code = models.CharField('Код подтверждения', max_length=50, blank=True, null=True)
-    sms_verify_code = models.CharField('Код подтверждения для SMS', max_length=50, blank=True, null=True)
     notification_id = models.CharField('ID для сообщений', max_length=100, blank=True, null=True, unique=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+    def __str__(self):
+        if self.phone:
+            return self.phone
+        else:
+            return self.email
 
 def user_post_save(sender, instance, created, **kwargs):
     """Создание всех значений по-умолчанию для нового пользовыателя"""

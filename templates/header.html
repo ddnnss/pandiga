@@ -19,7 +19,7 @@
 
                 {% if request.user.is_authenticated %}
                     <li class="user-menu">
-                        <a class="user-menu-link" href="javascript: void(0)">Скиба Дмитрий</a>
+                        <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }} {{ request.user.last_name }}</a>
                         <a class="user-menu-link user-menu-mail" href="">
                             <i class="fa fa-envelope">
                                 <span>1</span>
@@ -69,7 +69,7 @@
                                     <a  class="user-menu-dropdown-link" href="">настройки</a>
                                 </li>
                                 <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">выйти</a>
+                                    <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>
                                 </li>
 
                             </ul><!-- меню исполнителя-->
@@ -104,7 +104,7 @@
                                     <a  class="user-menu-dropdown-link" href="">настройки</a>
                                 </li>
                                 <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">выйти</a>
+                                    <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>
                                 </li>
 
                             </ul><!-- меню заказчика-->
