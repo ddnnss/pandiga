@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_save
 from partner.models import ParnterCode
+from staticPage.models import City
 
 
 class UserManager(BaseUserManager):
@@ -37,7 +38,10 @@ class User(AbstractUser):
                                          on_delete=models.SET_NULL,
                                          related_name='own_partner_code',
                                          verbose_name='Персональный портнерский код')
-    image = models.ImageField('Фото', upload_to='user',blank=True,null=True)
+    city = models.ForeignKey(City, blank=True, null=True, on_delete=models.SET_NULL,
+                             verbose_name='Местоположение')
+    avatar = models.ImageField('Фото', upload_to='user',blank=True,null=True)
+    photo = models.CharField('VK аватар', max_length=255, blank=True, null=True)
     first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
     last_name = models.CharField('Фамилия', max_length=50, blank=True, null=True)
     middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
@@ -55,7 +59,6 @@ class User(AbstractUser):
     is_blocked = models.BooleanField('Заблокирован?', default=False)
     is_phone_verified = models.BooleanField('Телефон подтвержден?', default=False)
     is_email_verified = models.BooleanField('EMail подтвержден?', default=False)
-    city = models.CharField('Город', max_length=50, blank=True, null=True)
     verify_code = models.CharField('Код подтверждения', max_length=50, blank=True, null=True)
     notification_id = models.CharField('ID для сообщений', max_length=100, blank=True, null=True, unique=True)
     USERNAME_FIELD = 'email'
@@ -68,6 +71,14 @@ class User(AbstractUser):
             return self.phone
         else:
             return self.email
+
+    def get_avatar(self):
+        if self.avatar:
+            return self.avatar.url
+        elif self.photo:
+            return self.photo
+        else:
+            return '/static/img/n_a.png'
 
 def user_post_save(sender, instance, created, **kwargs):
     """Создание всех значений по-умолчанию для нового пользовыателя"""

@@ -1,6 +1,5 @@
 import json
-
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from customuser.models import *
 from django.http import JsonResponse, HttpResponseRedirect
 from twilio.rest import Client
@@ -18,10 +17,6 @@ def create_random_string(digits=False, num=4):
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
-
-
-def phone_login(request):
-    pass
 
 
 def send_sms(request):
@@ -81,29 +76,11 @@ def send_check_number(request):
     else:
         return JsonResponse({'result': 'number_error'})
 
-
-
-
-
-
-def log_in(request):
-    return_dict = {}
-    phone = request.POST.get('phone')
-    password = request.POST.get('password')
-    print(phone)
-    user = authenticate(phone=phone, password=password)
-    print(user)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            return_dict['result'] = 'ok'
-            return JsonResponse(return_dict)
-        else:
-            return_dict['result'] = 'inactive'
-            return JsonResponse(return_dict)
+def change_status(request):
+    user = request.user
+    if user.is_customer:
+        user.is_customer = False
     else:
-        return_dict['result'] = 'invalid'
-        return JsonResponse(return_dict)
-
-
-
+        user.is_customer = True
+    user.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

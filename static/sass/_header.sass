@@ -98,6 +98,7 @@
   left: 0
   background: #ffffff
   width: 100%
+  z-index: 100
   &-group
     display: flex
     align-items: center
@@ -115,9 +116,14 @@
     flex-basis: 49%
     box-sizing: border-box
     color: $color-text
+    &:hover
+      font-weight: 600
     &.user-menu-active
       background: $color-btn-bg
       color: #ffffff
+      cursor: default
+      &:hover
+      font-weight: 400
 
 .user-menu-dropdown
   opacity: 0

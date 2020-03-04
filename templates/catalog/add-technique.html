@@ -20,6 +20,16 @@
                         <label for="">название</label>
                         <input type="text" required name="">
                     </div><!--//form-row-->
+                     <div class="form-row">
+                    <label for="">местоположение</label>
+                     <div class="city-select">
+                         <input id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text">
+                         <div id="city_select_list" class="city-select-list ">
+
+
+                         </div>
+                     </div>
+                </div><!--//form-row-->
                     <div class="form-row">
                         <label for="">фотографии</label>
                         <div class="upload-wrapper">
@@ -82,6 +92,7 @@
                         <textarea required name="" id="" cols="30" rows="10"></textarea>
 
                     </div><!--//form-row-->
+                    <input id="city_id" type="hidden" name="city" value="0">
                     {% if request.user.is_authenticated %}
                         <button type="submit" class="btn btn-link by-center">добавить технику</button>
                     {% else %}
@@ -208,4 +219,56 @@
         })
     </script>
     <!-- get section && subsection-->
+    <!-- getCities-->
+    <script>
+    function getCities(el) {
+        let citySelectList = document.getElementById('city_select_list')
+
+        if (el.value.length <= 2){
+            console.log('too small')
+            return
+        }else{
+            console.log(el.value)
+            el.disabled = true
+            let body = {'query':el.value}
+            fetch('/get_city/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                    el.disabled = false
+                    el.focus()
+                    if (res.length >= 1){
+                        citySelectList.innerHTML = ''
+                        for(i of res){
+
+                            citySelectList.innerHTML = citySelectList.innerHTML +
+                                `<p data-id="${i['id']}" data-city="${i['city']}" data-region="${i['region']}" class="city-select-list-item" onclick="setCity(this)">
+                                 ${i['city']}
+                                 <span>${i['region']}</span>
+                             </p>`
+                        }
+                        citySelectList.classList.add('list-active')
+                    }else{
+                        citySelectList.classList.remove('list-active')
+                    }
+
+                })
+        }
+
+    }
+    function setCity(el) {
+        let citySelectInput = document.getElementById('city_select_input')
+        let citySelectList = document.getElementById('city_select_list')
+        let cityId = document.getElementById('city_id')
+        citySelectList.classList.remove('list-active')
+        citySelectInput.value = `${el.dataset.region}, ${el.dataset.city}`
+        cityId.value = el.dataset.id
+    }
+    </script>
+    <!-- getCities-->
+
 {% endblock %}

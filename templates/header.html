@@ -28,86 +28,95 @@
 
                         <div class="user-menu-dropdown">
                             <div class="user-menu-dropdown-group">
-                                <a href="" class="user-menu-dropdown-toggle">заказчик</a>
-                                <a href="" class="user-menu-dropdown-toggle user-menu-active">исполнитель</a>
+                                {% if request.user.is_customer %}
+                                    <a href="#" class="user-menu-dropdown-toggle user-menu-active">заказчик</a>
+                                    <a href="{% url 'change_status' %}" class="user-menu-dropdown-toggle">исполнитель</a>
+                                {% else %}
+                                    <a href="{% url 'change_status' %}" class="user-menu-dropdown-toggle ">заказчик</a>
+                                    <a href="#" class="user-menu-dropdown-toggle user-menu-active">исполнитель</a>
+
+                                {% endif %}
                             </div>
+                            {% if request.user.is_customer %}
+                                <ul class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
 
-                            <ul style="display: none" class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">баланс: 100 <i class="fa fa-rub"></i></a>
-                                    <a class="user-menu-dropdown-link link-small" href="">пополнить</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">тариф: pro </a>
-                                    <a class="user-menu-dropdown-link link-small" href="">изменить</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">моя техника (0)</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">отклики на заявки (0)</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">отклики на работу (0)</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">отзывы</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">мой профиль</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">настройки</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>
-                                </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">избранное (<span>1</span>)</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">мои заявки на технику (0)</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">мои заявки на работу (0)</a>
+                                    </li>
 
-                            </ul><!-- меню исполнителя-->
-                            <ul class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">мой профиль</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">настройки</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>
+                                    </li>
 
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">избранное (<span>1</span>)</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">мои заявки на технику (0)</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">мои заявки на работу (0)</a>
-                                </li>
+                                </ul><!-- меню заказчика-->
 
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">отзывы</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">мой профиль</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="">настройки</a>
-                                </li>
-                                <li class="user-menu-dropdown-item">
-                                    <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>
-                                </li>
+                            {% else %}
+                                <ul  class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">баланс: 100 <i class="fa fa-rub"></i></a>
+                                        <a class="user-menu-dropdown-link link-small" href="">пополнить</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">тариф: pro </a>
+                                        <a class="user-menu-dropdown-link link-small" href="">изменить</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">моя техника (0)</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">отклики на заявки (0)</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">отклики на работу (0)</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">мой профиль</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="">настройки</a>
+                                    </li>
+                                    <li class="user-menu-dropdown-item">
+                                        <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>
+                                    </li>
 
-                            </ul><!-- меню заказчика-->
+                                </ul><!-- меню исполнителя-->
+                            {% endif %}
                         </div>
                         {% else %}
                     <li class="header-nav-item"><a class="{{ loginActive }} header-nav-link" href="{% url 'login_page' %}">вход</a></li>

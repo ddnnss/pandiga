@@ -6,6 +6,7 @@ from random import choices
 import string
 from ckeditor_uploader.fields import RichTextUploadingField
 from customuser.models import User
+from staticPage.models import City
 
 class TechniqueType(models.Model):
     name = models.CharField('Название типа техники', max_length=255, blank=False, null=True)
@@ -105,3 +106,45 @@ class TechniqueSubSection(models.Model):
     class Meta:
         verbose_name = "Подраздел техники"
         verbose_name_plural = "Подразделы техники"
+
+
+
+class TechniqueItem(models.Model):
+    sub_section = models.ForeignKey(TechniqueSubSection, blank=False, null=True, on_delete=models.SET_NULL,
+                                verbose_name='Относится к подразделу')
+    owner = models.ForeignKey(User, blank=False, null=True, on_delete=models.SET_NULL,
+                                verbose_name='Владелец')
+    city = models.ForeignKey(City, blank=True, null=True, on_delete=models.SET_NULL,
+                                verbose_name='Местоположение')
+    name = models.CharField('Название техники', max_length=255, blank=False, null=True)
+    name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
+    name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
+
+    is_moderated = models.BooleanField('Проверена?', default=True)
+    is_free = models.BooleanField('Статус свободен?', default=True)
+    created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        slug = slugify(self.name)
+        if not self.name_slug:
+            testSlug = TechniqueItem.objects.filter(name_slug=slug)
+            slugRandom = ''
+            if testSlug:
+                slugRandom = '-' + ''.join(choices(string.ascii_lowercase + string.digits, k=2))
+            self.name_slug = slug + slugRandom
+        self.name_lower = self.name.lower()
+        super(TechniqueItem, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'Еденица техники : {self.name}'
+
+    class Meta:
+        verbose_name = "Техника"
+        verbose_name_plural = "Еденицы техники"
+
+
+class TechniqueItemImages(models.Model):
+    techniqueitem = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,
+                                verbose_name='Изображение для')
+    image = models.ImageField('Изображение', upload_to='technique/items/', blank=False, null=True)
+    is_moderated = models.BooleanField('Проверена?', default=True)

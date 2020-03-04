@@ -204,7 +204,166 @@
                             </div>
                         </div>
                     </div><!--//tab-chat-->
+                    <div id="tab-my-cars" class="lk-tab ">
+                        <div class="section-header "><h3>моя техника</h3></div>
 
+                    </div><!--//tab-my-cars-->
+
+                    <div id="tab-my-order" class="lk-tab ">
+                        <div class="section-header "><h3>отклики на заявки</h3></div>
+
+                    </div><!--//tab-my-order-->
+                    <div id="tab-my-job" class="lk-tab ">
+                        <div class="section-header "><h3>отклики на работу</h3></div>
+
+                    </div><!--//tab-my-job-->
+                    <div id="tab-finance" class="lk-tab ">
+                       <div class="lk-tab-finance">
+                           <div class="lk-tab-finance-item item-header">
+                               <p class="lk-tab-finance-item-header">ID</p>
+                               <p class="lk-tab-finance-item-header">дата</p>
+                               <p class="lk-tab-finance-item-header">сумма</p>
+                               <p class="lk-tab-finance-item-header">операция</p>
+                               <p class="lk-tab-finance-item-header">Платёжная система</p>
+                               <p class="lk-tab-finance-item-header">Статус</p>
+                               <!--p class="lk-tab-finance-item-header">Действие</p-->
+                           </div>
+                           <div class="lk-tab-finance-item error-payment">
+                               <p class="lk-tab-finance-item-item">ID</p>
+                               <p class="lk-tab-finance-item-item">дата</p>
+                               <p class="lk-tab-finance-item-item">сумма</p>
+                               <p class="lk-tab-finance-item-item">операция</p>
+                               <p class="lk-tab-finance-item-item">Платёжная система</p>
+                               <p class="lk-tab-finance-item-item">Статус</p>
+
+                           </div>
+                           <div class="lk-tab-finance-item success-payment">
+                               <p class="lk-tab-finance-item-item">ID</p>
+                               <p class="lk-tab-finance-item-item">дата</p>
+                               <p class="lk-tab-finance-item-item">сумма</p>
+                               <p class="lk-tab-finance-item-item">операция</p>
+                               <p class="lk-tab-finance-item-item">Платёжная система</p>
+                               <p class="lk-tab-finance-item-item">Статус</p>
+
+                           </div>
+                       </div>
+
+                    </div><!--//tab-finance-->
+                    <div id="tab-money-earn" class="lk-tab ">
+                        <div class="lk-tab-moneyearn">
+                            <div class="lk-tab-content-bg mb-20">
+                                <p class="mb-20">Скопируйте промо-код и сообщите его своим друзьям и знакомым. Все, кто будут регистрироваться по вашему промо-коду получат скидку, а вы будете получать регулярное вознаграждение</p>
+                                <div class="mb-20 d-flex">  <span class="btn btn-link ">Ввести промо-код партнера</span>
+                                    <span class="btn btn-link" onclick="opentab(event, 'tab-money-drop', 'link-active')">вывести средства</span>
+                                <a style="padding-top: 10px" href="">Подробее о партнерской программе</a>
+                                </div>
+
+                                <p class="text-w-600 text-fs-20">ВАШ ПРОМО-КОД : <span class="color-red">43534535324</span></p>
+                            </div>
+                            <div class="lk-tab-content-bg">
+                                 <div class="tab">
+                                <button  class="h-tablinks htab-active" onclick="openHTab(event, 'fin_tab_1')">пользователь</button>
+                                <button class="h-tablinks" onclick="openHTab(event, 'fin_tab_2')">начисления</button>
+                            </div>
+                            <!-- Tab content -->
+                            <div id="fin_tab_1" class="h-tabcontent" style="display: block">
+                                <p>Lorem ipsum dolor sit.</p>
+                            </div>
+                            <div id="fin_tab_2" class="h-tabcontent">
+                                <p>Lorem ipsum dolor sit1.</p>
+                            </div>
+                            </div>
+                        </div><!--//lk-tab-moneyearn-->
+
+                    </div><!--//tab-money-earn-->
+                    <div id="tab-feedback" class="lk-tab ">
+                        <div class="lk-tab-feedback">
+                            <div class="tab">
+                                <button  class="h-tablinks htab-active" onclick="openHTab(event, 'my_feedback')">Мои отзывы (0)</button>
+                                <button class="h-tablinks" onclick="openHTab(event, 'feedback_about_me')">Отзывы обо мне (0)</button>
+                            </div>
+                            <!-- Tab content -->
+                            <div id="my_feedback" class="h-tabcontent" style="display: block">
+                                <p>Lorem ipsum dolor sit.</p>
+                            </div>
+                            <div id="feedback_about_me" class="h-tabcontent">
+                                <p>Lorem ipsum dolor sit1.</p>
+                            </div>
+
+
+                        </div><!--lk-tab-feedback -->
+
+                    </div><!--//tab-feedback-->
+                    <div id="tab-profile" class="lk-tab ">
+
+                        <div class="lk-tab-profile">
+                            <div class="lk-tab-profile-summary">
+                                <p>Едениц техники: 0</p>
+                                <p>Отклики на заявки: 0</p>
+                            </div>
+                            <div class="lk-tab-profile-main">
+                                <div class="lk-tab-profile-main-top">
+                                    <div class="lk-tab-profile-main-top-img">
+                                        <img src="http://placehold.it/200" alt="">
+                                        <label class="" for="user_avatar"> <i class="fa fa-edit"></i> Изменить фото профиля
+                                            <input id="user_avatar" type="file" accept="image/*">
+                                        </label>
+                                    </div>
+                                    <p>Lorem ipsum dolor.</p>
+                                </div>
+                                <div class="lk-tab-profile-main-bottom">
+                                    <div class="form-row">
+                                        <i class="fa fa-user"></i>
+                                        <input type="text" value="lorem lorem">
+
+                                    </div>
+                                    <div class="form-row">
+                                        <i class="fa fa-map-marker"></i>
+                                        <div class="city-select">
+                                            <input class="city-select-input" type="text">
+                                            <div class="city-select-list">
+                                                <p class="city-select-list-item">
+                                                    Lorem ipsum.
+                                                    <span>Lorem ipsum dolor.</span>
+                                                </p>
+                                                <p class="city-select-list-item">
+                                                    Город
+                                                    <span>Регион</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <i class="fa fa-envelope"></i>
+                                        <input type="text" value="lorem lorem">
+
+                                    </div>
+                                    <div class="form-row">
+                                        <i class="fa fa-phone"></i>
+                                        <input type="text" value="">
+                                    </div>
+                                    <div class="form-row">
+                                        <i class="fa fa-calendar"></i>
+                                        <input type="date" value="">
+                                    </div>
+                                    <a href="" class="btn btn-link">Сохранить изменения</a>
+                                </div>
+                            </div>
+                        </div><!-- lk-tab-profile-->
+                    </div><!--//tab-profile-->
+                    <div id="tab-settings" class="lk-tab ">
+                        <div class="section-header "><h3>настройки</h3></div>
+
+                    </div><!--//tab-settings-->
+                    <div id="tab-money-drop" class="lk-tab ">
+                        <div class="lk-tab-moneydrop">
+
+                            <div class="lk-tab-content-bg">
+                                sdfsdfdf
+                            </div>
+                        </div><!--//lk-tab-moneyearn-->
+
+                    </div><!--//tab-money-drop-->
                 </div><!--//lk-content-->
             </div><!--//lk-wrapper-->
         </div><!--//container-->
@@ -213,6 +372,29 @@
 </div><!--//main-->
 
 <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+
+        let url = new URL(location.href);
+        let tab = url.searchParams.get("tab");
+        console.log(tab)
+        if (tab){
+            opentab(event, tab, 'link-active')
+        }
+
+    });
+    function openHTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("h-tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("h-tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" htab-active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " htab-active";
+    }
 
     function opentab(evt, TabName, type) {
         var i, tabcontent, tablinks;

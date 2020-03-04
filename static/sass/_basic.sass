@@ -64,7 +64,7 @@ input,select, textarea
   border: 1px solid $color-border
   border-radius: 2px
   flex-grow: 1
-  width: auto !important
+  width: auto
   background: $color-bg-light
   transition: background-color .2s linear
   box-sizing: border-box
@@ -77,6 +77,12 @@ input,select, textarea
   &:hover
     transition: background-color .2s linear
     background: #fff
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+  -webkit-appearance: none
+  -moz-appearance: textfield
+  margin: 0
 
 section
   padding: 40px 0
@@ -128,7 +134,11 @@ section
     position: absolute
     display: none
 
+.d-flex
+  display: flex
+  flex-wrap: wrap
 
+  justify-content: space-between
 .container
   max-width: 1140px
   padding: 0 15px
@@ -147,6 +157,12 @@ section
 
 .color-white
   color: #ffffff !important
+.color-red
+  color: $color-red !important
+.text-w-600
+  font-weight: 600 !important
+.text-fs-20
+  font-size: 20px !important
 .by-center
   margin: 0 auto
 .section-header
@@ -329,4 +345,41 @@ section
         margin-right: 0
       &.star-colored
         color: $color-star
+
+.city-select
+  position: relative
+  flex-grow: 1
+
+  &-input
+    width: 100%
+  &-list
+    opacity: 0
+    pointer-events: none
+    position: absolute
+    background: #ffffff
+    border: 1px solid $color-border
+    border-radius: 2px
+    z-index: 10
+    left: 0
+    right: 0
+    padding: 10px
+    box-sizing: border-box
+    transition: opacity .2s linear
+    &-item
+      font-weight: 600
+      border-bottom: 1px dashed $color-btn-border
+      padding-bottom: 5px
+      margin-bottom: 5px
+      cursor: pointer
+      &:hover
+          background: $color-bg-light
+      span
+        display: block
+        font-size: 13px
+        font-weight: 400
+    &.list-active
+      opacity: 1
+      pointer-events: all
+      transition: opacity .2s linear
+
 
