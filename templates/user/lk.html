@@ -1,9 +1,98 @@
 {% extends 'basic.html' %}
 {% load static %}
 {% block content %}
+    <div class="main">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="/">главная</a></li>
+                    <li>личный кабинет</li>
+                </ul>
+            </div><!--//breadcrumbs-->
+        </div><!--//container-->
 
+        <section class="lk">
+            <div class="container">
+                <div class="lk-wrapper">
+                    <div class="lk-menu">
+                        <ul>
+                            <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: 0 р <span>пополнить</span></li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги (5 / 0)</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника (0)</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >отклики на заявки (0)</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >отклики на работу (0)</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-feedback', 'link-active')" >отзывы</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-profile', 'link-active')" >мой профиль</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-settings', 'link-active')" >настройки</li>
+                        </ul>
+                        <a href="" class="btn">выход</a>
+                    </div><!--//lk-menu-->
+                    <div class="lk-content">
+                       {% include 'user/_tab-balance.html' %}
+                       {% include 'user/_tab-tarif.html' %}
+                       {% include 'user/_tab-chat.html' %}
+                       {% include 'user/_tab-my-cars.html' %}
+                       {% include 'user/_tab-my-order.html' %}
+                       {% include 'user/_tab-my-job.html' %}
+                       {% include 'user/_tab-finance.html' %}
+                       {% include 'user/_tab-money-earn.html' %}
+                       {% include 'user/_tab-feedback.html' %}
+                       {% include 'user/_tab-profile.html' %}
+                       {% include 'user/_tab-settings.html' %}
+                       {% include 'user/_tab-money-drop.html' %}
+                    </div><!--//lk-content-->
+                </div><!--//lk-wrapper-->
+            </div><!--//container-->
+        </section><!--//lk-->
+
+    </div><!--//main-->
 {% endblock %}
 {% block js %}
-      {{ block.super }}
+    {{ block.super }}
+    <!--tabs-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
 
+            let url = new URL(location.href);
+            let tab = url.searchParams.get("tab");
+            console.log(tab)
+            if (tab){
+                opentab(event, tab, 'link-active')
+            }
+
+        });
+        function openHTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("h-tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("h-tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" htab-active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " htab-active";
+        }
+
+        function opentab(evt, TabName, type) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("lk-tab");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(` ${type}`, "");
+            }
+            document.getElementById(TabName).style.display = "block";
+
+            console.log(evt)
+            evt.currentTarget.className += ` ${type}`;
+        }
+    </script>
+    <!--//tabs-->
 {% endblock %}

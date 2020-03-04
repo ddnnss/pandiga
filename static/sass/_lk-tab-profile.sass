@@ -1,0 +1,45 @@
+.lk-tab-profile
+  &-summary
+    background: $color-bg-light
+    border: 1px solid $color-border
+    box-sizing: border-box
+    border-radius: 2px
+    padding: 10px 20px
+    display: grid
+    grid-template-columns: repeat(auto-fill,minmax(150px,1fr))
+    grid-gap: 10px
+    margin-bottom: 20px
+  &-main
+    background: $color-bg-light
+    border: 1px solid $color-border
+    box-sizing: border-box
+    border-radius: 2px
+    padding: 20px
+    &-top
+      display: flex
+      flex-wrap: wrap
+      margin-bottom: 20px
+      &-img
+        position: relative
+        margin-right: 20px
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        width: 200px
+        img
+          margin-bottom: 10px
+        label
+          cursor: pointer
+          &:hover
+            color: $color-link
+          i
+            font-size: 16px
+
+        input
+          display: none
+      p
+        font-size: 18px
+        font-weight: 600
+
+    &-bottom

@@ -1,0 +1,197 @@
+.lk-tab-chat
+  position: relative
+  height: 100%
+  ul
+    margin-bottom: 30px
+    li
+      margin-bottom: 15px
+      &:last-child
+        margin-bottom: 0
+  p
+    margin-bottom: 15px
+
+  &-item
+    cursor: pointer
+    display: flex
+    justify-content: space-between
+    background: $color-bg-light
+    border: 1px solid $color-border
+    //box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07)
+    border-radius: 2px
+    padding: 20px
+    align-items: center
+    transition: background-color .2s linear
+    margin-bottom: 20px
+    &:hover
+      background: #ffffff
+    &-img
+      position: relative
+      img
+        width: 50px
+        height: 50px
+        border-radius: 50%
+        margin-right: 20px
+      &.unread
+        &::after
+          position: absolute
+          content: attr(data-num)
+          right: 16px
+          color: #ffffff
+          background: #37D134
+          width: 20px
+          height: 20px
+          padding: 2px 6px
+          border-radius: 50%
+    &-theme-img
+      margin: 0 20px
+      width: 50px
+    &-theme
+      flex-grow: 1
+      p
+        margin-bottom: 0
+      a
+        text-decoration: underline
+        color: $color-link
+    &-user
+      flex-grow: 1
+      border-right: 1px solid $color-border
+      p
+        margin-bottom: 5px
+      span
+        font-weight: 300
+        color: #838383
+    &-date
+      display: flex
+      flex-direction: column
+      align-items: flex-end
+    &-close
+      a
+        color: $color-link
+        font-size: 30px
+        opacity: 0.8
+        &:hover
+          opacity: 1
+
+.lk-tab-chat-messages
+  display: block
+  position: absolute
+  border: 1px solid $color-border
+  background: $color-bg-light
+  box-sizing: border-box
+  box-shadow: inset 0px 2px 20px rgba(0, 0, 0, 0.02)
+  border-radius: 2px
+
+  top: 0
+  &-top
+    display: flex
+    justify-content: space-between
+    align-items: center
+    background: $color-bg-light
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07)
+    border-radius: 2px
+    padding: 20px
+    &-img
+      position: relative
+      img
+        width: 50px
+        height: 50px
+        border-radius: 50%
+        margin-right: 20px
+      &.unread
+        &::after
+          position: absolute
+          content: attr(data-num)
+          right: 16px
+          color: #ffffff
+          background: $color-link
+          width: 20px
+          height: 20px
+          padding: 2px 6px
+          border-radius: 50%
+
+    &-user
+      flex-grow: 1
+      p
+        font: 16px 'GB', Sans-Serif
+        color: $color-text-grey
+        margin-bottom: 10px
+      span
+        color: #838383
+
+  &-bottom
+    //border: 1px solid $color-border
+    padding: 40px 20px
+    overflow-y: auto
+    //max-height: 50%
+    height: calc(100vh / 2)
+
+    &__message-to-me
+      width: 70%
+      display: flex
+      p
+        font: 16px 'GR', Sans-Serif
+        color: #000
+        padding: 10px
+        background: #ffffff
+        border-radius: 2px
+        flex-basis: 85%
+        max-width: fit-content
+      span
+        font: 12px 'GR', Sans-Serif
+        color: #838383
+        flex-basis: 15%
+        margin-left: 10px
+    &__message-from-me
+      width: 70%
+      display: flex
+      margin-left: auto
+      justify-content: flex-end
+      p
+        order: 2
+        font: 16px 'GR', Sans-Serif
+        padding: 10px
+        background: $color-bg-dark
+        border-radius: 2px
+        flex-basis: 85%
+        color: #ffffff
+        max-width: fit-content
+      span
+        order: 1
+        flex-basis: 15%
+        font: 12px 'GR', Sans-Serif
+        color: #838383
+  &-new-message
+    position: relative
+    background: $color-bg-light
+    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07)
+    border-radius: 2px
+    display: flex
+    align-items: center
+    justify-content: space-between
+    //padding: 13px 25px
+    z-index: 999
+    input
+      border: none
+      display:  block
+      flex-basis: 90%
+      overflow: hidden
+      resize: none
+
+      &:focus
+        outline: 0 !important
+        box-shadow: none
+        border: none !important
+      &:hover
+        box-shadow: none
+      &:hover > .lk-tab-chat-messages-new-message
+        background: #ffffff
+
+    &-button
+      flex-basis: 6%
+      margin-left: 20px
+      margin-bottom: auto
+      a
+        color: $color-btn-bg
+        font-size: 30px
+  &.show-messages
+    display: block

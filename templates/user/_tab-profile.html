@@ -1,0 +1,55 @@
+<div id="tab-profile" class="lk-tab ">
+
+    <div class="lk-tab-profile">
+        <div class="lk-tab-profile-summary">
+            <p>Едениц техники: 0</p>
+            <p>Отклики на заявки: 0</p>
+        </div>
+        <div class="lk-tab-profile-main">
+            <form action="">
+            <div class="lk-tab-profile-main-top">
+                <div class="lk-tab-profile-main-top-img">
+                    <img src="{{ user.get_avatar }}" alt="">
+                    <label class="" for="user_avatar"> <i class="fa fa-edit"></i> Изменить фото профиля
+                        <input id="user_avatar" type="file" accept="image/*">
+                    </label>
+                </div>
+                <p>{{ user.first_name }} {% if user.last_name %}{{ user.last_name }}{% endif %}</p>
+            </div>
+            <div class="lk-tab-profile-main-bottom">
+                <div class="form-row">
+                     <i class="fa fa-user"></i>
+                    <div class="form-row-group">
+                     <input required type="text" value="{% if user.first_name %}{{ user.first_name }}{% endif %}" placeholder="Ваше имя">
+                        <input required type="text" value="{% if user.last_name %}{{ user.last_name }}{% endif %}" placeholder="Ваша фамилия">
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <i class="fa fa-map-marker"></i>
+                    <div class="city-select">
+                        <input required id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text" placeholder="Ваш город">
+                        <div id="city_select_list" class="city-select-list ">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <i class="fa fa-envelope"></i>
+                    <input required type="text" value="{% if user.email %}{{ user.email }}{% endif %}" placeholder="Ваш EMail">
+
+                </div>
+                <div class="form-row">
+                    <i class="fa fa-phone"></i>
+                    <input required type="tel" pattern="+[0-9]{11}" value="{% if user.phone %}{{ user.phone }}{% endif %}" placeholder="Ваш телефон в формате +71112223344">
+                </div>
+                <div class="form-row">
+                    <i class="fa fa-calendar"></i>
+                    <input type="date" value="">
+                </div>
+                <button type="submit" class="btn btn-link">Сохранить изменения</button>
+            </div>
+            </form>
+        </div>
+    </div><!-- lk-tab-profile-->
+</div><!--//tab-profile-->

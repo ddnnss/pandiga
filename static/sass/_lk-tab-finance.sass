@@ -1,0 +1,30 @@
+.lk-tab-finance
+  &-item
+    display: grid
+    grid-template-columns: 1fr 2fr 1fr 2fr 2fr 2fr
+    background: $color-bg-light
+    &-header
+      text-align: center
+      border: 1px solid $color-border
+      text-transform: uppercase
+      font-size: 14px
+      font-weight: 600
+      border-right: none
+      line-height: 30px
+      color: #ffffff
+      &:last-child
+        border-right: 1px solid $color-border
+    &-item
+      text-align: center
+      border: 1px solid $color-border
+      font-size: 13px
+      &:last-child
+        border-right: 1px solid $color-border
+    &.error-payment
+       background: $color-red
+       color: #ffffff
+    &.success-payment
+       background: green
+       color: #ffffff
+    &.item-header
+      background: $color-bg-dark

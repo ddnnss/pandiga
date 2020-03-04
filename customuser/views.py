@@ -1,5 +1,7 @@
 import json
 from django.contrib.auth import login, logout
+from django.shortcuts import render
+
 from customuser.models import *
 from django.http import JsonResponse, HttpResponseRedirect
 from twilio.rest import Client
@@ -50,6 +52,7 @@ def send_sms(request):
     else:
         return JsonResponse({'result': 'send_error'})
 
+
 def send_check_number(request):
     request_unicode = request.body.decode('utf-8')
     request_body = json.loads(request_unicode)
@@ -76,6 +79,7 @@ def send_check_number(request):
     else:
         return JsonResponse({'result': 'number_error'})
 
+
 def change_status(request):
     user = request.user
     if user.is_customer:
@@ -84,3 +88,9 @@ def change_status(request):
         user.is_customer = True
     user.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def lk_page(request):
+    user = request.user
+
+    return render(request, 'user/lk.html', locals())

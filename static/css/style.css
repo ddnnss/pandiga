@@ -2305,6 +2305,26 @@ section {
   font-size: 15px;
 }
 
+@-webkit-keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .lk-tab-chat {
   position: relative;
   height: 100%;
@@ -2323,8 +2343,6 @@ section {
 }
 
 .lk-tab-chat p {
-  font: 16px 'GR', Sans-Serif;
-  color: #969696;
   margin-bottom: 15px;
 }
 
@@ -2336,11 +2354,21 @@ section {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  background: #FFFFFF;
-  -webkit-box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07);
-  box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.07);
+  background: #f5f5f5;
+  border: 1px solid #d5d5d5;
   border-radius: 2px;
   padding: 20px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-transition: background-color .2s linear;
+  -o-transition: background-color .2s linear;
+  transition: background-color .2s linear;
+  margin-bottom: 20px;
+}
+
+.lk-tab-chat-item:hover {
+  background: #ffffff;
 }
 
 .lk-tab-chat-item-img {
@@ -2366,20 +2394,53 @@ section {
   border-radius: 50%;
 }
 
-.lk-tab-chat-item-user {
+.lk-tab-chat-item-theme-img {
+  margin: 0 20px;
+  width: 50px;
+}
+
+.lk-tab-chat-item-theme {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
   flex-grow: 1;
 }
 
+.lk-tab-chat-item-theme p {
+  margin-bottom: 0;
+}
+
+.lk-tab-chat-item-theme a {
+  text-decoration: underline;
+  color: #800;
+}
+
+.lk-tab-chat-item-user {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  border-right: 1px solid #d5d5d5;
+}
+
 .lk-tab-chat-item-user p {
-  font: 16px 'GB', Sans-Serif;
-  color: #686868;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .lk-tab-chat-item-user span {
+  font-weight: 300;
   color: #838383;
+}
+
+.lk-tab-chat-item-date {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
 }
 
 .lk-tab-chat-item-close a {
@@ -2402,7 +2463,6 @@ section {
   -webkit-box-shadow: inset 0px 2px 20px rgba(0, 0, 0, 0.02);
   box-shadow: inset 0px 2px 20px rgba(0, 0, 0, 0.02);
   border-radius: 2px;
-  height: 100%;
   top: 0;
 }
 
@@ -2463,10 +2523,9 @@ section {
 }
 
 .lk-tab-chat-messages-bottom {
-  border: 1px solid #d5d5d5;
-  padding: 60px 20px;
+  padding: 40px 20px;
   overflow-y: auto;
-  height: calc(100vh / 3);
+  height: calc(100vh / 2);
 }
 
 .lk-tab-chat-messages-bottom__message-to-me {
@@ -2479,9 +2538,9 @@ section {
 .lk-tab-chat-messages-bottom__message-to-me p {
   font: 16px 'GR', Sans-Serif;
   color: #000;
-  padding: 10px 20px;
-  background: #F6F6F6;
-  border-radius: 20px;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 2px;
   -ms-flex-preferred-size: 85%;
   flex-basis: 85%;
   max-width: -webkit-fit-content;
@@ -2494,6 +2553,7 @@ section {
   color: #838383;
   -ms-flex-preferred-size: 15%;
   flex-basis: 15%;
+  margin-left: 10px;
 }
 
 .lk-tab-chat-messages-bottom__message-from-me {
@@ -2512,9 +2572,9 @@ section {
   -ms-flex-order: 2;
   order: 2;
   font: 16px 'GR', Sans-Serif;
-  padding: 10px 20px;
-  background: #447CFA;
-  border-radius: 20px;
+  padding: 10px;
+  background: #333;
+  border-radius: 2px;
   -ms-flex-preferred-size: 85%;
   flex-basis: 85%;
   color: #ffffff;
@@ -2551,28 +2611,40 @@ section {
   z-index: 999;
 }
 
-.lk-tab-chat-messages-new-message textarea {
+.lk-tab-chat-messages-new-message input {
   border: none;
   display: block;
-  -ms-flex-preferred-size: 95%;
-  flex-basis: 95%;
+  -ms-flex-preferred-size: 90%;
+  flex-basis: 90%;
   overflow: hidden;
   resize: none;
-  height: 16px;
 }
 
-.lk-tab-chat-messages-new-message textarea:focus {
-  outline: 0;
+.lk-tab-chat-messages-new-message input:focus {
+  outline: 0 !important;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: none !important;
+}
+
+.lk-tab-chat-messages-new-message input:hover {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
+.lk-tab-chat-messages-new-message input:hover > .lk-tab-chat-messages-new-message {
+  background: #ffffff;
+}
+
 .lk-tab-chat-messages-new-message-button {
+  -ms-flex-preferred-size: 6%;
+  flex-basis: 6%;
+  margin-left: 20px;
   margin-bottom: auto;
 }
 
 .lk-tab-chat-messages-new-message-button a {
-  color: #447CFA;
+  color: #800;
   font-size: 30px;
 }
 
@@ -2627,6 +2699,7 @@ section {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  width: 200px;
 }
 
 .lk-tab-profile-main-top-img img {
@@ -2699,24 +2772,84 @@ section {
   background: #333;
 }
 
-@-webkit-keyframes fadeEffect {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+.lk-tab-my-cars-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px;
+  background: #f5f5f5;
+  border: 1px solid #d5d5d5;
+  border-radius: 2px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
 
-@keyframes fadeEffect {
-  from {
-    opacity: 0;
-  }
+.lk-tab-my-cars-item a {
+  font-size: 20px;
+  color: #333;
+}
 
-  to {
-    opacity: 1;
-  }
+.lk-tab-my-cars-item a:hover {
+  color: #800;
+}
+
+.lk-tab-my-cars-item-img {
+  width: 150px;
+  height: 150px;
+  margin-right: 10px;
+}
+
+.lk-tab-my-cars-item-info {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
+}
+
+.lk-tab-my-cars-item-info-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.lk-tab-my-cars-item-info-category {
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.lk-tab-my-cars-item-info-price {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.lk-tab-my-cars-item-info-price p:first-child {
+  margin-right: 20px;
+}
+
+.lk-tab-my-cars-item-info-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 .login-wrapper {
