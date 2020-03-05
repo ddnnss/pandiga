@@ -67,7 +67,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 id="modal_title"  class="modal-title section-header"></h3>
-                    <a href="#close" title="Close" class="close">×</a>
+                    <span  onclick="openModal()" title="Закрыть" class="close">×</span>
                 </div>
                 <div id="modal_body" class="modal-body">
 
@@ -81,7 +81,7 @@
     {{ block.super }}
     <script src="{% static 'js/phone-mask.min.js' %}"></script>
     <script>
-        let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
         let userName = document.getElementById('user_name')
         let userPhone = document.getElementById('user_phone')
         let modalTitle = document.getElementById('modal_title')

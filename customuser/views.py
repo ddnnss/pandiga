@@ -7,6 +7,8 @@ from django.http import JsonResponse, HttpResponseRedirect
 from twilio.rest import Client
 import settings
 
+from technique.models import *
+
 def create_random_string(digits=False, num=4):
     from random import choices
     import string
@@ -92,5 +94,6 @@ def change_status(request):
 
 def lk_page(request):
     user = request.user
+    my_technique = TechniqueItem.objects.filter(owner=user)
 
     return render(request, 'user/lk.html', locals())
