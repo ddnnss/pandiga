@@ -169,7 +169,7 @@
     justify-content: space-between
   &-item
     position: relative
-    padding: 15px 35px
+    padding: 0px 35px
     border-bottom: 1px solid $color-border
     box-sizing: border-box
     cursor: pointer
@@ -179,6 +179,8 @@
       border-bottom: none
     a
       color: $color-text
+      display: block
+      line-height: 55px
     &::after
       position: absolute
       font-family: 'FontAwesome'
@@ -189,10 +191,15 @@
       color: $color-link
       background: #ffffff
       transition: background-color .2s linear
+
     &:hover > div
         opacity: 1
         pointer-events: all
-      
+
+.menu-item-active
+  font-weight: 600
+  color: $color-link !important
+
 .category-menu-inner
   border: 1px solid $color-border
   box-sizing: border-box
@@ -215,7 +222,7 @@
 
 .category-menu-inner-item
   position: relative
-  padding: 15px 35px
+  padding: 0px 35px
   border-bottom: 1px solid $color-border
   box-sizing: border-box
   font-size:
@@ -227,8 +234,7 @@
       border-bottom: none
   a
     color: $color-text
-    &:hover
-      color: $color-link
+
   &::after
     position: absolute
     font-family: 'FontAwesome'

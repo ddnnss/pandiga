@@ -10,4 +10,5 @@ urlpatterns = [
     path('get_city/', views.get_city, name='get_city'),
 
 
+
 ]

@@ -1,0 +1,235 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="/">главная</a></li>
+                    <li><a href="{% url 'technique_catalog' %}">каталог техники</a></li>
+
+                    {% if current_technique_section and not current_technique_subsection%}
+                        <li><a href="{% url 'technique_type_catalog' current_technique_type.name_slug %}">{{ current_technique_type.name }}</a></li>
+                        <li>{{ current_technique_section.name }}</li>
+                    {% elif current_technique_subsection%}
+                        <li><a href="{% url 'technique_type_catalog' current_technique_type.name_slug %}">{{ current_technique_type.name }}</a></li>
+                        <li><a href="{% url 'technique_section_catalog' current_technique_type.name_slug current_technique_section.name_slug %}">{{ current_technique_section.name }}</a></li>
+                        <li>{{ current_technique_subsection.name }}</li>
+                    {% else %}
+                        <li>{{ current_technique_type.name }}</li>
+                    {% endif %}
+                </ul>
+            </div><!--//breadcrumbs-->
+
+
+            <section class="items-block">
+                <div class="section-header"><h1>название категории</h1></div>
+                <div class="items-block-wrapper">
+                    <div class="items-block-left">
+                        <div class="category-menu mb-10">
+                            <ul class="category-menu-wrapper">
+                                {% for type in all_technique_types %}
+                                    <li class="category-menu-item" ><a {% if current_technique_type.id == type.id%}
+                                        class="menu-item-active"
+                                    {% endif %}
+                                        href="{% url 'technique_type_catalog' type.name_slug %}">{{ type.name }}</a>
+                                        <div  class="category-menu-inner">
+                                            <ul class="category-menu-inner-wrapper">
+                                                {% for section in type.sections.all %}
+                                                    <li class="category-menu-inner-item">
+                                                        <a {% if current_technique_section.id == section.id%}
+                                                            class="menu-item-active"
+                                                            {% endif %}
+                                                            href="{% url 'technique_section_catalog' current_technique_type.name_slug section.name_slug%}">
+                                                            {{ section.name }}
+                                                        </a>
+                                                        <div  class="category-menu-inner">
+                                                            <ul class="category-menu-inner-wrapper">
+                                                                {% for subsection in section.subsections.all %}
+                                                                    <li class="category-menu-item link-item">
+                                                                        <a {% if current_technique_subsection.id == subsection.id%}
+                                                                            class="menu-item-active"
+                                                                            {% endif %}
+                                                                            href="{% url 'technique_subsection_catalog' current_technique_type.name_slug section.name_slug subsection.name_slug%}">
+                                                                            {{ subsection.name }}
+                                                                        </a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+
+                                            </ul>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                        <div class="item-filter">
+                            <form action="" method="get">
+                                <p>Поиск по категории</p>
+                                <input name="search" type="text">
+                                <p>География</p>
+                                <div class="city-select">
+                                    <input id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text">
+                                    <div id="city_select_list" class="city-select-list ">
+
+                                    </div>
+                                </div>
+                                {#                            <p>Тип</p>#}
+                                <select style="display: none" name="" id="type_select">
+                                    <option value="any">Любой</option>
+                                    {% for type in all_techique_types %}
+                                        <option {% if current_technique_type.id == type.id%}selected{% endif %} value="{{ type.name_slug }}">{{ type.name }}</option>
+                                    {% endfor %}
+
+                                </select>
+                                <p>Раздел</p>
+                                <select name="section" id="section_select">
+                                    <option value="all">Все разделы</option>
+                                    {% for section in current_technique_type.sections.all %}
+                                        <option {% if current_technique_section.id == section.id %}selected{% endif %} class="section-name" value="{{ section.name_slug }}">{{ section.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <p>Подраздел</p>
+                                <select name="subsection" id="subsection_select">
+                                    <option value="all">Все подразделы</option>
+                                    {% if current_technique_section %}
+                                        {% for subsection in current_technique_section.subsections.all %}
+                                            <option {% if current_technique_subsection.id == subsection.id %}selected{% endif %} class="subsection-name" value="{{ subsection.name_slug }}">{{ subsection.name }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                </select>
+                                <input id="city_id" type="hidden" name="city" value="all">
+                                <button type="submit" class="btn">поиск</button>
+                            </form>
+
+
+                        </div>
+
+                    </div><!--//items-block-left-->
+                    <div class="items-block-right">
+                        <div class="items-block-right-sorting">
+                            <div class="items-block-right-sorting-inner">
+                                <div class="items-block-right-sorting-inner-display">
+                                    <p>Вид отображения</p>
+                                    <a class="selected-display" href=""><i class="fa fa-th"></i></a>
+                                    <a href=""><i class="fa fa-list"></i></a>
+                                </div>
+                            </div>
+                        </div><!--//items-block-right-sorting-->
+                        <div class="items-block-right-wrapper">
+                            {% for technique in all_technique %}
+                                <div class="item-grid">
+                                    <a href="">
+                                        <div class="item-image" style="background: url({{ technique.get_main_image }})">
+                                            {% if technique.is_free %}
+                                                <span  class="item-free">свободен</span>
+                                            {% else %}
+                                                <span  class="item-busy">занят</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="item-info">
+                                            <div class="item-info-top">
+                                                <div class="rating item-rating">
+                                                    <p class="rating-value">{{ technique.rating }}</p>
+                                                    <div class="rating-inner">
+                                                        <ul class="rating-inner-stars">
+                                                            {% for r in rating%}
+
+                                                                <li class="rating-inner-star
+                                                               {% if forloop.counter <= technique.rating %}star-colored{% endif %}">
+                                                                    <i class="fa fa-star"></i></li>
+                                                            {% endfor %}
+
+
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="item-name">{{ technique.name }}</div>
+                                            </div>
+                                            <div class="item-info-bottom">
+                                                <div class="item-info-user">
+                                                    <div class="item-info-user-avatar"><img src="{{ technique.owner.get_avatar }}" alt=""></div>
+                                                    <div class="item-info-user-name"><p>
+                                                        {{ technique.owner.first_name }}
+                                                        {% if  technique.owner.last_name %}
+                                                            {{ technique.owner.last_name }}
+                                                        {% endif %}
+                                                    </p></div>
+                                                </div>
+                                                <div class="item-info-price">
+                                                    <div class="item-info-price-time"><p class="item-info-price-time-value">от
+                                                        <span>{{ technique.min_rent_time }}</span>
+                                                        {% if technique.rent_type == 'hour' %}
+                                                            Ч
+                                                        {% elif technique.rent_type == 'day'%}
+                                                            Д
+                                                        {% endif %}
+                                                    </p>
+                                                    </div>
+                                                    <div class="item-info-price-money"><p class="item-info-price-money-value">
+                                                        <span>{{ technique.rent_price }}</span>
+                                                        {% if technique.rent_type == 'hour' %}
+                                                            <p>руб/час</p>
+                                                        {% elif technique.rent_type == 'day'%}
+                                                            <p>руб/день</p>
+                                                        {% endif %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </a>
+                                </div><!--//item-grid-->
+                            {% endfor %}
+
+                        </div><!--//items-block-right-wrapper-->
+
+                    </div><!--//items-block-right-->
+                </div><!--//items-block-wrapper-->
+
+            </section><!--//items-->
+        </div><!--//container-->
+    </div><!--//main-->
+
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script>
+        let acc = document.getElementsByClassName("accordion");
+        let i;
+        let lastActive = null
+        let lastPanel = null
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                console.log(lastActive)
+                if (lastActive){
+                    lastActive.classList.remove('active')
+                    lastPanel.classList.remove('panel-active')
+                    lastPanel.style.maxHeight = null;
+                }
+                this.classList.toggle("active");
+                lastActive=this
+                let panel = this.nextElementSibling;
+                lastPanel = panel
+                if (panel.style.maxHeight) {
+
+                    panel.style.maxHeight = null;
+                    panel.classList.remove('panel-active')
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                    panel.classList.add('panel-active')
+                }
+            });
+        }
+    </script>
+{% endblock %}

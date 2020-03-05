@@ -17,7 +17,7 @@
                 <div class="main-catalog-wrapper">
                     {% for technique in all_Technique %}
                         <div class="main-catalog-item">
-                            <a href="">
+                            <a href="{% url 'technique_type_catalog' technique.name_slug %}">
                                 <div class="main-catalog-item-image" style="background: url({{ technique.image.url }})">
                                     <div class="main-catalog-item-inner">
                                         <p>{{ technique.name }}</p>

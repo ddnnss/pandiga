@@ -34,3 +34,6 @@ def login_page(request):
     else:
         return HttpResponseRedirect('/')
 
+
+
+

@@ -51,7 +51,7 @@
                         <select id="type_select" required >
                             <option selected disabled>Выбрать</option>
                             {% for type in all_types %}
-                                <option value="{{ type.id }}">{{ type.name | capfirst }}</option>
+                                <option value="{{ type.name_slug }}">{{ type.name | capfirst }}</option>
                             {% endfor %}
 
                         </select>
@@ -170,69 +170,7 @@
         document.querySelector('#upload_img').addEventListener("change", previewImages);
     </script>
     <!-- preview images-->
-    <!-- get section && subsection-->
-    <script>
-        let typeSelect = document.getElementById('type_select')
-        let sectionSelect = document.getElementById('section_select')
-        let subsectionSelect = document.getElementById('subsection_select')
 
-
-        function clearSelect(el){
-            let elem = document.querySelectorAll(`.${el}`)
-            elem.forEach(function (i) {
-                console.log(i)
-                i.remove()
-            })
-        }
-        function createOption(id,name,target,ro) {
-            let option = document.createElement("option")
-            option.text = name
-            option.value = id
-            if (ro){
-                option.setAttribute('disabled','disabled')
-                option.setAttribute('selected','selected')
-            }
-            option.classList.add(`${target}-name`)
-            return option
-
-        }
-        function getSubcat(id,target) {
-            let body = {'type':id,'target':target}
-            fetch('/catalog/get_type_sublists/', {
-                method: 'post',
-                body: JSON.stringify(body),
-                headers: { "X-CSRFToken": csrfmiddlewaretoken },
-                credentials: 'same-origin'
-            }).then(res=>res.json())
-                .then(res => {
-                    console.log(res)
-                    if (target === 'section'){
-                        sectionSelect.appendChild(createOption('0','Выбрать',target,true))
-                        for (x of res) {
-                            //console.log(x['id'])
-                            sectionSelect.appendChild(createOption(x['id'],x['name'],target))
-                        }
-                    }
-                    if (target === 'subsection'){
-                        for (x of res) {
-                            //console.log(x['id'])
-                            subsectionSelect.appendChild(createOption(x['id'],x['name'],target))
-                        }
-                    }
-                })
-        }
-        typeSelect.addEventListener('change',()=>{
-            clearSelect('section-name')
-            clearSelect('subsection-name')
-            getSubcat(typeSelect.options[typeSelect.selectedIndex].value,'section')
-
-        })
-        sectionSelect.addEventListener('change',()=>{
-            clearSelect('subsection-name')
-            getSubcat(sectionSelect.options[sectionSelect.selectedIndex].value,'subsection')
-        })
-    </script>
-    <!-- get section && subsection-->
 
 
 {% endblock %}

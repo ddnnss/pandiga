@@ -1,6 +1,26 @@
 from django.contrib import admin
 from .models import *
 
+class SectionInline(admin.TabularInline):
+    model = TechniqueSection
+    extra = 0
+
+class TechniqueTypeAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    inlines = [SectionInline]
+    class Meta:
+        model = TechniqueType
+
+
+class SubSectionInline(admin.TabularInline):
+    model = TechniqueSubSection
+    extra = 0
+
+class TechniqueSectionAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    inlines = [SubSectionInline]
+    class Meta:
+        model = TechniqueSection
 
 class ImagesInline (admin.TabularInline):
     model = TechniqueItemImage
@@ -24,8 +44,8 @@ class TechniqueItemAdmin(admin.ModelAdmin):
     class Meta:
         model = TechniqueItem
 
-admin.site.register(TechniqueType)
-admin.site.register(TechniqueSection)
+admin.site.register(TechniqueType,TechniqueTypeAdmin)
+admin.site.register(TechniqueSection,TechniqueSectionAdmin)
 admin.site.register(TechniqueSubSection)
 admin.site.register(TechniqueItem,TechniqueItemAdmin)
 

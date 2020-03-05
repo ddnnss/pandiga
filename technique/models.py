@@ -47,7 +47,7 @@ class TechniqueType(models.Model):
 
 class TechniqueSection(models.Model):
     type = models.ForeignKey(TechniqueType,blank=False,null=True,on_delete=models.SET_NULL,
-                             verbose_name='Относится к типу')
+                             verbose_name='Относится к типу',related_name='sections')
     name = models.CharField('Название раздела техники', max_length=255, blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
@@ -80,7 +80,7 @@ class TechniqueSection(models.Model):
 
 class TechniqueSubSection(models.Model):
     section = models.ForeignKey(TechniqueSection,blank=False,null=True,on_delete=models.SET_NULL,
-                             verbose_name='Относится к разделу')
+                             verbose_name='Относится к разделу',related_name='subsections')
     name = models.CharField('Название подраздела техники', max_length=255, blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
@@ -114,6 +114,10 @@ class TechniqueSubSection(models.Model):
 
 
 class TechniqueItem(models.Model):
+    type = models.ForeignKey(TechniqueType, blank=True, null=True, on_delete=models.SET_NULL,
+                                verbose_name='Относится к типу')
+    section = models.ForeignKey(TechniqueSection, blank=True, null=True, on_delete=models.SET_NULL,
+                                verbose_name='Относится к разделу')
     sub_section = models.ForeignKey(TechniqueSubSection, blank=False, null=True, on_delete=models.SET_NULL,
                                 verbose_name='Относится к подразделу')
     owner = models.ForeignKey(User, blank=False, null=True, on_delete=models.SET_NULL,
@@ -128,9 +132,10 @@ class TechniqueItem(models.Model):
     rent_price = models.IntegerField('Стоимость аренды',blank=False,null=True)
     description = models.TextField('Описание', blank=False,null=True)
     features = models.TextField('Характеристики', blank=False, null=True)
-
+    rating = models.IntegerField('Рейтинг',default=0)
     is_moderated = models.BooleanField('Проверена?', default=True)
     is_free = models.BooleanField('Статус свободен?', default=True)
+    is_active = models.BooleanField('Учавстует в выдаче?', default=True)
     created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
 
     def save(self, *args, **kwargs):
@@ -142,6 +147,8 @@ class TechniqueItem(models.Model):
                 slugRandom = '-' + ''.join(choices(string.ascii_lowercase + string.digits, k=2))
             self.name_slug = slug + slugRandom
         self.name_lower = self.name.lower()
+        self.section = self.sub_section.section
+        self.type = self.sub_section.section.type
         super(TechniqueItem, self).save(*args, **kwargs)
 
     def get_main_image(self):
