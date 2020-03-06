@@ -154,7 +154,8 @@ section
   margin-bottom: 40px !important
 .mb-60
   margin-bottom: 60px !important
-
+.not-visible
+  display: none
 .color-white
   color: #ffffff !important
 .color-red
@@ -207,19 +208,24 @@ section
   cursor: pointer
   border-radius: 2px
   font-weight: 600
+  transition: all .2s ease-in-out
 
   &.btn-link
     max-width: 320px
     font-size: 14px
     font-weight: 400
+    transition: all .2s ease-in-out
   &:hover
-    box-shadow: 0 0 10px $color-btn-border
+    transition: all .2s ease-in-out
+    box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.49)
+    transform: translateY(-1px)
 
   &.btn-outline
     position: relative
     background: none
     color: $color-text
     max-width: 320px
+    box-sizing: border-box
     &::before
       position: absolute
       content: ''
@@ -280,6 +286,12 @@ section
     background: $color-red
     bottom: -5px
     left: 0
+
+.hr
+  width: 100%
+  border-bottom: 1px solid $color-border
+
+  margin: 10px 0
 
 .breadcrumbs
 
@@ -383,3 +395,31 @@ section
       transition: opacity .2s linear
 
 
+.dual-input
+  display: flex
+  align-items: center
+  margin-bottom: 10px
+  input
+    border: none
+    padding: 0 10px
+    height: 40px
+    width: 49%
+    border: 1px solid $color-border
+
+    border-radius: 2px
+    &:focus
+      outline: 0
+  p
+    margin: 0 10px
+
+.range-input
+  margin: 0 auto
+  width: 240px
+  margin-bottom: 10px
+.filter-values
+  display: flex
+  justify-content: space-between
+  p:first-child
+    margin-left: 10px
+  p:last-child
+  margin-right: 10px

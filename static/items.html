@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="css/font-awesome.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nouislider.css">
 </head>
 <body>
 
@@ -74,7 +75,49 @@
                             <select name="" id="">
                                 <option value=""></option>
                             </select>
+                            <div class="hr"></div>
+                            <label class="custom-checkbox">Почасовой фильтр
+                                <input type="checkbox" id="time_type" checked onchange="toggleTimeFilter(this)">
+                                <span class="checkmark"></span>
+                            </label>
+                            <div class="hr"></div>
+                            <div id="horly" class="mb-20">
+                                 <p>Время аренды (часы)</p>
+                            <div class="dual-input">
+                                <input id="h_from" name="h_from"  type="text"  placeholder="От">
+                                <p>-</p>
+                                <input id="h_to"  name="h_to" type="text"  placeholder="До">
+                            </div>
+                            <div id="slider_h" class="range-input"></div>
+                            <p class="filter-caption ">Стоимость <i class="fa fa-rub"></i> / час</p>
+                            <div class="dual-input">
+                                <input id="price_from" name="h_price_from" type="text"  placeholder="От">
+                                <p>-</p>
+                                <input id="price_to"  name="h_price_to" type="text"  placeholder="До">
+                            </div>
+                            <div id="slider" class="range-input "></div>
+                            </div>
+
+                            <div id="daily" class="mb-20 not-visible">
+                                <p>Время аренды (дни)</p>
+                            <div class="dual-input">
+                                <input id="d_from" disabled name="d_from" type="text"  placeholder="От">
+                                <p>-</p>
+                                <input id="d_to" disabled name="d_to" type="text"  placeholder="До">
+                            </div>
+                            <div id="slider_d" class="range-input"></div>
+                            <p class="filter-caption ">Стоимость <i class="fa fa-rub"></i> / день</p>
+                            <div class="dual-input">
+                                <input id="price_from_d" disabled name="d_price_from" type="text"  placeholder="От">
+                                <p>-</p>
+                                <input id="price_to_d"  disabled name="d_price_to" type="text"  placeholder="До">
+                            </div>
+                            <div id="slider_price_d" class="range-input "></div>
+                            </div>
+
+
                             <button type="submit" class="btn">поиск</button>
+                            <span onclick="clearForm()" class="btn btn-outline">Сбросить фильтры</span>
                         </form>
 
 
@@ -87,16 +130,16 @@
                                         <li class="category-menu-inner-item"><a class=" menu-item-active" href="dfds">dsfdsfserwerewrew</a>
                                             <div  class="category-menu-inner">
                                                 <ul class="category-menu-inner-wrapper">
-                                                     <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
-                                                     <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
+                                                    <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
+                                                    <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
                                                 </ul>
                                             </div>
                                         </li>
-                                         <li class="category-menu-inner-item"><a  href="dfds">dsfdsfserwerewrew</a>
+                                        <li class="category-menu-inner-item"><a  href="dfds">dsfdsfserwerewrew</a>
                                             <div  class="category-menu-inner">
                                                 <ul class="category-menu-inner-wrapper">
-                                                     <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
-                                                     <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
+                                                    <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
+                                                    <li class="category-menu-item link-item"><a href="sd">Lorem ipsum.</a></li>
                                                 </ul>
                                             </div>
                                         </li>
@@ -255,6 +298,166 @@
         </section><!--//items-->
     </div><!--//container-->
 </div><!--//main-->
+<script src="js/nouislider.js"></script>
+<script>
+    let slider_price = document.getElementById('slider');
+    let slider_h = document.getElementById('slider_h');
+    let slider_d = document.getElementById('slider_d');
+    let slider_price_d = document.getElementById('slider_price_d');
+    let priceValues = [
+        document.getElementById('price_from'),
+        document.getElementById('price_to')
+    ];
+    let hValues = [
+        document.getElementById('h_from'),
+        document.getElementById('h_to')
+    ];
+
+    let dValues = [
+        document.getElementById('d_from'),
+        document.getElementById('d_to')
+    ];
+
+    let dPriceValues = [
+        document.getElementById('price_from_d'),
+        document.getElementById('price_to_d')
+    ];
+
+    function toggleTimeFilter(el) {
+        let horlyBlock = document.getElementById('horly')
+        let dailyBlock = document.getElementById('daily')
+        horlyBlock.classList.toggle('not-visible')
+        dailyBlock.classList.toggle('not-visible')
+        if (el.checked){
+            for (x in dValues){
+                dValues[x].setAttribute('disabled','disabled')
+            }
+             for (x in dPriceValues){
+                dPriceValues[x].setAttribute('disabled','disabled')
+            }
+            for (x in dValues){
+                hValues[x].removeAttribute('disabled')
+            }
+             for (x in dPriceValues){
+                priceValues[x].removeAttribute('disabled')
+            }
+        }
+        else{
+            for (x in dValues){
+                hValues[x].setAttribute('disabled','disabled')
+            }
+             for (x in dPriceValues){
+                priceValues[x].setAttribute('disabled','disabled')
+            }
+            for (x in dValues){
+                dValues[x].removeAttribute('disabled')
+            }
+             for (x in dPriceValues){
+                dPriceValues[x].removeAttribute('disabled')
+            }
+        }
+    }
+</script>
+<script>
+
+    noUiSlider.create(slider_price, {
+        start: [0, 10000],
+        connect: true,
+        range: {
+            'min': [0],
+
+            'max': [10000]
+        }
+
+    });
+
+    noUiSlider.create(slider_h, {
+        start: [0, 24],
+        connect: true,
+        range: {
+            'min': [0],
+
+            'max': [24]
+        }
+
+    });
+
+    noUiSlider.create(slider_d, {
+        start: [0, 100],
+        connect: true,
+        range: {
+            'min': [0],
+
+            'max': [100]
+        }
+
+    });
+
+    noUiSlider.create(slider_price_d, {
+        start: [0, 10000],
+        connect: true,
+        range: {
+            'min': [0],
+
+            'max': [10000]
+        }
+
+    });
+
+    slider_price.noUiSlider.on('update', function (values, handle) {
+        priceValues[handle].value = Math.floor(values[handle]);
+
+    });
+    priceValues[0].addEventListener('input', function () {
+        slider_price.noUiSlider.set([this.value,null]);
+
+    });
+    priceValues[1].addEventListener('input', function () {
+        slider_price.noUiSlider.set([null,this.value]);
+
+    });
+
+
+    slider_h.noUiSlider.on('update', function (values, handle) {
+        hValues[handle].value = Math.floor(values[handle]);
+
+    });
+    hValues[0].addEventListener('input', function () {
+        slider_h.noUiSlider.set([this.value,null]);
+
+    });
+    hValues[1].addEventListener('input', function () {
+        slider_h.noUiSlider.set([null,this.value]);
+
+    });
+
+
+    slider_d.noUiSlider.on('update', function (values, handle) {
+        dValues[handle].value = Math.floor(values[handle]);
+
+    });
+    dValues[0].addEventListener('input', function () {
+        slider_d.noUiSlider.set([this.value,null]);
+
+    });
+    dValues[1].addEventListener('input', function () {
+        slider_d.noUiSlider.set([null,this.value]);
+
+    });
+
+    slider_price_d.noUiSlider.on('update', function (values, handle) {
+        dPriceValues[handle].value = Math.floor(values[handle]);
+
+    });
+    dPriceValues[0].addEventListener('input', function () {
+        slider_price_d.noUiSlider.set([this.value,null]);
+
+    });
+    dPriceValues[1].addEventListener('input', function () {
+        slider_price_d.noUiSlider.set([null,this.value]);
+
+    });
+</script>
 <script>
     let acc = document.getElementsByClassName("accordion");
     let i;

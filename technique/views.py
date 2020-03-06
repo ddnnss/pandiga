@@ -1,5 +1,5 @@
 import json
-
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from .models import *
@@ -59,7 +59,22 @@ def get_type_sublists(request):
             return_dict.append({'name_slug': i.name_slug, 'name': i.name})
         return JsonResponse(return_dict, safe=False)
 
-def filter_qs(qs,filter_city=None,filter_section=None,filter_subsection=None,filter_search=None):
+
+def filter_qs(qs,filter_city=None,
+              filter_section=None,
+              filter_subsection=None,
+              filter_search=None,
+              filter_time_type=None,
+              filter_h_from=None,
+              filter_h_to=None,
+              filter_h_price_from=None,
+              filter_h_price_to=None,
+              filter_d_from=None,
+              filter_d_to=None,
+              filter_d_price_from=None,
+              filter_d_price_to=None
+              ):
+    print('filter_time_type', filter_time_type)
     result_qs = qs
     if filter_search:
         result_qs = result_qs.filter(name_lower__contains=filter_search.lower())
@@ -69,7 +84,18 @@ def filter_qs(qs,filter_city=None,filter_section=None,filter_subsection=None,fil
         result_qs = result_qs.filter(section__name_slug=filter_section)
     if filter_subsection:
         result_qs = result_qs.filter(sub_section__name_slug=filter_subsection)
+    if filter_h_from and filter_h_to:
+        result_qs = result_qs.filter(rent_type='hour')
+        result_qs = result_qs.filter(Q(min_rent_time__lte=filter_h_to) & Q(min_rent_time__gte=filter_h_from))
+        result_qs = result_qs.filter(Q(rent_price__lte=filter_h_price_to) & Q(rent_price__gte=filter_h_price_from))
+    if filter_d_from and filter_d_to:
+        result_qs = result_qs.filter(rent_type='day')
+        result_qs = result_qs.filter(Q(min_rent_time__lte=filter_d_to) & Q(min_rent_time__gte=filter_d_from))
+        result_qs = result_qs.filter(Q(rent_price__lte=filter_d_price_to) & Q(rent_price__gte=filter_d_price_from))
+
     return result_qs
+
+
 def technique_type_catalog(request, type_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
     all_technique_qs = TechniqueItem.objects.filter(type=current_technique_type, is_moderated=True, is_active=True)
@@ -80,12 +106,39 @@ def technique_type_catalog(request, type_slug):
     filter_subsection = request.GET.get('subsection') if request.GET.get('subsection') != 'all' else None
     filter_search = request.GET.get('search') if request.GET.get('search') != '' else None
 
+    filter_time_type = request.GET.get('time_type') if request.GET.get('time_type') != '' else None
+
+    filter_h_from = request.GET.get('h_from') if request.GET.get('h_from') != '' else None
+    filter_h_to = request.GET.get('h_to') if request.GET.get('h_to') != '' else None
+    filter_h_price_from = request.GET.get('h_price_from') if request.GET.get('h_price_from') != '' else None
+    filter_h_price_to = request.GET.get('h_price_to') if request.GET.get('h_price_to') != '' else None
+
+    filter_d_from = request.GET.get('d_from') if request.GET.get('d_from') != '' else None
+    filter_d_to = request.GET.get('d_to') if request.GET.get('d_to') != '' else None
+    filter_d_price_from = request.GET.get('d_price_from') if request.GET.get('d_price_from') != '' else None
+    filter_d_price_to = request.GET.get('d_price_to') if request.GET.get('d_price_to') != '' else None
+
+
     city_from_filter = City.objects.get(id=filter_city) if filter_city else ''
     section_from_filter = TechniqueSection.objects.get(name_slug=filter_section) if filter_section else ''
     subsection_from_filter = TechniqueSubSection.objects.get(name_slug=filter_subsection) if filter_subsection else ''
 
-    if filter_city or filter_section or filter_subsection or filter_search:
-        all_technique = filter_qs(all_technique_qs,filter_city,filter_section,filter_subsection, filter_search)
+    if filter_city or filter_section or filter_subsection or filter_search or filter_h_from or filter_d_from:
+        all_technique = filter_qs(all_technique_qs,
+                                  filter_city,
+                                  filter_section,
+                                  filter_subsection,
+                                  filter_search,
+                                  filter_time_type,
+                                  filter_h_from,
+                                  filter_h_to,
+                                  filter_h_price_from,
+                                  filter_h_price_to,
+                                  filter_d_from,
+                                  filter_d_to,
+                                  filter_d_price_from,
+                                  filter_d_price_to
+                                  )
     else:
         all_technique = all_technique_qs
     return render(request, 'catalog/catalog_inner.html', locals())
