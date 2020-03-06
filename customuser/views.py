@@ -1,4 +1,5 @@
 import json
+from .utils import create_random_string
 from django.contrib.auth import login, logout
 from django.shortcuts import render
 
@@ -9,14 +10,7 @@ import settings
 
 from technique.models import *
 
-def create_random_string(digits=False, num=4):
-    from random import choices
-    import string
-    if digits:
-        random_string = ''.join(choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=num))
-    else:
-        random_string = ''.join(choices(string.digits, k=num))
-    return random_string
+
 
 def logout_page(request):
     logout(request)
@@ -30,7 +24,7 @@ def send_sms(request):
     print(request_body)
     request.session['user_phone'] = request_body['phone'].replace('(','').replace(')','').replace('-','')
     request.session['user_name'] = request_body['name']
-    sms_number = create_random_string()
+    sms_number = create_random_string(digits=True)
     request.session['sms_number'] = sms_number
 
     print('sms_number=',sms_number)

@@ -1,8 +1,10 @@
+from .utils import create_random_string
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_save
 from partner.models import ParnterCode
 from staticPage.models import City
+
 
 
 class UserManager(BaseUserManager):
@@ -83,7 +85,8 @@ class User(AbstractUser):
 def user_post_save(sender, instance, created, **kwargs):
     """Создание всех значений по-умолчанию для нового пользовыателя"""
     if created:
-        new_code = ParnterCode.objects.create(user=instance,code='1234')
+        new_code = ParnterCode.objects.create(user=instance,
+                                              code=create_random_string(digits=True,num=8))
         instance.own_partner_code = new_code
         instance.save()
 

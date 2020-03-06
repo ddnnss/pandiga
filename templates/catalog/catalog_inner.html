@@ -70,10 +70,10 @@
                         <div class="item-filter">
                             <form action="" method="get">
                                 <p>Поиск по категории</p>
-                                <input name="search" type="text">
+                                <input name="search" type="text" value="{% if filter_search %}{{ filter_search }}{% endif %}">
                                 <p>География</p>
                                 <div class="city-select">
-                                    <input id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text">
+                                    <input id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text" value="{{ city_from_filter }}">
                                     <div id="city_select_list" class="city-select-list ">
 
                                     </div>
@@ -88,9 +88,11 @@
                                 </select>
                                 <p>Раздел</p>
                                 <select name="section" id="section_select">
-                                    <option value="all">Все разделы</option>
+                                <option value="all">Все разделы</option>
+{#                                    <option value="{% if filter_section  %}{{ section_name.name_slug }}{% else %}all{% endif %}">#}
+{#                                        {% if filter_section  %}{{ section_name.name }}{% else %}Все разделы{% endif %}</option>#}
                                     {% for section in current_technique_type.sections.all %}
-                                        <option {% if current_technique_section.id == section.id %}selected{% endif %} class="section-name" value="{{ section.name_slug }}">{{ section.name }}</option>
+                                        <option {% if current_technique_section.id == section.id or section_from_filter.id == section.id %}selected{% endif %} class="section-name" value="{{ section.name_slug }}">{{ section.name }}</option>
                                     {% endfor %}
                                 </select>
                                 <p>Подраздел</p>
@@ -98,12 +100,17 @@
                                     <option value="all">Все подразделы</option>
                                     {% if current_technique_section %}
                                         {% for subsection in current_technique_section.subsections.all %}
-                                            <option {% if current_technique_subsection.id == subsection.id %}selected{% endif %} class="subsection-name" value="{{ subsection.name_slug }}">{{ subsection.name }}</option>
+                                            <option {% if current_technique_subsection.id == subsection.id or subsection_from_filter.id == subsection.id%}selected{% endif %} class="subsection-name" value="{{ subsection.name_slug }}">{{ subsection.name }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% if section_from_filter %}
+                                        {% for subsection in section_from_filter.subsections.all %}
+                                            <option {% if subsection_from_filter.id == subsection.id%}selected{% endif %} class="subsection-name" value="{{ subsection.name_slug }}">{{ subsection.name }}</option>
                                         {% endfor %}
                                     {% endif %}
 
                                 </select>
-                                <input id="city_id" type="hidden" name="city" value="all">
+                                <input id="city_id" type="hidden" name="city" value="{% if filter_city  %}{{ filter_city }}{% else %}all{% endif %}">
                                 <button type="submit" class="btn">поиск</button>
                             </form>
 

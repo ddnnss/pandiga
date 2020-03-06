@@ -20,6 +20,7 @@
 {% block js %}
     <script>
      let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+      let cityId = document.getElementById('city_id')
        function openModal() {
             document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
         }
@@ -31,6 +32,7 @@
 
         if (el.value.length <= 2){
             console.log('too small')
+             cityId.value = 'all'
             return
         }else{
             console.log(el.value)
@@ -68,7 +70,7 @@
     function setCity(el) {
         let citySelectInput = document.getElementById('city_select_input')
         let citySelectList = document.getElementById('city_select_list')
-        let cityId = document.getElementById('city_id')
+
         citySelectList.classList.remove('list-active')
         citySelectInput.value = `${el.dataset.region}, ${el.dataset.city}`
         cityId.value = el.dataset.id
