@@ -87,6 +87,10 @@ input::-webkit-inner-spin-button
 section
   padding: 40px 0
 
+.tns-outer [aria-controls], .tns-outer [data-action]
+  display: none !important
+.tns-item
+  cursor: ew-resize
 .custom-checkbox
   display: block
   position: relative
@@ -290,8 +294,14 @@ section
 .hr
   width: 100%
   border-bottom: 1px solid $color-border
-
   margin: 10px 0
+
+.block-bordered
+  background: $color-bg-light
+  border: 1px solid $color-border
+  padding: 10px
+  box-sizing: border-box
+  border-radius: 2px
 
 .breadcrumbs
 

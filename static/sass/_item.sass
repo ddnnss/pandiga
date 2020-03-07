@@ -1,0 +1,112 @@
+.item-block
+  &-wrapper
+    display: grid
+    grid-template-columns: 1fr 3fr
+    grid-gap: 10px
+  &-left
+
+  &-right
+
+
+
+.item-time-price
+  &-row
+    display: grid
+    grid-template-columns: 2fr 4fr
+    margin: 0 auto
+    margin-bottom: 10px
+    img
+      margin: auto
+
+.item-owner
+  &-info
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    margin-bottom: 10px
+    img
+      margin-right: 10px
+      width: 50px
+      height: 50px
+      object-fit: cover
+      border-radius: 50%
+    span
+      text-transform: uppercase
+      font-weight: 300
+      font-size: 12px
+      flex-grow: 1
+      text-align: end
+  &-contact
+    margin-bottom: 20px
+
+    &-row
+      color: $color-link
+      margin-bottom: 10px
+      i
+        font-size: 18px
+        margin-right: 10px
+      span
+        display: none
+        cursor: pointer
+        font-size: 14px
+        font-weight: 300
+      a
+        color: $color-link
+        text-decoration: underline
+
+
+.item-owner-other-technique
+  &-item
+    border-bottom: 1px dashed $color-link
+    padding-bottom: 5px
+    margin-bottom: 5px
+    &:last-child
+      border-bottom: none
+      padding: 0
+      margin: 0
+    a
+      color: $color-text
+    &:hover
+      p
+        color: $color-link
+
+    &-name
+      margin-bottom: 5px
+    &-info
+
+      text-transform: uppercase
+      font-size: 13px
+      display: flex
+      align-items: center
+      img
+        margin-right: 10px
+      span
+        margin-right: 10px
+
+.item-slider-wrapper
+  position: relative
+.item-slider-control
+  left: 0
+  right: 0
+  position: absolute
+  z-index: 100
+  top: 45%
+
+  &_item
+    color: #ffffff
+    opacity: .7
+    position: absolute
+    cursor: pointer
+    transform: scale(2)
+    transition: all .2s linear
+    &:hover
+      opacity: 1
+      transform: scale(2.5)
+    &.arrow-prev
+      left: 30px
+      &:hover
+        left: 25px
+    &.arrow-next
+      right: 30px
+      &:hover
+        right: 25px
