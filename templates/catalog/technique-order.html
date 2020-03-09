@@ -6,15 +6,15 @@
             <div class="breadcrumbs">
                 <ul>
                     <li><a href="/">главная</a></li>
-                    <li>добавить технику в каталог</li>
+                    <li>заявка на технику</li>
                 </ul>
             </div><!--//breadcrumbs-->
         </div><!--//container-->
 
         <section class="technique-form">
             <div class="container">
-                <div class="section-header"><h1>добавить технику в каталог</h1></div>
-                <p class="text-center mb-30">Добавьте свою технику в базу клуба и начинайте зарабатывать уже сегодня.<br> Для этого заполните форму ниже, отредактировать информацию или удалить свою технику вы сможете в любое время.</p>
+                <div class="section-header"><h1>заявка на технику</h1></div>
+                <p class="text-center mb-30">Вы можете создать заявку на поиск техники и владельцы техники сами откликнуться на нее</p>
 
                 {% if messages %}
                     {% for message in messages %}
@@ -23,29 +23,14 @@
                     {% endfor %}
                 {% endif %}
 
-                <form action="{% url 'add_technique' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <form action="{% url 'technique_order' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <div class="form-row">
                         <label for="">название</label>
                         <input type="text" required name="{{ form.name.name}}">
                     </div><!--//form-row-->
-                     <div class="form-row">
-                    <label for="">местоположение</label>
-                     <div class="city-select">
-                         <input autocomplete="off" required id="city_select_input" placeholder="Начните вводить город" class="city-select-input" onkeyup="getCities(this)" type="text">
-                         <div id="city_select_list" class="city-select-list ">
 
-                         </div>
-                     </div>
-                </div><!--//form-row-->
-                    <div class="form-row">
-                        <label for="">фотографии</label>
-                        <div class="upload-wrapper">
-                            <label for="upload_img" class="upload-label">
-                                <input id="upload_img" required multiple name="item_images" accept="image/*"  type="file" >
-                            </label>
-                            <div id="preview" class="images-preview"></div>
-                        </div>
-                    </div><!--//form-row-->
+
+
                     <div class="form-row">
                         <label for="">тип</label>
                         <select id="type_select" required >
@@ -70,47 +55,51 @@
                         </select>
                     </div><!--//form-row-->
                     <div class="form-row">
-                        <label for="">минимальное время аренды</label>
+                        <label for="">Срок аренды</label>
                         <div class="form-row-group">
-                            <input id="rent_time_input" type="number" min="1" max="24" required name="{{ form.min_rent_time.name }}">
-                            <select name="{{ form.rent_type.name }}" id="" onchange="changePrice(this)" >
-                                <option selected value="hour" data-label="час" data-time="24">Часов</option>
-                                <option value="day" data-label="день" data-time="30">Дней</option>
+                            <input type="number" min="1" required name="{{ form.rent_time.name }}">
+                            <select name="{{ form.rent_type.name }}"  >
+                                <option selected value="hour" data-label="час">Часов</option>
+                                <option value="day" data-label="день">Дней</option>
                             </select>
                         </div>
-
                     </div><!--//form-row-->
                     <div class="form-row">
-                        <label for="">стоимость (руб)</label>
-                        <div  class="form-row-group">
-                            <input type="number" min="1" required name="{{ form.rent_price.name }}">
-                            <p  style="align-self: center;font-size: 20px">/ <span id="price_label">час</span></p>
-
+                        <label for="">Когда</label>
+                        <div style="grid-template-columns: 2fr 1fr 2fr; align-items: center" class="form-row-group">
+                            <input type="date" name="{{ form.order_date.name }}">
+                              <label class="custom-checkbox">На точное время
+                                    <input type="checkbox" id="order_time_check" name="order_time_check" onchange="toggleTime(this)">
+                                    <span class="checkmark"></span>
+                                </label>
+                            <input class="not-visible" id="order_time" disabled type="time" name="{{ form.order_time.name }}">
                         </div>
 
-                    </div><!--//form-row-->
-                    <div class="form-row">
-                        <label for="">описание</label>
-                        <textarea required name="{{ form.description.name }}"  cols="30" rows="10"></textarea>
 
                     </div><!--//form-row-->
                     <div class="form-row">
-                        <label for="">характеристики</label>
-                        <textarea required name="{{ form.features.name }}"  cols="30" rows="10"></textarea>
+                        <label for="">местоположение</label>
+                        <div class="city-select">
+                            <input autocomplete="off" required id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text">
+                            <div id="city_select_list" class="city-select-list ">
+
+                            </div>
+                        </div>
+                    </div><!--//form-row-->
+                    <div class="form-row">
+                        <label for="">Комментарий</label>
+                        <textarea name="{{ form.comment.name }}"  cols="30" rows="10"></textarea>
 
                     </div><!--//form-row-->
-                  <div class="form-row">
-                        <label for="">Документы</label>
-
-                                <input required multiple name="item_docs" accept="image/*"  type="file" >
 
 
-                    </div><!--//form-row-->
+
+
                     <input id="city_id" type="hidden" name="{{ form.city.name }}" value="0">
                     {% if request.user.is_authenticated %}
-                        <button type="submit" class="btn btn-link by-center">добавить технику</button>
+                        <button type="submit" class="btn btn-link by-center">Создать заявку</button>
                     {% else %}
-                        <span class="btn btn-link by-center" onclick="openModal()">добавить технику</span>
+                        <span class="btn btn-link by-center" onclick="openModal()">Создать заявку</span>
                     {% endif %}
                 </form>
 
@@ -119,34 +108,38 @@
         </section><!--//main-catalog-->
 
     </div><!--//main-->
-{% if not request.user.is_authenticated %}
-    <div id="openModal" class="modal">
-        <div id="modal_login" class="modal-dialog " >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title section-header">Ошибка</h3>
-                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
-                </div>
-                <div  class="modal-body">
-                    <p class="modal-error-text">Необходима регистрация</p>
-                    <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+    {% if not request.user.is_authenticated %}
+        <div id="openModal" class="modal">
+            <div id="modal_login" class="modal-dialog " >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title section-header">Ошибка</h3>
+                        <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                    </div>
+                    <div  class="modal-body">
+                        <p class="modal-error-text">Необходима регистрация</p>
+                        <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 {% endblock %}
 {% block js %}
     {{ block.super }}
     <!-- preview images-->
     <script>
-        let priceLabel = document.getElementById('price_label')
-        let rentTimeInput = document.getElementById('rent_time_input')
-        function changePrice(el) {
-            let selectedVal = el.options[el.selectedIndex]
-            priceLabel.innerText = selectedVal.dataset.label
-            rentTimeInput.setAttribute('max',selectedVal.dataset.time)
+        let timeInput = document.getElementById('order_time')
+        function toggleTime(el) {
+            timeInput.value=''
+            timeInput.classList.toggle('not-visible')
+            if (el.checked){
 
+               timeInput.removeAttribute('disabled')
+            }
+            else{
+                timeInput.setAttribute('disabled','disabled')
+            }
         }
         function previewImages() {
             var preview = document.querySelector('#preview');
@@ -211,7 +204,7 @@
                 .then(res => {
                     console.log(res)
                     if (target === 'section'){
-                      sectionSelect.appendChild(createOption('all','Выберите раздел',target))
+                        sectionSelect.appendChild(createOption('all','Выберите раздел',target))
                         for (x of res) {
                             //console.log(x['id'])
                             sectionSelect.appendChild(createOption(x['name_slug'],x['name'],target))

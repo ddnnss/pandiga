@@ -121,7 +121,7 @@ class TechniqueItem(models.Model):
     sub_section = models.ForeignKey(TechniqueSubSection, blank=False, null=True, on_delete=models.SET_NULL,
                                 verbose_name='Относится к подразделу')
     owner = models.ForeignKey(User, blank=False, null=True, on_delete=models.SET_NULL,
-                                verbose_name='Владелец')
+                                verbose_name='Владелец', related_name='techniques')
     city = models.ForeignKey(City, blank=True, null=True, on_delete=models.SET_NULL,
                                 verbose_name='Местоположение')
     name = models.CharField('Название техники', max_length=255, blank=False, null=True)
@@ -151,8 +151,23 @@ class TechniqueItem(models.Model):
         self.type = self.sub_section.section.type
         super(TechniqueItem, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return f'/catalog/{self.sub_section.section.type.name_slug}/{self.sub_section.section.name_slug}/{self.sub_section.name_slug}/{self.name_slug}'
+
     def get_main_image(self):
         return self.images.first().image.url
+
+    def get_rent_type_short(self):
+        if self.rent_type == 'day':
+            return 'Д'
+        else:
+            return 'Ч'
+
+    def get_rent_type_long(self):
+        if self.rent_type == 'day':
+            return 'ДЕНЬ'
+        else:
+            return 'ЧАС'
 
     def image_tag(self):
         return mark_safe('<img src="{}" width="100" height="100" />'.format(self.get_main_image()))
@@ -166,6 +181,14 @@ class TechniqueItem(models.Model):
         verbose_name = "Техника"
         verbose_name_plural = "Еденицы техники"
 
+class TechniqueItemFavorite(models.Model):
+    techniqueitem = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,
+                                      verbose_name='Изображение для')
+    user = models.ForeignKey(User, blank=False, null=True, on_delete=models.SET_NULL,
+                                verbose_name='Владелец')
+
+    def __str__(self):
+        return f'Избранная техника полбзователем  : {self.user.first_name}'
 
 class TechniqueItemImage(models.Model):
     techniqueitem = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,

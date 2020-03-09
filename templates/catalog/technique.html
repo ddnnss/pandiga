@@ -1,0 +1,169 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="/">главная</a></li>
+                    <li><a href="{% url 'technique_catalog' %}">каталог техники</a></li>
+                    <li><a href="{% url 'technique_type_catalog' techniqueItem.sub_section.section.type.name_slug %}">{{ techniqueItem.sub_section.section.type.name }}</a></li>
+                    <li><a href="{% url 'technique_section_catalog' techniqueItem.sub_section.section.type.name_slug techniqueItem.sub_section.section.name_slug %}">{{ techniqueItem.sub_section.section.name }}</a></li>
+                    <li><a href="{% url 'technique_subsection_catalog' techniqueItem.sub_section.section.type.name_slug techniqueItem.sub_section.section.name_slug techniqueItem.sub_section.name_slug %}">{{ techniqueItem.sub_section.name }}</a></li>
+                    <li>{{ techniqueItem.name }}</li>
+                </ul>
+            </div><!--//breadcrumbs-->
+
+
+            <section class="item-block">
+                <div class="section-header"><h1>{{ techniqueItem.name }}</h1></div>
+                <div class="item-block-wrapper">
+                    <div class="item-block-left">
+                        <div class="item-time-price block-bordered mb-20">
+                            <div class="item-time-price-row">
+                                <img src="{% static 'img/money-icon.png' %}" alt="">
+                                <p>Стоимость: {{ techniqueItem.rent_price }} <i class="fa fa-rub"></i>/{{ techniqueItem.get_rent_type_long }} </p>
+                            </div>
+                            <div class="item-time-price-row">
+                                <img src="{% static 'img/time-icon.png' %}" alt="">
+                                <p>Мин. время заказа: от {{ techniqueItem.min_rent_time }} {{ techniqueItem.get_rent_type_short }}</p>
+                            </div>
+                            {% if techniqueItem.owner.id != request.user.id %}
+                                {% if request.user.is_authenticated  %}
+                                    <a href="{% url 'to_rent' techniqueItem.id %}" class="btn btn-link">взять в аренду</a>
+                                {% else %}
+                                    <span class="btn btn-link" onclick="openModal()">взять в аренду</span>
+                                {% endif %}
+                            {% endif %}
+
+                        </div><!--//item-time-price-->
+                        <div class="item-owner block-bordered mb-20">
+                            <div class="item-owner-info">
+                                <img src="{{ techniqueItem.owner.get_avatar }}" alt="">
+                                <p style="flex-basis: 50%">{{ techniqueItem.owner.first_name }}</p>
+                                <span >зарегистрирован {{ techniqueItem.owner.date_joined | date }}</span>
+                            </div>
+                            <div class="item-owner-contact">
+                                <p class="item-owner-contact-row">
+                                    {% if request.user.is_authenticated %}
+                                        <i class="fa fa-phone"></i> <a href="tel:+71231112233">+71231112233</a><span>... показать номер</span>
+                                    {% else %}
+                                        <i class="fa fa-phone"></i> недоступно
+
+                                    {% endif %}
+                                </p>
+                                <p class="item-owner-contact-row">
+                                    <i class="fa fa-map-marker"></i>
+                                    {% if techniqueItem.owner.city.city %}
+                                        {{ techniqueItem.owner.city.city }}, {{ techniqueItem.owner.city.region }}
+                                    {% else %}
+                                        не указано
+                                    {% endif %}
+                                </p>
+                            </div>
+                            {% if techniqueItem.owner.id != request.user.id %}
+                                {% if request.user.is_authenticated %}
+                                    <span class="btn btn-link">отправить сообщение</span>
+                                {% else %}
+                                    <span class="btn btn-link" onclick="openModal()">отправить сообщение</span>
+                                {% endif %}
+                            {% endif %}
+                        </div><!--//item-owner-->
+                        <div class="item-owner-other-technique block-bordered">
+                            <p class="text-center">ДРУГАЯ ТЕХНИКА ВЛАДЕЛЬЦА</p>
+                            <div class="hr"></div>
+                            {% for otherTechniqueItem in otherTechnique%}
+                                <div class="item-owner-other-technique-item">
+                                    <a href="{% url 'technique' otherTechniqueItem.sub_section.section.type.name_slug otherTechniqueItem.sub_section.section.name_slug otherTechniqueItem.sub_section.name_slug otherTechniqueItem.name_slug%}">
+                                        <p class="item-owner-other-technique-item-name">{{ otherTechniqueItem.name }}</p>
+                                        <p class="item-owner-other-technique-item-info">
+                                            <img src="{% static 'img/time-icon.png' %}" alt=""> <span>от {{ otherTechniqueItem.min_rent_time }} {{ otherTechniqueItem.get_rent_type_short }}</span>
+                                            <img src="{% static 'img/money-icon.png' %}" alt=""> <span>{{ otherTechniqueItem.rent_price }} <i class="fa fa-rub"></i>/{{ otherTechniqueItem.get_rent_type_long }}</span>
+                                        </p>
+                                    </a>
+                                </div><!--//item-owner-other-technique-item-->
+                            {% endfor %}
+                        </div><!--//item-owner-other-technique-->
+
+
+                    </div><!--//item-block-left-->
+                    <div class="item-block-right block-bordered">
+                        <div class="item-slider-wrapper mb-20">
+                            <div class="item-slider-control " id="customize-controls">
+                                <div class="prev item-slider-control_item arrow-prev" onclick="slider.goTo('prev');">
+                                    <i class=" fa fa-chevron-left"></i>
+                                </div>
+                                <div class="next item-slider-control_item arrow-next" onclick="slider.goTo('next');">
+                                    <i class="fa fa-chevron-right"></i>
+                                </div>
+                            </div>
+                            <div class="item-slider">
+                                {% for image in techniqueItem.images.all %}
+
+                                    <img src="{{ image.image.url }}" alt="">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if request.user.is_authenticated %}
+                            <span class="btn btn-outline btn-link mb-20">добавить в избранное</span>
+                        {% endif %}
+
+                        <div class="tab">
+                            <button  class="h-tablinks htab-active" onclick="openHTab(event, 'description_tab')">описание</button>
+                            <button class="h-tablinks" onclick="openHTab(event, 'features_tab')">характеристики</button>
+                            <button class="h-tablinks" onclick="openHTab(event, 'feedback_tab')">отзывы</button>
+                        </div>
+                        <!-- Tab content -->
+                        <div id="description_tab" class="h-tabcontent" style="display: block">
+                            <p>{{ techniqueItem.description }}</p>
+                        </div>
+                        <div id="features_tab" class="h-tabcontent">
+                            <p>{{ techniqueItem.features }}</p>
+                        </div>
+                        <div id="feedback_tab" class="h-tabcontent">
+                            <p>Отзывы</p>
+                        </div>
+
+
+
+
+                    </div><!--//item-block-right-->
+                </div><!--//item-block-wrapper-->
+
+            </section><!--//item-->
+        </div><!--//container-->
+    </div><!--//main-->
+    {% if not request.user.is_authenticated %}
+        <div id="openModal" class="modal">
+            <div id="modal_login" class="modal-dialog " >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title section-header">Ошибка</h3>
+                        <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                    </div>
+                    <div  class="modal-body">
+                        <p class="modal-error-text">Необходима регистрация</p>
+                        <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/tiny-slider.js' %}"></script>
+    <script>
+        var slider = tns({
+            container: '.item-slider',
+            items:1,
+            "autoHeight": true,
+            autoplay: true,
+            nav: false,
+            autoplayTimeout: 4000,
+            speed: 1000,
+            controls:false,
+            mouseDrag:true,
+        });
+    </script>
+{% endblock %}

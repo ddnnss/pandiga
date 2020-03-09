@@ -433,3 +433,27 @@ section
     margin-left: 10px
   p:last-child
   margin-right: 10px
+
+
+.paginator
+  display: flex
+  justify-content: center
+  text-align: center
+  &-items
+    display: flex
+  &-item
+    margin-right: 20px
+    font-size: 18px
+    cursor: pointer
+    span
+      color: $color-text
+      transition: all .2s linear
+      &:hover
+        color: $color-link
+        font-weight: 600
+    &:last-child
+      margin-right: 0
+  & .page-active
+    span
+      color: $color-link
+      font-weight: 600

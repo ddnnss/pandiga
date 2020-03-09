@@ -8,6 +8,8 @@ urlpatterns = [
     path('', include('staticPage.urls')),
     path('user/', include('customuser.urls')),
     path('catalog/', include('technique.urls')),
+    path('chat/', include('chat.urls')),
+    path('technique/', include('techniqueOrder.urls')),
     path('', include('social_django.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 

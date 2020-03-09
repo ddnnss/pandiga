@@ -1,107 +1,43 @@
 <div id="tab-chat" class="lk-tab ">
+    <div class="lk-tab-chat">
 
-
-                            <div class="lk-tab-chat">
-                                <ul>
-
-                                    <li>
-                                        <div data-chat_id="3"  class="lk-tab-chat-item ">
-                                            <div class="lk-tab-chat-item-img">
-                                                <img src="http://placehold.it/100" alt="">
-                                            </div>
-
-                                            <div class="lk-tab-chat-item-user">
-                                                <p>Иван Сергеевич</p>
-                                                <span>Превью сообщения, короткий текст...</span>
-                                            </div>
-
-                                            <div class="lk-tab-chat-item-theme-img">
-                                                <img src="http://placehold.it/100" alt="">
-                                            </div>
-                                            <div class="lk-tab-chat-item-theme">
-                                                <p>Название техники</p>
-                                            </div>
-                                            <div class="lk-tab-chat-item-date">
-                                                <span>18:30; 01.01.2020 </span>
-                                                <a href="#"><i class="fa fa-trash"></i></a>
-                                            </div>
-                                        </div>
-                                        <div data-chat_id="3"  class="lk-tab-chat-item ">
-                                            <div class="lk-tab-chat-item-img">
-                                                <img src="http://placehold.it/100" alt="">
-                                            </div>
-
-                                            <div class="lk-tab-chat-item-user">
-                                                <p>Иван Сергеевич</p>
-                                                <span>Превью сообщения, короткий текст...</span>
-                                            </div>
-
-                                            <div class="lk-tab-chat-item-theme-img">
-                                                <img src="http://placehold.it/100" alt="">
-                                            </div>
-                                            <div class="lk-tab-chat-item-theme">
-                                                <p>Название техники</p>
-
-                                            </div>
-                                            <div class="lk-tab-chat-item-date">
-                                                <span>18:30; 01.01.2020 </span>
-                                                <a href="#"><i class="fa fa-trash"></i></a>
-                                            </div>
-                                        </div>
+        <ul id="read-chats-list"></ul>
+           <div class="paginator">
+                                <ul id="paginator" class="paginator-items">
+                                    <li class="paginator-item page-active"><span onclick="getChats(1)">1</span></li>
 
                                 </ul>
-                                <div id="chat-messages" class="lk-tab-chat-messages">
-                                    <div class="lk-tab-chat-messages-top ">
-                                        <div class="lk-tab-chat-item-img">
-                                            <img src="http://placehold.it/100" alt="">
-                                        </div>
-
-                                        <div class="lk-tab-chat-item-user">
-                                            <p>Иван Сергеевич</p>
-                                        </div>
-                                        <div class="lk-tab-chat-item-theme-img">
-                                            <img src="http://placehold.it/100" alt="">
-                                        </div>
-                                        <div class="lk-tab-chat-item-theme">
-                                            <p>Тема диалога : </p>
-                                            <a href="">Lorem ipsum dolor.</a>
-                                        </div>
-                                        <div class="lk-tab-chat-item-close">
-                                            <a href="javascript:void(0)" onclick="closeChat()"><i class="fa fa-close"></i></a>
-                                        </div>
-
-                                    </div>
-                                    <div class="lk-tab-chat-messages-bottom">
-                                        <div class="lk-tab-chat-messages-bottom__message-to-me">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt ea officia repudiandae? Aliquam deserunt iusto labore laboriosam magnam quae repellendus?</p>
-                                            <span>15:30, 27.01</span>
-                                        </div>
-                                        <div class="lk-tab-chat-messages-bottom__message-from-me">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Fuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentium Fuga, iste officiis! Delectus eaque iure praesentium quibusdam, reiciendis unde vitae voluptate.</p>
-                                            <span>15:30, 27.01</span>
-                                        </div>
-                                        <div class="lk-tab-chat-messages-bottom__message-to-me">
-                                            <p>Текст сообщения 1</p>
-                                            <span>15:30, 27.01</span>
-                                        </div>
-                                        <div class="lk-tab-chat-messages-bottom__message-from-me">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Fuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentium Fuga, iste officiis! Delectus eaque iure praesentium quibusdam, reiciendis unde vitae voluptate.</p>
-                                            <span>15:30, 27.01</span>
-                                        </div>
-                                        <div class="lk-tab-chat-messages-bottom__message-to-me">
-                                            <p>Текст сообщения 1</p>
-                                            <span>15:30, 27.01</span>
-                                        </div>
-                                        <div class="lk-tab-chat-messages-bottom__message-from-me">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Fuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentiumFuga, iste officiis! Delectus eaque iure praesentium Fuga, iste officiis! Delectus eaque iure praesentium quibusdam, reiciendis unde vitae voluptate.</p>
-                                            <span>15:30, 27.01</span>
-                                        </div>
-                                    </div>
-                                    <div class="lk-tab-chat-messages-new-message">
-                                        <input type="text" placeholder="Ваше сообщение">
-                                        <div class="lk-tab-chat-messages-new-message-button"><a href="#"><i class="fa fa-telegram"></i></a></div>
-
-                                    </div>
-                                </div>
                             </div>
-                        </div><!--//tab-chat-->
+        <div id="chat-messages" style="left: 0; right: 0;" class="lk-tab-chat-messages">
+            <div  class="lk-tab-chat-messages-top ">
+                <div  class="lk-tab-chat-item-img ">
+                    <img id="chat_user_avatar" src="" alt="">
+                </div>
+
+                <div class="lk-tab-chat-item-user">
+                    <p id="chat_user_name"></p>
+                    <span></span>
+                </div>
+                <div class="lk-tab-chat-item-theme-img">
+                    <img id="chat_theme_img" src="http://placehold.it/100" alt="">
+                </div>
+                <div class="lk-tab-chat-item-theme">
+                    <p>Тема диалога : </p>
+                    <a id="chat_theme" href=""></a>
+                </div>
+                <div class="lk-tab-chat-item-close">
+                    <a href="javascript:void(0)" onclick="closeChat()"><i class="fa fa-close"></i></a>
+                </div>
+
+            </div>
+            <div class="lk-tab-chat-messages-bottom">
+            </div>
+            <div class="lk-tab-chat-messages-new-message">
+                <input id="chat_message"  placeholder="Текст вашего сообщения">
+                <div class="lk-tab-chat-messages-new-message-button"><a href="javascript: void(0)" onclick="sendMsg()"><i class="fa fa-telegram"></i></a></div>
+
+            </div>
+        </div>
+
+    </div>
+</div><!--//tab-chat-->

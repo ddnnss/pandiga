@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'staticPage.apps.StaticpageConfig',
     'partner.apps.PartnerConfig',
     'tariff.apps.TariffConfig',
-    'technique.apps.TechniqueConfig'
+    'technique.apps.TechniqueConfig',
+    'chat.apps.ChatConfig',
+    'techniqueOrder.apps.TechniqueorderConfig'
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -66,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'technique.context_processors.get_technique',
+                'customuser.context_processors.check_profile',
             ],
         },
     },
@@ -86,7 +89,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 

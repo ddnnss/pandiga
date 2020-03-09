@@ -1,7 +1,7 @@
 {% extends 'basic.html' %}
 {% load static %}
 {% block content %}
-    <div class="main">
+    <div style="height: 100vh" class="main">
         <div class="container">
             <div class="breadcrumbs">
                 <ul>
@@ -16,33 +16,45 @@
                 <div class="lk-wrapper">
                     <div class="lk-menu">
                         <ul>
-                            <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: 0 р <span>пополнить</span></li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги (5 / 0)</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника (0)</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >отклики на заявки (0)</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >отклики на работу (0)</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-feedback', 'link-active')" >отзывы</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-profile', 'link-active')" >мой профиль</li>
-                            <li class="tablinks" onclick="opentab(event, 'tab-settings', 'link-active')" >настройки</li>
+                            {% if request.user.is_customer %}
+                                <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-fav', 'link-active')" >избранное ({{ techniqueItemsFavorite.count }})</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >мои заявки на технику (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >мои заявки на работу (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-feedback', 'link-active')" >отзывы</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-profile', 'link-active')" >мой профиль</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-settings', 'link-active')" >настройки</li>
+                            {% else %}
+                                <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: 0 р <span>пополнить</span></li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника ({{ ownTecnique.count }})</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >отклики на заявки (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >отклики на работу (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-feedback', 'link-active')" >отзывы</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-profile', 'link-active')" >мой профиль</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-settings', 'link-active')" >настройки</li>
+                            {% endif %}
                         </ul>
                         <a href="" class="btn">выход</a>
                     </div><!--//lk-menu-->
                     <div class="lk-content">
-                       {% include 'user/_tab-balance.html' %}
-                       {% include 'user/_tab-tarif.html' %}
-                       {% include 'user/_tab-chat.html' %}
-                       {% include 'user/_tab-my-cars.html' %}
-                       {% include 'user/_tab-my-order.html' %}
-                       {% include 'user/_tab-my-job.html' %}
-                       {% include 'user/_tab-finance.html' %}
-                       {% include 'user/_tab-money-earn.html' %}
-                       {% include 'user/_tab-feedback.html' %}
-                       {% include 'user/_tab-profile.html' %}
-                       {% include 'user/_tab-settings.html' %}
-                       {% include 'user/_tab-money-drop.html' %}
+                        {% include 'user/_tab-balance.html' %}
+                        {% include 'user/_tab-tarif.html' %}
+                        {% include 'user/_tab-chat.html' %}
+                        {% include 'user/_tab-my-cars.html' %}
+                        {% include 'user/_tab-my-order.html' %}
+                        {% include 'user/_tab-my-job.html' %}
+                        {% include 'user/_tab-finance.html' %}
+                        {% include 'user/_tab-money-earn.html' %}
+                        {% include 'user/_tab-feedback.html' %}
+                        {% include 'user/_tab-profile.html' %}
+                        {% include 'user/_tab-settings.html' %}
+                        {% include 'user/_tab-money-drop.html' %}
                     </div><!--//lk-content-->
                 </div><!--//lk-wrapper-->
             </div><!--//container-->
@@ -55,44 +67,208 @@
     <!--tabs-->
     <script>
         document.addEventListener("DOMContentLoaded", function(event) {
-
             let url = new URL(location.href);
             let tab = url.searchParams.get("tab");
-            console.log(tab)
-            if (tab){
-                opentab(event, tab, 'link-active')
-            }
+            opentab(event, tab, 'link-active')
 
         });
-        function openHTab(evt, tabName) {
-            let i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("h-tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("h-tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" htab-active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " htab-active";
-        }
-
-        function opentab(evt, TabName, type) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("lk-tab");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(` ${type}`, "");
-            }
-            document.getElementById(TabName).style.display = "block";
-
-            console.log(evt)
-            evt.currentTarget.className += ` ${type}`;
-        }
     </script>
     <!--//tabs-->
+      <script>
+        let curChat = 0
+        let curPage = 1
+        let readChatsList = document.getElementById('read-chats-list')
+        let unreadChats = document.getElementById('unread-chats')
+        let chatDiv = document.getElementById('chat-messages')
+        let chatMsgWrapper = document.getElementsByClassName('lk-tab-chat-messages-bottom')[0]
+        let msgTextArea = document.getElementById('chat_message')
+        let paginator = document.getElementById('paginator')
+
+        getChats()
+
+        function getChats(page=curPage) {
+            let body = {
+                page: page,
+            }
+            readChatsList.innerHTML=''
+            fetch('/chat/get_chats/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+
+
+                    if (res['readChats'].length > 0){
+                        for (chat of res['readChats']){
+                            paginator.innerHTML = ''
+                            readChatsList.innerHTML = readChatsList.innerHTML + `
+                             <li>
+                                    <div data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
+                                        <div  class="lk-tab-chat-item-img ">
+                                            <img src="${chat['user_avatar']}" alt="">
+                                        </div>
+
+                                        <div class="lk-tab-chat-item-user">
+                                            <p>${chat['chat_from']}</p>
+                                            <span>${chat['last_msg']}</span>
+                                        </div>
+                                          <div class="lk-tab-chat-item-theme-img">
+                                            <a href="${chat['technique_url']}">
+                                                <img src="${chat['technique_img']}" alt="">
+                                            </a>
+
+                                        </div>
+                                        <div class="lk-tab-chat-item-theme">
+                                            <a href="${chat['technique_url']}">
+                                                <p>${chat['technique_name']}</p>
+                                            </a>
+                                        </div>
+                                        <div class="lk-tab-chat-item-date">
+                                            <span>${chat['last_msg_time']}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            `
+                        }
+                            if ( res['pages']['last_page'] > 1){
+                             for(var i = 1; i <= res['pages']['last_page']; i++){
+                                if (i == res['pages']['curent_page']){
+                                    paginator.innerHTML = paginator.innerHTML + `
+                                 <li class="paginator-item page-active"><span onclick="getChats(${i})">${i}</span></li>
+                                `
+                                }else{
+                                  paginator.innerHTML = paginator.innerHTML + `
+                                 <li class="paginator-item"><span onclick="getChats(${i})">${i}</span></li>
+                                `
+                                }
+
+                            }
+                            }
+
+                            curPage = res['pages']['curent_page']
+
+
+                    }else{
+
+                    }
+
+
+
+                })
+
+        }
+
+
+        function sendMsg() {
+            let msg = msgTextArea.value
+
+            let body = {
+                chatId: curChat,
+                msgFrom: {{ request.user.id }},
+                msg: msg
+            }
+
+            fetch('/chat/add_msg/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(msg)
+
+
+                    chatMsgWrapper.innerHTML=chatMsgWrapper.innerHTML + `
+                                    <div class="lk-tab-chat-messages-bottom__message-from-me">
+                                        <p>${ msg}</p>
+                                        <span>${new Date(Date.now()).toLocaleString()}</span>
+                                    </div>`
+                }).then(()=>{
+                    document.getElementsByClassName('lk-tab-chat-messages-bottom')[0].scrollTo(0,(document.getElementsByClassName('lk-tab-chat-messages-bottom')[0].scrollTop+2000))
+                    msgTextArea.value = ''
+                }
+
+            )
+
+
+        }
+
+    </script>
+
+    <script>
+        document.getElementById('chat_message').addEventListener('keypress', function(event) {
+        if (event.keyCode == 13) {
+            sendMsg()
+        }
+    });
+    </script>
+    <script>
+        function closeChat(){
+            getChats()
+            document.getElementById('chat-messages').classList.remove('show-messages')
+        }
+
+
+
+
+        function openChat(el){
+            chatMsgWrapper.innerHTML = ''
+            msgTextArea.value = ''
+
+            let chatUserAvatar = document.getElementById('chat_user_avatar')
+            let chatUserName = document.getElementById('chat_user_name')
+            let chatThemeImg = document.getElementById('chat_theme_img')
+            let chatTheme = document.getElementById('chat_theme')
+            let chat_id = el.dataset.chat_id
+            let body = {
+                chat_id: chat_id
+            }
+            curChat = chat_id
+            fetch('/chat/get_msg/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+
+                    chatUserName.innerText = res['userInfo']['user_name']
+                    chatUserAvatar.setAttribute('src',res['userInfo']['user_avatar'])
+                    chatThemeImg.setAttribute('src',res['userInfo']['technique_img'])
+                    chatTheme.setAttribute('href',res['userInfo']['technique_url'])
+                    chatTheme.innerText = res['userInfo']['technique_name']
+
+                    for (msg of res['chatMsg']){
+                        console.log(msg)
+
+                        if (msg['own']){
+                            chatMsgWrapper.innerHTML=chatMsgWrapper.innerHTML + `
+                                    <div class="lk-tab-chat-messages-bottom__message-from-me">
+                                        <p>${msg['own'][0]}</p>
+                                        <span>${msg['own'][1]}</span>
+                                    </div>`
+                        }else{
+                            chatMsgWrapper.innerHTML=chatMsgWrapper.innerHTML + `
+                                    <div class="lk-tab-chat-messages-bottom__message-to-me">
+                                        <p>${msg['from'][0]}</p>
+                                        <span>${msg['from'][1]}</span>
+                                    </div>
+                               `
+                        }
+
+                    }
+                }).then(()=>{
+                    chatDiv.classList.add('show-messages')
+                    document.getElementsByClassName('lk-tab-chat-messages-bottom')[0].scrollTo(0,(document.getElementsByClassName('lk-tab-chat-messages-bottom')[0].scrollTop+2000))
+                }
+            )
+        }
+
+
+    </script>
+
 {% endblock %}

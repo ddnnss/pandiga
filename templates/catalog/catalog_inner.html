@@ -157,7 +157,7 @@
 
                                 <input id="city_id" type="hidden" name="city" value="{% if filter_city  %}{{ filter_city }}{% else %}all{% endif %}">
                                 <button type="submit" class="btn mb-10">поиск</button>
-                            <span onclick="clearForm()" class="btn btn-outline">Сбросить фильтры</span>
+                            <span onclick="clearForm()" class="btn btn-outline btn-link">Сбросить фильтры</span>
                             </form>
 
 
@@ -177,7 +177,7 @@
                         <div class="items-block-right-wrapper">
                             {% for technique in all_technique %}
                                 <div class="item-grid">
-                                    <a href="">
+                                    <a href="{% url 'technique' technique.sub_section.section.type.name_slug technique.sub_section.section.name_slug technique.sub_section.name_slug technique.name_slug%}">
                                         <div class="item-image" style="background: url({{ technique.get_main_image }})">
                                             {% if technique.is_free %}
                                                 <span  class="item-free">свободен</span>
@@ -248,7 +248,9 @@
 
                     </div><!--//items-block-right-->
                 </div><!--//items-block-wrapper-->
-
+                <div class="seo_text">
+                    {{ seo_text | safe }}
+                </div>
             </section><!--//items-->
         </div><!--//container-->
     </div><!--//main-->
@@ -453,4 +455,69 @@
             });
         }
     </script>
+        <!-- get section && subsection-->
+    <script>
+        let typeSelect = document.getElementById('type_select')
+        let sectionSelect = document.getElementById('section_select')
+        let subsectionSelect = document.getElementById('subsection_select')
+
+        function clearSelect(el){
+            let elem = document.querySelectorAll(`.${el}`)
+            elem.forEach(function (i) {
+                console.log('Elem to clear:',i)
+                i.remove()
+            })
+        }
+
+        function createOption(name_slug,name,target,ro) {
+            let option = document.createElement("option")
+            option.text = name
+            option.value = name_slug
+            if (ro){
+                option.setAttribute('disabled','disabled')
+                option.setAttribute('selected','selected')
+            }
+            option.classList.add(`${target}-name`)
+            return option
+
+        }
+        function getSubcat(name_slug,target) {
+            let body = {'type':name_slug,'target':target}
+            fetch('/catalog/get_type_sublists/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                    if (target === 'section'){
+                        //sectionSelect.appendChild(createOption('all','Выберите раздел',target))
+                        for (x of res) {
+                            //console.log(x['id'])
+                            sectionSelect.appendChild(createOption(x['name_slug'],x['name'],target))
+                        }
+                    }
+                    if (target === 'subsection'){
+                        //subsectionSelect.appendChild(createOption('all','Выберите подраздел',target))
+                        for (x of res) {
+                            //console.log(x['id'])
+                            subsectionSelect.appendChild(createOption(x['name_slug'],x['name'],target))
+                        }
+                    }
+                })
+        }
+
+        typeSelect.addEventListener('change',()=>{
+            clearSelect('section-name')
+            clearSelect('subsection-name')
+            getSubcat(typeSelect.options[typeSelect.selectedIndex].value,'section')
+
+        })
+        sectionSelect.addEventListener('change',()=>{
+            clearSelect('subsection-name')
+            getSubcat(sectionSelect.options[sectionSelect.selectedIndex].value,'subsection')
+        })
+    </script>
+    <!-- //get section && subsection-->
 {% endblock %}

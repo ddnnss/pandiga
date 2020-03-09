@@ -12,17 +12,29 @@
         </div>
         <div class="header-nav">
             <ul class="header-nav-wrapper">
-                <li class="header-nav-item"><a class="{{ addTechniqueActive }} header-nav-link" href="{% url 'add_technique' %}">добавить свою технику</a></li>
+                {% if request.user.is_customer %}
+                    <li class="header-nav-item"><a class="{{ addTechniqueOrderActive }} header-nav-link" href="{% url 'technique_order' %}">создать заявку на технику</a></li>
+                {% else %}
+                    <li class="header-nav-item"><a class="{{ addTechniqueActive }} header-nav-link" href="{% url 'add_technique' %}">добавить свою технику</a></li>
+                {% endif %}
                 <li class="header-nav-item"><a class="{{ catalogTechniqueActive }} header-nav-link" href="{% url 'technique_catalog' %}">каталог техники</a></li>
                 <li class="header-nav-item"><a class="header-nav-link" href="#">работа</a></li>
-                <li class="header-nav-item"><a class="header-nav-link" href="#">для владельцев техники</a></li>
+                {% if request.user.is_customer %}
+                    <li class="header-nav-item"><a class="header-nav-link" href="#">партнерская программа</a></li>
+                {% else %}
+                    {% if request.user.is_authenticated %}
+                        <li class="header-nav-item"><a class="header-nav-link" href="#">заявки на технику</a></li>
+                    {% else %}
+                        <li class="header-nav-item"><a class="header-nav-link" href="#">для владельцев техники</a></li>
+                    {% endif %}
 
+                {% endif %}
                 {% if request.user.is_authenticated %}
                     <li class="user-menu">
                         <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }}</a>
                         <a class="user-menu-link user-menu-mail" href="">
                             <i class="fa fa-envelope">
-                                <span>1</span>
+                                <span>{{ allUnreadChats.count }}</span>
                             </i>
                         </a>
 
@@ -41,32 +53,32 @@
                                 <ul class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
 
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">избранное (<span>1</span>)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-favorites">избранное (<span>1</span>)</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">мои заявки на технику (0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-profile">мои заявки на технику (0)</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">мои заявки на работу (0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-job">мои заявки на работу (0)</a>
                                     </li>
 
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-finance">финансовые операции</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-feedback">отзывы</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-money-earn">заработок в системе</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-profile">мой профиль</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">настройки</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-settings">настройки</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>
@@ -77,39 +89,39 @@
                             {% else %}
                                 <ul  class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">баланс: 100 <i class="fa fa-rub"></i></a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-balance">баланс: 100 <i class="fa fa-rub"></i></a>
                                         <a class="user-menu-dropdown-link link-small" href="">пополнить</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">тариф: pro </a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-tarif">тариф: pro </a>
                                         <a class="user-menu-dropdown-link link-small" href="">изменить</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">диалоги (1/0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">моя техника (0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-cars">моя техника ({{ ownTecnique.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">отклики на заявки (0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-order">отклики на заявки (0)</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">отклики на работу (0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-job">отклики на работу (0)</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">финансовые операции</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-finance">финансовые операции</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">отзывы</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-feedback">отзывы</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">заработок в системе</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-money-earn">заработок в системе</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">мой профиль</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-profile">мой профиль</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="">настройки</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-settings">настройки</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'logout_page' %}">выйти</a>

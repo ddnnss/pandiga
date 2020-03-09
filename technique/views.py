@@ -11,6 +11,10 @@ def technique_catalog(request):
     catalogTechniqueActive = 'menu-link-active '
     return render(request, 'catalog/catalog.html', locals())
 
+def add_to_favorite(request,item_id):
+    techniqueItem = get_object_or_404(TechniqueItem, id=item_id)
+    TechniqueItemFavorite.objects.create(user=request.user,techniqueitem=techniqueItem)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def add_technique(request):
     if request.POST:
@@ -56,7 +60,7 @@ def get_type_sublists(request):
     if target == 'subsection':
         subsections = TechniqueSubSection.objects.filter(section__name_slug=name_slug)
         for i in subsections:
-            return_dict.append({'name_slug': i.name_slug, 'name': i.name})
+            return_dict.append({'id':i.id, 'name_slug': i.name_slug, 'name': i.name})
         return JsonResponse(return_dict, safe=False)
 
 
@@ -98,6 +102,7 @@ def filter_qs(qs,filter_city=None,
 
 def technique_type_catalog(request, type_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
+    seo_text= current_technique_type.seo_text
     all_technique_qs = TechniqueItem.objects.filter(type=current_technique_type, is_moderated=True, is_active=True)
 
     filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
@@ -147,12 +152,100 @@ def technique_type_catalog(request, type_slug):
 def technique_section_catalog(request, type_slug, section_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
     current_technique_section = get_object_or_404(TechniqueSection, name_slug=section_slug)
-    all_technique = TechniqueItem.objects.filter(section=current_technique_section, is_moderated=True, is_active=True)
+    seo_text = current_technique_section.seo_text
+    all_technique_qs = TechniqueItem.objects.filter(section=current_technique_section, is_moderated=True, is_active=True)
+    filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
+    # filter_type = request.GET.get('type') if request.GET.get('type') != 'all' else None
+    filter_section = request.GET.get('section') if request.GET.get('section') != 'all' else None
+    filter_subsection = request.GET.get('subsection') if request.GET.get('subsection') != 'all' else None
+    filter_search = request.GET.get('search') if request.GET.get('search') != '' else None
+
+    filter_time_type = request.GET.get('time_type') if request.GET.get('time_type') != '' else None
+
+    filter_h_from = request.GET.get('h_from') if request.GET.get('h_from') != '' else None
+    filter_h_to = request.GET.get('h_to') if request.GET.get('h_to') != '' else None
+    filter_h_price_from = request.GET.get('h_price_from') if request.GET.get('h_price_from') != '' else None
+    filter_h_price_to = request.GET.get('h_price_to') if request.GET.get('h_price_to') != '' else None
+
+    filter_d_from = request.GET.get('d_from') if request.GET.get('d_from') != '' else None
+    filter_d_to = request.GET.get('d_to') if request.GET.get('d_to') != '' else None
+    filter_d_price_from = request.GET.get('d_price_from') if request.GET.get('d_price_from') != '' else None
+    filter_d_price_to = request.GET.get('d_price_to') if request.GET.get('d_price_to') != '' else None
+
+    city_from_filter = City.objects.get(id=filter_city) if filter_city else ''
+    section_from_filter = TechniqueSection.objects.get(name_slug=filter_section) if filter_section else ''
+    subsection_from_filter = TechniqueSubSection.objects.get(name_slug=filter_subsection) if filter_subsection else ''
+
+    if filter_city or filter_section or filter_subsection or filter_search or filter_h_from or filter_d_from:
+        all_technique = filter_qs(all_technique_qs,
+                                  filter_city,
+                                  filter_section,
+                                  filter_subsection,
+                                  filter_search,
+                                  filter_time_type,
+                                  filter_h_from,
+                                  filter_h_to,
+                                  filter_h_price_from,
+                                  filter_h_price_to,
+                                  filter_d_from,
+                                  filter_d_to,
+                                  filter_d_price_from,
+                                  filter_d_price_to
+                                  )
+    else:
+        all_technique = all_technique_qs
     return render(request, 'catalog/catalog_inner.html', locals())
 
 def technique_subsection_catalog(request, type_slug, section_slug, subsection_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
     current_technique_section = get_object_or_404(TechniqueSection, name_slug=section_slug)
     current_technique_subsection = get_object_or_404(TechniqueSubSection, name_slug=subsection_slug)
-    all_technique = TechniqueItem.objects.filter(sub_section=current_technique_subsection, is_moderated=True, is_active=True)
+    seo_text = current_technique_subsection.seo_text
+    all_technique_qs = TechniqueItem.objects.filter(sub_section=current_technique_subsection, is_moderated=True, is_active=True)
+    filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
+    # filter_type = request.GET.get('type') if request.GET.get('type') != 'all' else None
+    filter_section = request.GET.get('section') if request.GET.get('section') != 'all' else None
+    filter_subsection = request.GET.get('subsection') if request.GET.get('subsection') != 'all' else None
+    filter_search = request.GET.get('search') if request.GET.get('search') != '' else None
+
+    filter_time_type = request.GET.get('time_type') if request.GET.get('time_type') != '' else None
+
+    filter_h_from = request.GET.get('h_from') if request.GET.get('h_from') != '' else None
+    filter_h_to = request.GET.get('h_to') if request.GET.get('h_to') != '' else None
+    filter_h_price_from = request.GET.get('h_price_from') if request.GET.get('h_price_from') != '' else None
+    filter_h_price_to = request.GET.get('h_price_to') if request.GET.get('h_price_to') != '' else None
+
+    filter_d_from = request.GET.get('d_from') if request.GET.get('d_from') != '' else None
+    filter_d_to = request.GET.get('d_to') if request.GET.get('d_to') != '' else None
+    filter_d_price_from = request.GET.get('d_price_from') if request.GET.get('d_price_from') != '' else None
+    filter_d_price_to = request.GET.get('d_price_to') if request.GET.get('d_price_to') != '' else None
+
+    city_from_filter = City.objects.get(id=filter_city) if filter_city else ''
+    section_from_filter = TechniqueSection.objects.get(name_slug=filter_section) if filter_section else ''
+    subsection_from_filter = TechniqueSubSection.objects.get(name_slug=filter_subsection) if filter_subsection else ''
+
+    if filter_city or filter_section or filter_subsection or filter_search or filter_h_from or filter_d_from:
+        all_technique = filter_qs(all_technique_qs,
+                                  filter_city,
+                                  filter_section,
+                                  filter_subsection,
+                                  filter_search,
+                                  filter_time_type,
+                                  filter_h_from,
+                                  filter_h_to,
+                                  filter_h_price_from,
+                                  filter_h_price_to,
+                                  filter_d_from,
+                                  filter_d_to,
+                                  filter_d_price_from,
+                                  filter_d_price_to
+                                  )
+    else:
+        all_technique = all_technique_qs
     return render(request, 'catalog/catalog_inner.html', locals())
+
+
+def technique(request, type_slug, section_slug, subsection_slug,technique_slug):
+    techniqueItem = get_object_or_404(TechniqueItem, name_slug=technique_slug)
+    otherTechnique = TechniqueItem.objects.filter(owner=techniqueItem.owner).exclude(id=techniqueItem.id)
+    return render(request, 'catalog/technique.html', locals())
