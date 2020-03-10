@@ -20,7 +20,7 @@
                                 <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-fav', 'link-active')" >избранное ({{ techniqueItemsFavorite.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-orders', 'link-active')" >мои заявки на технику ({{ my_technique_orders.count }})</li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >мои заявки на работу (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-job-orders', 'link-active')" >мои заявки на работу (0)</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-feedback', 'link-active')" >отзывы</li>
@@ -31,8 +31,8 @@
                                 <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника ({{ my_technique.count }})</li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >отклики на заявки (0)</li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >отклики на работу (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-orders-apply', 'link-active')" >отклики на заявки (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-job-apply', 'link-active')" >отклики на работу (0)</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-feedback', 'link-active')" >отзывы</li>
@@ -49,8 +49,9 @@
                         {% include 'user/_tab-my-fav.html' %}
                         {% include 'user/_tab-my-orders.html' %}
                         {% include 'user/_tab-my-cars.html' %}
-                        {% include 'user/_tab-my-order.html' %}
-                        {% include 'user/_tab-my-job.html' %}
+                        {% include 'user/_tab-my-order-apply.html' %}
+                        {% include 'user/_tab-my-job-orders.html' %}
+                        {% include 'user/_tab-my-job-apply.html' %}
                         {% include 'user/_tab-finance.html' %}
                         {% include 'user/_tab-money-earn.html' %}
                         {% include 'user/_tab-feedback.html' %}
@@ -63,6 +64,24 @@
         </section><!--//lk-->
 
     </div><!--//main-->
+     <div id="openModal" class="modal">
+        <div id="modal_login" class="modal-dialog " >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title section-header">ВВЕДИТЕ ПРОМО-КОД</h3>
+                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                </div>
+                <div  class="modal-body">
+                    <form action="">
+                        <input class="mb-20" style="width: 100%" type="number"  placeholder="ПРОМО-КОД">
+                        <button type="submit" class="btn btn-link by-center">Подтвердить</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block js %}
     {{ block.super }}

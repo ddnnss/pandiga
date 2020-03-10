@@ -3,7 +3,6 @@
     {% if not my_technique %}
         <p class="mb-20"> Вы не добавили не одной еденицы техники</p>
         <a class="btn btn-link" href="{% url 'add_technique' %}">добавить технику</a>
-
     {% endif %}
         {% for technique in my_technique %}
             <div class="lk-tab-my-cars-item">
@@ -39,6 +38,4 @@
         </div><!-- //lk-tab-my-cars-item-->
         {% endfor %}
     </div>
-
-
 </div><!--//tab-my-cars-->

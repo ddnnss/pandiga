@@ -344,7 +344,8 @@
                         <div class="lk-tab-moneyearn">
                             <div class="lk-tab-content-bg mb-20">
                                 <p class="mb-20">Скопируйте промо-код и сообщите его своим друзьям и знакомым. Все, кто будут регистрироваться по вашему промо-коду получат скидку, а вы будете получать регулярное вознаграждение</p>
-                                <div class="mb-20 d-flex">  <span class="btn btn-link ">Ввести промо-код партнера</span>
+                                <div class="mb-20 d-flex">  <span class="btn btn-link " onclick="openModal()">Ввести промо-код партнера</span>
+
                                     <span class="btn btn-link" onclick="opentab(event, 'tab-money-drop', 'link-active')">вывести средства</span>
                                     <a style="padding-top: 10px" href="">Подробее о партнерской программе</a>
                                 </div>
@@ -450,7 +451,33 @@
                         <div class="lk-tab-moneydrop">
 
                             <div class="lk-tab-content-bg">
-                                sdfsdfdf
+                                <div class="section-header"><h3>Вывести средства</h3></div>
+
+                                <form action="">
+                                    <div class="form-row">
+                                        <label>Сумма</label>
+                                        <div class="form-row-group">
+                                            <input type="number" value="0">
+                                           <span class="btn">Доступно 1000 <i class="fa fa-rub"></i> Снять всю сумму</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label >Тип</label>
+                                        <div class="form-row-group">
+                                            <select name="" id="">
+                                            <option value="">Перечислить на счет сайта</option>
+                                            <option value="">Вывод на банковскую карту</option>
+                                        </select>
+                                            <input type="number" autocomplete="cardnumber" placeholder="Номер карты">
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Комментарий</label>
+                                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-link by-center">Выполнить</button>
+                                </form>
                             </div>
                         </div><!--//lk-tab-moneyearn-->
 
@@ -461,8 +488,28 @@
     </section><!--//lk-->
 
 </div><!--//main-->
+ <div id="openModal" class="modal">
+        <div id="modal_login" class="modal-dialog " >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title section-header">ВВЕДИТЕ ПРОМО-КОД</h3>
+                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                </div>
+                <div  class="modal-body">
+                    <form action="">
+                        <input class="mb-20" style="width: 100%" type="number"  placeholder="ПРОМО-КОД">
+                        <button type="submit" class="btn btn-link by-center">Подтвердить</button>
+                    </form>
 
+
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
+      function openModal() {
+            document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
+        }
     document.addEventListener("DOMContentLoaded", function(event) {
 
         let url = new URL(location.href);
