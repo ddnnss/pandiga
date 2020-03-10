@@ -1,0 +1,40 @@
+.technique-order
+  &-wrapper
+  &-item
+    position: relative
+    margin-bottom: 10px
+    transition: all .2s linear
+    &:hover
+      background: #ffffff
+
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.13)
+      transform: translateY(-2px)
+
+    a
+      color: $color-text
+    &-top
+      display: flex
+      justify-content: space-between
+      max-width: 50%
+      margin-bottom: 10px
+    &-middle
+      margin-bottom: 10px
+
+    &-bottom
+      display: flex
+      justify-content: space-between
+      p
+        text-transform: uppercase
+      i
+        font-size: 20px
+      ul
+        display: flex
+        li
+          text-transform: uppercase
+          &:after
+            content: '/'
+            margin: 0 10px
+          &:last-child:after
+            content: none
+    & .order-detail
+      margin-bottom: 10px

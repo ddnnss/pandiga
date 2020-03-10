@@ -1,0 +1,160 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="/">главная</a></li>
+                    <li><a href="{% url 'technique_all_orders' %}">заявки на технику</a></li>
+                    <li>детали заявки № {{ order.id }}</li>
+                </ul>
+            </div><!--//breadcrumbs-->
+
+
+            <section class="item-block">
+                <div class="section-header"><h1>детали заявки № {{ order.id }}</h1></div>
+                <div class="item-block-wrapper">
+                    <div class="item-block-left">
+
+                        <div class="item-owner block-bordered mb-20">
+                            <div class="item-owner-info">
+                                <img src="{{ order.customer.get_avatar }}" alt="">
+                                <p>{{ order.customer.first_name }}</p>
+                                <span>зарегистрирован {{ order.customer.date_joined | date }}</span>
+                            </div>
+                            <div class="item-owner-contact">
+                                <p class="item-owner-contact-row">
+                                    {% if request.user.is_authenticated %}
+                                        <i class="fa fa-phone"></i> <a href="tel:+71231112233">+71231112233</a><span>... показать номер</span>
+                                    {% else %}
+                                        <i class="fa fa-phone"></i> недоступно
+
+                                    {% endif %}
+                                </p>
+                                <p class="item-owner-contact-row">
+                                    <i class="fa fa-map-marker"></i>
+                                    {% if techniqueItem.owner.city.city %}
+                                        {{ techniqueItem.owner.city.city }}, {{ techniqueItem.owner.city.region }}
+                                    {% else %}
+                                        не указано
+                                    {% endif %}
+                                </p>
+                            </div>
+                            {% if techniqueItem.owner.id != request.user.id %}
+                                {% if request.user.is_authenticated %}
+                                    <span class="btn btn-link">отправить сообщение</span>
+                                {% else %}
+                                    <span class="btn btn-link" onclick="openModal()">отправить сообщение</span>
+                                {% endif %}
+                            {% endif %}
+                        </div><!--//item-owner-->
+                        <div class="item-owner-other-technique block-bordered">
+                            <p class="text-center">ПОХОЖИЕ ЗАЯВКИ</p>
+                            <div class="hr"></div>
+                            <div class="item-owner-other-technique-item">
+                                <a href="">
+                                    <ul>
+                                        <li>lorem</li>
+                                        <li>lorem</li>
+                                        <li>lorem</li>
+                                    </ul>
+                                    <p class="item-owner-other-technique-item-info">
+                                        <i class="fa fa-map-marker"></i> <span>от 1 Д</span>
+                                    </p>
+                                    <p class="item-owner-other-technique-item-info">
+                                        <i class="fa fa-calendar"></i> <span>1 <i class="fa fa-rub"></i>/день</span>
+                                    </p>
+                                </a>
+                            </div><!--//item-owner-other-technique-item-->
+                            <div class="item-owner-other-technique-item">
+                                <a href="">
+                                    <p class="item-owner-other-technique-item-name">Lorem ipsum dolor sit amet.</p>
+                                    <p class="item-owner-other-technique-item-info">
+                                        <img src="img/time-icon.png" alt=""> <span>от 1 Д</span>  <img src="img/money-icon.png" alt=""> <span>1 <i class="fa fa-rub"></i>/день</span>
+                                    </p>
+                                </a>
+                            </div><!--//item-owner-other-technique-item-->
+                            <div class="item-owner-other-technique-item">
+                                <a href="">
+                                    <p class="item-owner-other-technique-item-name">Lorem ipsum dolor sit amet.</p>
+                                    <p class="item-owner-other-technique-item-info">
+                                        <img src="img/time-icon.png" alt=""> <span>от 1 Д</span>  <img src="img/money-icon.png" alt=""> <span>1 <i class="fa fa-rub"></i>/день</span>
+                                    </p>
+                                </a>
+                            </div><!--//item-owner-other-technique-item-->
+                        </div><!--//item-owner-other-technique-->
+
+
+                    </div><!--//item-block-left-->
+                    <div class="item-block-right ">
+                        <div class="technique-order-item block-bordered no-hover">
+                            <div class="technique-order-item-bottom order-detail">
+                                <p><i class="fa fa-calendar"></i> {{ order.order_date }}</p>
+
+                                <p><i class="fa fa-map-marker"></i> {{ order.get_location }}</p>
+                                <p>Заказчик: {{ order.customer.first_name }}</p>
+
+                            </div>
+                            <div class="technique-order-item-top">
+
+                                <p>Срок аренды {{ order.rent_time }} {{ order.get_rent_type_short }}</p>
+                                <div class="rating technique-order-rating order-detail">
+                                    <p class="rating-value">{{ order.customer.rating }}</p>
+                                    <div class="rating-inner">
+                                        <ul class="rating-inner-stars">
+                                            {% for r in rating%}
+                                                <li class="rating-inner-star
+                                                             {% if forloop.counter <= order.customer.rating %}star-colored{% endif %}">
+                                                    <i class="fa fa-star"></i>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if order.comment %}
+                                <div class="technique-order-item-middle">
+                                    <p>Комментарий:</p>
+                                    <p>{{ order.comment }}</p>
+                                </div>
+                            {% endif %}
+
+
+                        </div><!--//technique-order-item-->
+                        <span class="btn btn-link by-center" onclick="openModal()">предложить свою технику</span>
+
+                    </div><!--//item-block-right-->
+                </div><!--//item-block-wrapper-->
+
+            </section><!--//item-->
+        </div><!--//container-->
+        <div id="openModal" class="modal">
+            <div id="modal_login" class="modal-dialog " >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title section-header">Предложите технику и цену</h3>
+                        <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                    </div>
+                    <div  class="modal-body">
+                        <form action=""></form>
+                        <select style="width: 100%;margin-bottom: 20px" name="technique_for_order" required>
+                            {% if my_technique %}
+                                {% for t in my_technique %}
+                                    <option value="{{ t.id }}">{{ t.name }}</option>
+                                {% endfor %}
+                                {% else %}
+                                <option disabled selected >У вас нет подходящей техники для предложения</option>
+                            {% endif %}
+                        </select>
+                        <button type="submit" class="btn btn-link by-center mb-20" >предложить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--//main-->
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+
+{% endblock %}

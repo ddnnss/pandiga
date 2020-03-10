@@ -326,6 +326,10 @@ section
       a
         text-transform: uppercase
         color: $color-link
+.no-hover:hover
+  transform: translateY(0) !important
+  box-shadow: none !important
+  background: $color-bg-light !important
 
 
 .rating
@@ -338,6 +342,12 @@ section
     position: absolute
     left: 35px
     top: 180px
+  &.technique-order-rating
+    position: absolute
+    right: 70px
+    top: 25px
+    &.order-detail
+      top: 40px
 
   &-value
     position: absolute

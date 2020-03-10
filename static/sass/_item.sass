@@ -60,6 +60,20 @@
     border-bottom: 1px dashed $color-link
     padding-bottom: 5px
     margin-bottom: 5px
+    ul
+      display: flex
+      margin-bottom: 10px
+      li
+        text-transform: uppercase
+        &:after
+          content: '/'
+          margin: 0 10px
+        &:last-child:after
+          content: none
+    i
+      font-size: 18px
+      color: $color-link
+      margin-right: 10px
     &:last-child
       border-bottom: none
       padding: 0
@@ -67,7 +81,7 @@
     a
       color: $color-text
     &:hover
-      p
+      p, li
         color: $color-link
 
     &-name
@@ -78,6 +92,7 @@
       font-size: 13px
       display: flex
       align-items: center
+      margin-bottom: 10px
       img
         margin-right: 10px
       span

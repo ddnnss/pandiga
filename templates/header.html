@@ -23,7 +23,7 @@
                     <li class="header-nav-item"><a class="header-nav-link" href="#">партнерская программа</a></li>
                 {% else %}
                     {% if request.user.is_authenticated %}
-                        <li class="header-nav-item"><a class="header-nav-link" href="#">заявки на технику</a></li>
+                        <li class="header-nav-item"><a class="header-nav-link" href="{% url 'technique_all_orders' %}">заявки на технику</a></li>
                     {% else %}
                         <li class="header-nav-item"><a class="header-nav-link" href="#">для владельцев техники</a></li>
                     {% endif %}

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import *
 
-# Register your models here.
+admin.site.register(TechniqueOrder)
+admin.site.register(TechniqueOrderViewed)
+admin.site.register(TechniqueOrderApply)
