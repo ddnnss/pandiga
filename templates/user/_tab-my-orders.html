@@ -1,0 +1,40 @@
+ <div id="tab-orders" class="lk-tab ">
+                           <div class="technique-order-wrapper">
+                            {% for order in my_technique_orders %}
+                                <div class="technique-order-item block-bordered">
+                                    <a href="{% url 'technique_order_detail' order.name_slug %}">
+                                        <div class="technique-order-item-top">
+                                            <p>Название</p>
+                                            <p>Номер заявки: {{ order.id }}</p>
+                                            <p>Срок аренды : {{ order.rent_time }} {{order.get_rent_type_short}}</p>
+                                            <div class="rating technique-order-rating">
+                                                <p class="rating-value">{{ order.customer.rating }}</p>
+                                                <div class="rating-inner">
+                                                    <ul class="rating-inner-stars">
+                                                        {% for r in rating%}
+                                                            <li class="rating-inner-star
+                                                               {% if forloop.counter <= order.customer.rating %}star-colored{% endif %}">
+                                                                <i class="fa fa-star"></i></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="technique-order-item-middle">
+                                            <p>{{ order.name }}</p>
+                                        </div>
+                                        <div class="technique-order-item-bottom">
+                                            <ul>
+                                                <li>{{ order.type.name }}</li>
+                                                <li>{{ order.section.name }}</li>
+                                                <li>{{ order.sub_section.name }}</li>
+                                            </ul>
+                                            <p><i class="fa fa-map-marker"></i>{{ order.get_location }}</p>
+                                            <p><i class="fa fa-calendar"></i> {{ order.order_date }}</p>
+                                        </div>
+                                    </a>
+                                </div><!--//technique-order-item-->
+                            {% endfor %}
+
+                        </div><!--//technique-order-wrapper-->
+                        </div><!--//tab-my-job-->

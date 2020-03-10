@@ -8,7 +8,7 @@
             </div><!-- //header-dropdown-menu-->
         </div><!-- //header-dropdown-->
         <div class="header-logo">
-            <img src="img/logo.png" alt="">
+            <a href="/"><img src="{% static 'img/logo.png' %}" alt=""></a>
         </div>
         <div class="header-nav">
             <ul class="header-nav-wrapper">
@@ -56,10 +56,10 @@
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-favorites">избранное (<span>1</span>)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-fav">избранное ({{ techniqueItemsFavorite.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-profile">мои заявки на технику (0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-orders">мои заявки на технику ({{ my_technique_orders.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-job">мои заявки на работу (0)</a>
@@ -100,7 +100,7 @@
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-cars">моя техника ({{ ownTecnique.count }})</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-cars">моя техника ({{ my_technique.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-order">отклики на заявки (0)</a>
@@ -150,8 +150,8 @@
 
             <div class="header-offer-wrapper">
                 <div class="header-offer-text">
-                    <h1>аренда техники для работы и отдыха</h1>
-                    <p>спецтехника, авто, мото, водная техника и много другое</p>
+                    <h1>АРЕНДА ТЕХНИКИ ДЛЯ РАБОТЫ И ОТДЫХА</h1>
+                    <p>СПЕЦТЕХНИКА, АВТО, МОТО, ВОДНАЯ ТЕХНИКА И МНОГО ДРУГОЕ</p>
                 </div>
                 <div class="header-offer-form">
                     <form action="">

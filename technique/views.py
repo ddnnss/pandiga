@@ -16,6 +16,12 @@ def add_to_favorite(request,item_id):
     TechniqueItemFavorite.objects.create(user=request.user,techniqueitem=techniqueItem)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+def del_from_favorite(request,item_id):
+    techniqueItem = get_object_or_404(TechniqueItem, id=item_id)
+    item = TechniqueItemFavorite.objects.get(user=request.user,techniqueitem=techniqueItem)
+    item.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 def add_technique(request):
     if request.POST:
         newItem = None

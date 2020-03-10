@@ -9,6 +9,7 @@ from twilio.rest import Client
 import settings
 
 from technique.models import *
+from techniqueOrder.models import *
 
 
 
@@ -88,6 +89,6 @@ def change_status(request):
 
 def lk_page(request):
     user = request.user
-    my_technique = TechniqueItem.objects.filter(owner=user)
+
 
     return render(request, 'user/lk.html', locals())

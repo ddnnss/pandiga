@@ -13,13 +13,11 @@
                     <li>{{ techniqueItem.name }}</li>
                 </ul>
             </div><!--//breadcrumbs-->
-
-
             <section class="item-block">
                 <div class="section-header"><h1>{{ techniqueItem.name }}</h1></div>
                 <div class="item-block-wrapper">
                     <div class="item-block-left">
-                        <div class="item-time-price block-bordered mb-20">
+                        <div class="item-time-price block-bordered mb-10">
                             <div class="item-time-price-row">
                                 <img src="{% static 'img/money-icon.png' %}" alt="">
                                 <p>Стоимость: {{ techniqueItem.rent_price }} <i class="fa fa-rub"></i>/{{ techniqueItem.get_rent_type_long }} </p>
@@ -35,9 +33,8 @@
                                     <span class="btn btn-link" onclick="openModal()">взять в аренду</span>
                                 {% endif %}
                             {% endif %}
-
                         </div><!--//item-time-price-->
-                        <div class="item-owner block-bordered mb-20">
+                        <div class="item-owner block-bordered mb-10">
                             <div class="item-owner-info">
                                 <img src="{{ techniqueItem.owner.get_avatar }}" alt="">
                                 <p style="flex-basis: 50%">{{ techniqueItem.owner.first_name }}</p>
@@ -49,7 +46,6 @@
                                         <i class="fa fa-phone"></i> <a href="tel:+71231112233">+71231112233</a><span>... показать номер</span>
                                     {% else %}
                                         <i class="fa fa-phone"></i> недоступно
-
                                     {% endif %}
                                 </p>
                                 <p class="item-owner-contact-row">
@@ -64,6 +60,12 @@
                             {% if techniqueItem.owner.id != request.user.id %}
                                 {% if request.user.is_authenticated %}
                                     <span class="btn btn-link">отправить сообщение</span>
+                                    <div class="new-message block-bordered ">
+                                        <form action="">
+                                            <textarea style="width: 100%" name="" id="" cols="30" rows="10"></textarea>
+                                            <button class="btn btn-link">отправить</button>
+                                        </form>
+                                    </div>
                                 {% else %}
                                     <span class="btn btn-link" onclick="openModal()">отправить сообщение</span>
                                 {% endif %}
@@ -84,8 +86,6 @@
                                 </div><!--//item-owner-other-technique-item-->
                             {% endfor %}
                         </div><!--//item-owner-other-technique-->
-
-
                     </div><!--//item-block-left-->
                     <div class="item-block-right block-bordered">
                         <div class="item-slider-wrapper mb-20">
@@ -99,15 +99,17 @@
                             </div>
                             <div class="item-slider">
                                 {% for image in techniqueItem.images.all %}
-
                                     <img src="{{ image.image.url }}" alt="">
                                 {% endfor %}
                             </div>
                         </div>
                         {% if request.user.is_authenticated %}
-                            <span class="btn btn-outline btn-link mb-20">добавить в избранное</span>
+                            {% if techniqueItem.id in wishlist_ids %}
+                                <a href="{% url 'del_from_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">удалить из избранного</a>
+                            {% else %}
+                                <a href="{% url 'add_to_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">добавить в избранное</a>
+                            {% endif %}
                         {% endif %}
-
                         <div class="tab">
                             <button  class="h-tablinks htab-active" onclick="openHTab(event, 'description_tab')">описание</button>
                             <button class="h-tablinks" onclick="openHTab(event, 'features_tab')">характеристики</button>
@@ -123,13 +125,8 @@
                         <div id="feedback_tab" class="h-tabcontent">
                             <p>Отзывы</p>
                         </div>
-
-
-
-
                     </div><!--//item-block-right-->
                 </div><!--//item-block-wrapper-->
-
             </section><!--//item-->
         </div><!--//container-->
     </div><!--//main-->

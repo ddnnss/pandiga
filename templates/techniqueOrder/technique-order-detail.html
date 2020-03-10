@@ -44,8 +44,16 @@
                             {% if techniqueItem.owner.id != request.user.id %}
                                 {% if request.user.is_authenticated %}
                                     <span class="btn btn-link">отправить сообщение</span>
+                                        <div class="new-message block-bordered ">
+                                        <form action="">
+                                            <textarea style="width: 100%" name="" id="" cols="30" rows="10"></textarea>
+                                            <button class="btn btn-link">отправить</button>
+                                        </form>
+
+                                    </div>
                                 {% else %}
                                     <span class="btn btn-link" onclick="openModal()">отправить сообщение</span>
+
                                 {% endif %}
                             {% endif %}
                         </div><!--//item-owner-->

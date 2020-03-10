@@ -19,7 +19,7 @@
                             {% if request.user.is_customer %}
                                 <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-fav', 'link-active')" >избранное ({{ techniqueItemsFavorite.count }})</li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >мои заявки на технику (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-orders', 'link-active')" >мои заявки на технику ({{ my_technique_orders.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >мои заявки на работу (0)</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
@@ -30,7 +30,7 @@
                                 <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: 0 р <span>пополнить</span></li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника ({{ ownTecnique.count }})</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника ({{ my_technique.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >отклики на заявки (0)</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >отклики на работу (0)</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
@@ -46,6 +46,8 @@
                         {% include 'user/_tab-balance.html' %}
                         {% include 'user/_tab-tarif.html' %}
                         {% include 'user/_tab-chat.html' %}
+                        {% include 'user/_tab-my-fav.html' %}
+                        {% include 'user/_tab-my-orders.html' %}
                         {% include 'user/_tab-my-cars.html' %}
                         {% include 'user/_tab-my-order.html' %}
                         {% include 'user/_tab-my-job.html' %}

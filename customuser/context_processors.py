@@ -1,15 +1,21 @@
 from technique.models import TechniqueItemFavorite,TechniqueItem
 from chat.models import *
+from techniqueOrder.models import *
 
 import random
 def check_profile(request):
     num1 = random.randint(0, 9)
     num2 = random.randint(0, 9)
     if request.user.is_authenticated:
-        techniqueItemsFavorite = TechniqueItemFavorite.objects.filter(user=request.user)
-        ownTecnique = TechniqueItem.objects.filter(owner=request.user)
+        user = request.user
+        techniqueItemsFavorite = TechniqueItemFavorite.objects.filter(user=user)
+        wishlist_ids = []
+        for i in techniqueItemsFavorite:
+            wishlist_ids.append(i.techniqueitem.id)
+        my_technique = TechniqueItem.objects.filter(owner=user)
+        my_technique_orders = TechniqueOrder.objects.filter(customer=user)
 
-        allChats = Chat.objects.filter(users__in=[request.user.id])
+        allChats = Chat.objects.filter(users__in=[user.id])
 
 
         allUnreadChats = allChats.filter(isNewMessages=True)

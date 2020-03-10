@@ -1,5 +1,10 @@
 <div id="tab-my-cars" class="lk-tab ">
     <div class="lk-tab-my-cars">
+    {% if not my_technique %}
+        <p class="mb-20"> Вы не добавили не одной еденицы техники</p>
+        <a class="btn btn-link" href="{% url 'add_technique' %}">добавить технику</a>
+
+    {% endif %}
         {% for technique in my_technique %}
             <div class="lk-tab-my-cars-item">
             <div class="lk-tab-my-cars-item-img" style="background: url({{ technique.get_main_image }}) no-repeat center; background-size: cover">
