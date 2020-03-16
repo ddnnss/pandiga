@@ -38,15 +38,15 @@ def send_sms(request):
     auth_token = settings.TWILLO_AUTH_TOKEN
     client = Client(account_sid, auth_token)
     messageSend = True
-    # try:
-    #     message = client.messages.create(
-    #         to=request.session['user_phone'],
-    #         from_="test",
-    #         body=f'PANDIGA. Код подтверждения: {sms_number}')
-    #     print('message.sid=',message.sid)
-    #     messageSend = True
-    # except:
-    #     messageSend = False
+    try:
+        message = client.messages.create(
+            to=request.session['user_phone'],
+            from_="test",
+            body=f'PANDIGA. Код подтверждения: {sms_number}')
+        print('message.sid=',message.sid)
+        messageSend = True
+    except:
+        messageSend = False
 
     if messageSend:
         return JsonResponse({'result': 'send_ok', 'code': sms_number})
