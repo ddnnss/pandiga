@@ -130,8 +130,9 @@
 
 
                         </div><!--//technique-order-item-->
+                    {% if not order.worker %}
                         <span class="btn btn-link by-center" onclick="openModal()">предложить свою технику</span>
-
+                    {% endif %}
                     </div><!--//item-block-right-->
                 </div><!--//item-block-wrapper-->
 
@@ -144,18 +145,24 @@
                         <h3 class="modal-title section-header">Предложите технику и цену</h3>
                         <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
                     </div>
-                    <div  class="modal-body">
-                        <form action=""></form>
-                        <select style="width: 100%;margin-bottom: 20px" name="technique_for_order" required>
-                            {% if my_technique %}
+                    <div class="modal-body">
+                        <form action="{% url 'technique_order_apply' %}" method="post">{% csrf_token %}
+                          {% if my_technique %}
+                                 <select style="width: 100%;margin-bottom: 20px"  name="technique_for_order" required>
                                 {% for t in my_technique %}
                                     <option value="{{ t.id }}">{{ t.name }}</option>
+
                                 {% endfor %}
-                                {% else %}
-                                <option disabled selected >У вас нет подходящей техники для предложения</option>
-                            {% endif %}
-                        </select>
+                                </select>
+                              <input type="hidden" name="order_id" value="{{ order.id }}">
+                              <input type="hidden" name="user_id" value="{{ request.user.id }}">
+                              <input class="mb-20" required style="width: 100%" type="number" min="0" name="price" placeholder="Цена">
+
                         <button type="submit" class="btn btn-link by-center mb-20" >предложить</button>
+                                {% else %}
+                                <p>У вас нет подходящей техники для предложения</p>
+                            {% endif %}
+                    </form>
                     </div>
                 </div>
             </div>

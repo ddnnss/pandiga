@@ -1,32 +1,30 @@
- <div id="tab-finance" class="lk-tab ">
-                            <div class="lk-tab-finance">
-                                <div class="lk-tab-finance-item item-header">
-                                    <p class="lk-tab-finance-item-header">ID</p>
-                                    <p class="lk-tab-finance-item-header">дата</p>
-                                    <p class="lk-tab-finance-item-header">сумма</p>
-                                    <p class="lk-tab-finance-item-header">операция</p>
-                                    <p class="lk-tab-finance-item-header">Платёжная система</p>
-                                    <p class="lk-tab-finance-item-header">Статус</p>
-                                    <!--p class="lk-tab-finance-item-header">Действие</p-->
-                                </div>
-                                <div class="lk-tab-finance-item error-payment">
-                                    <p class="lk-tab-finance-item-item">ID</p>
-                                    <p class="lk-tab-finance-item-item">дата</p>
-                                    <p class="lk-tab-finance-item-item">сумма</p>
-                                    <p class="lk-tab-finance-item-item">операция</p>
-                                    <p class="lk-tab-finance-item-item">Платёжная система</p>
-                                    <p class="lk-tab-finance-item-item">Статус</p>
+<div id="tab-finance" class="lk-tab ">
+    <div class="lk-tab-finance">
+        <div class="lk-tab-finance-item item-header">
+            <p class="lk-tab-finance-item-header">ID</p>
+            <p class="lk-tab-finance-item-header">дата</p>
+            <p class="lk-tab-finance-item-header">сумма</p>
+            <p class="lk-tab-finance-item-header">операция</p>
+            <p class="lk-tab-finance-item-header">Платёжная система</p>
+            <p class="lk-tab-finance-item-header">Статус</p>
+            <!--p class="lk-tab-finance-item-header">Действие</p-->
+        </div>
+{% for payment in all_payments %}
+        <div class="lk-tab-finance-item
+        {% if payment.is_payed %}
+        success-payment
+        {% else %}
+        error-payment
+        {% endif %}">
+            <p class="lk-tab-finance-item-item">{{ payment.id }}</p>
+            <p class="lk-tab-finance-item-item">{{ payment.created_at | date }}</p>
+            <p class="lk-tab-finance-item-item">{{ payment.amount }}</p>
+            <p class="lk-tab-finance-item-item">Пополнение</p>
+            <p class="lk-tab-finance-item-item">{{ payment.type.name }}</p>
+            <p class="lk-tab-finance-item-item">{{ payment.status }}</p>
+        </div>
+{% endfor %}
 
-                                </div>
-                                <div class="lk-tab-finance-item success-payment">
-                                    <p class="lk-tab-finance-item-item">ID</p>
-                                    <p class="lk-tab-finance-item-item">дата</p>
-                                    <p class="lk-tab-finance-item-item">сумма</p>
-                                    <p class="lk-tab-finance-item-item">операция</p>
-                                    <p class="lk-tab-finance-item-item">Платёжная система</p>
-                                    <p class="lk-tab-finance-item-item">Статус</p>
+    </div>
 
-                                </div>
-                            </div>
-
-                        </div><!--//tab-finance-->
+</div><!--//tab-finance-->

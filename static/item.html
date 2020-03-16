@@ -83,14 +83,13 @@
                                 <i class="fa fa-map-marker"></i> Lorem ipsum dolor.
                             </p>
                         </div>
-                        <span class="btn btn-link">отправить сообщение</span>
-                        <div class="new-message block-bordered ">
-                            <form action="">
-                                <textarea style="width: 100%" name="" id="" cols="30" rows="10"></textarea>
+                        <span id="message_toggle" class="btn btn-link " onclick="messageToggle()">отправить сообщение</span>
+                            <form id="new_message" class="new-message " action="">
+                                <textarea id="message" style="width: 100%" name="" cols="30" rows="10"></textarea>
+                                <input type="hidden" name="technique_id" value="">
+                                <input type="hidden" name="technique_id" value="">
                                 <button class="btn btn-link">отправить</button>
                             </form>
-
-                        </div>
                     </div><!--//item-owner-->
                     <div class="item-owner-other-technique block-bordered">
                         <p class="text-center">ДРУГАЯ ТЕХНИКА ВЛАДЕЛЬЦА</p>
@@ -193,6 +192,18 @@
         }
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " htab-active";
+    }
+</script>
+<script>
+    let openBtn = document.getElementById('message_toggle'),
+        messageForm = document.getElementById('new_message'),
+        textarea = document.getElementById('message')
+    function messageToggle() {
+        messageForm.classList.add('new-message-active')
+        openBtn.classList.add('not-visible')
+        textarea.focus()
+
+
     }
 </script>
 <footer class="footer">

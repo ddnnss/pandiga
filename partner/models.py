@@ -1,29 +1,36 @@
 from django.db import models
+from customuser.models import User
 
 
-class ParnterCode(models.Model):
-    """Персональный партнерский код"""
-    code = models.CharField('Код партнера', max_length=10,blank=True,null=True)
-    user = models.ForeignKey('customuser.User',blank=False,null=True,
+class Parnter(models.Model):
+    code = models.CharField('Код', max_length=10, blank=True,null=True)
+
+    user = models.ForeignKey(User,blank=False,null=True,
                              on_delete=models.CASCADE,
-                             related_name='user',
-                             verbose_name='Код пользователя')
+                             related_name='my_partner',
+                             verbose_name='Партнер')
+    created_at = models.DateTimeField("Дата использования кода", auto_now_add=True, null=True)
+    total_earned = models.IntegerField('Всего начислено', blank=True, null=True, default=0)
 
     def __str__(self):
-        return self.code or ''
+        return f'Партнер по коду {self.code}'
 
+    class Meta:
+        verbose_name = "Партнер"
+        verbose_name_plural = "Партнеры"
 
 class PartnerMoney(models.Model):
     """Начисления партеров"""
-    code = models.ForeignKey(ParnterCode,blank=False,null=True,
+    partner = models.ForeignKey(Parnter,blank=False,null=True,
                              on_delete=models.CASCADE,
-                             verbose_name='Код')
-    earned = models.DecimalField('Начислено', max_digits=5, decimal_places=2, blank=True, null=True)
-    from_user = models.ForeignKey('customuser.User',blank=False,null=True,
-                             on_delete=models.CASCADE,
-                             related_name='from_user',
-                             verbose_name='От пользователя')
+                             verbose_name='Партнер')
+    earned = models.IntegerField('Начислено', blank=True, null=True)
+    action = models.CharField('Операция', max_length=10, blank=True,null=True, default=0)
     created_at = models.DateTimeField("Дата начисления", auto_now_add=True)
 
     def __str__(self):
-        return self.code.code or ''
+        return f'Начисление по коду {self.partner.code}'
+
+    class Meta:
+        verbose_name = "Начисление"
+        verbose_name_plural = "Начисления"

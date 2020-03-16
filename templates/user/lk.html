@@ -27,11 +27,11 @@
                                 <li class="tablinks" onclick="opentab(event, 'tab-profile', 'link-active')" >мой профиль</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-settings', 'link-active')" >настройки</li>
                             {% else %}
-                                <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: 0 р <span>пополнить</span></li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: {{ my_balance }} р <span>пополнить</span></li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: {{  my_tarif.short_name }} <span>изменить</span></li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника ({{ my_technique.count }})</li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-my-orders-apply', 'link-active')" >отклики на заявки (0)</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-my-orders-apply', 'link-active')" >отклики на заявки ({{ all_orders_apply.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-job-apply', 'link-active')" >отклики на работу (0)</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-money-earn', 'link-active')" >заработок в системе</li>
@@ -58,13 +58,15 @@
                         {% include 'user/_tab-profile.html' %}
                         {% include 'user/_tab-settings.html' %}
                         {% include 'user/_tab-money-drop.html' %}
+                        {% include 'user/_tab-my-order-detail.html' %}
+
                     </div><!--//lk-content-->
                 </div><!--//lk-wrapper-->
             </div><!--//container-->
         </section><!--//lk-->
 
     </div><!--//main-->
-     <div id="openModal" class="modal">
+    <div id="openModal" class="modal">
         <div id="modal_login" class="modal-dialog " >
             <div class="modal-content">
                 <div class="modal-header">
@@ -72,8 +74,8 @@
                     <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
                 </div>
                 <div  class="modal-body">
-                    <form action="">
-                        <input class="mb-20" style="width: 100%" type="number"  placeholder="ПРОМО-КОД">
+                    <form action="{% url 'apply_code' %}" method="post">{% csrf_token %}
+                        <input class="mb-20" style="width: 100%" type="number" name="partner_code" required placeholder="ПРОМО-КОД">
                         <button type="submit" class="btn btn-link by-center">Подтвердить</button>
                     </form>
 
@@ -85,6 +87,19 @@
 {% endblock %}
 {% block js %}
     {{ block.super }}
+    <script>
+        function setPaymentType(el) {
+            let allTypes = document.getElementsByClassName('payment-icon'),
+                typeInput = document.getElementById('payment_type')
+
+            for(x of allTypes){
+                x.classList.remove('payment-icon-active')
+            }
+            el.classList.add('payment-icon-active')
+            typeInput.value = el.dataset.type
+
+        }
+    </script>
     <!--tabs-->
     <script>
         document.addEventListener("DOMContentLoaded", function(event) {
@@ -95,7 +110,7 @@
         });
     </script>
     <!--//tabs-->
-      <script>
+    <script>
         let curChat = 0
         let curPage = 1
         let readChatsList = document.getElementById('read-chats-list')
@@ -105,7 +120,7 @@
         let msgTextArea = document.getElementById('chat_message')
         let paginator = document.getElementById('paginator')
 
-        getChats()
+
 
         function getChats(page=curPage) {
             let body = {
@@ -154,32 +169,22 @@
                                 </li>
                             `
                         }
-                            if ( res['pages']['last_page'] > 1){
-                             for(var i = 1; i <= res['pages']['last_page']; i++){
+                        if ( res['pages']['last_page'] > 1){
+                            for(var i = 1; i <= res['pages']['last_page']; i++){
                                 if (i == res['pages']['curent_page']){
                                     paginator.innerHTML = paginator.innerHTML + `
                                  <li class="paginator-item page-active"><span onclick="getChats(${i})">${i}</span></li>
                                 `
                                 }else{
-                                  paginator.innerHTML = paginator.innerHTML + `
+                                    paginator.innerHTML = paginator.innerHTML + `
                                  <li class="paginator-item"><span onclick="getChats(${i})">${i}</span></li>
                                 `
                                 }
-
                             }
-                            }
-
-                            curPage = res['pages']['curent_page']
-
-
-                    }else{
-
-                    }
-
-
-
+                        }
+                        curPage = res['pages']['curent_page']
+                    }else{ }
                 })
-
         }
 
 
@@ -200,8 +205,6 @@
             }).then(res=>res.json())
                 .then(res => {
                     console.log(msg)
-
-
                     chatMsgWrapper.innerHTML=chatMsgWrapper.innerHTML + `
                                     <div class="lk-tab-chat-messages-bottom__message-from-me">
                                         <p>${ msg}</p>
@@ -211,30 +214,23 @@
                     document.getElementsByClassName('lk-tab-chat-messages-bottom')[0].scrollTo(0,(document.getElementsByClassName('lk-tab-chat-messages-bottom')[0].scrollTop+2000))
                     msgTextArea.value = ''
                 }
-
             )
-
-
         }
 
     </script>
 
     <script>
         document.getElementById('chat_message').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
-            sendMsg()
-        }
-    });
+            if (event.keyCode == 13) {
+                sendMsg()
+            }
+        });
     </script>
     <script>
         function closeChat(){
-            getChats()
+            getChats(curPage)
             document.getElementById('chat-messages').classList.remove('show-messages')
         }
-
-
-
-
         function openChat(el){
             chatMsgWrapper.innerHTML = ''
             msgTextArea.value = ''
@@ -280,7 +276,6 @@
                                     </div>
                                `
                         }
-
                     }
                 }).then(()=>{
                     chatDiv.classList.add('show-messages')
@@ -288,8 +283,6 @@
                 }
             )
         }
-
-
     </script>
 
 {% endblock %}

@@ -73,7 +73,7 @@
                                 <input name="search" type="text" value="{% if filter_search %}{{ filter_search }}{% endif %}">
                                 <p>География</p>
                                 <div class="city-select">
-                                    <input id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text" value="{{ city_from_filter }}">
+                                    <input autocomplete="off" id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text" value="{{ city_from_filter }}">
                                     <div id="city_select_list" class="city-select-list ">
 
                                     </div>

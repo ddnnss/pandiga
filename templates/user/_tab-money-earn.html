@@ -6,19 +6,34 @@
                 <span class="btn btn-link" onclick="opentab(event, 'tab-money-drop', 'link-active')">вывести средства</span>
                 <a style="padding-top: 10px" href="">Подробее о партнерской программе</a>
             </div>
-            <p class="text-w-600 text-fs-20">ВАШ ПРОМО-КОД : <span class="color-red">{{ request.user.own_partner_code.code }}</span></p>
+            <p class="text-w-600 text-fs-20">ВАШ ПРОМО-КОД : <span class="color-red">{{ request.user.partner_code }}</span></p>
+            <div class="hr"></div>
+            <p class="text-w-600 text-fs-20">ВАШ ДОХОД : <span class="color-red">{{ request.user.partner_balance }} <i class="fa fa-rub"></i></span></p>
         </div>
         <div class="lk-tab-content-bg">
             <div class="tab">
-                <button  class="h-tablinks htab-active" onclick="openHTab(event, 'fin_tab_1')">пользователь</button>
+                <button  class="h-tablinks htab-active" onclick="openHTab(event, 'fin_tab_1')">партнеры</button>
                 <button class="h-tablinks" onclick="openHTab(event, 'fin_tab_2')">начисления</button>
             </div>
             <!-- Tab content -->
             <div id="fin_tab_1" class="h-tabcontent" style="display: block">
-                <p>Lorem ipsum dolor sit.</p>
+                {% for partner in all_partners %}
+                    <div class="parnter-info" style="display: grid; grid-template-columns: 1fr 1fr 1fr">
+                    <p>{{ partner.user.get_full_name }}</p>
+                    <p>{{ partner.created_at | date }}</p>
+                    <p>{{ partner.total_earned }} РУБ</p>
+                    </div>
+                {% endfor %}
             </div>
             <div id="fin_tab_2" class="h-tabcontent">
-                <p>Lorem ipsum dolor sit1.</p>
+                {% for partner_money in all_partners_money %}
+                    <div class="parnter-info" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr">
+                        <p>{{ partner_money.created_at | date }}</p>
+                    <p>{{ partner_money.partner.user.get_full_name }}</p>
+                    <p>{{ partner_money.earned }} <i class="fa fa-rub"></i></p>
+                    <p>{{ partner_money.action }} </p>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div><!--//lk-tab-moneyearn-->

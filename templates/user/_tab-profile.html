@@ -6,47 +6,52 @@
             <p>Отклики на заявки: 0</p>
         </div>
         <div class="lk-tab-profile-main">
-            <form action="">
+            <form action="{% url 'user_profile_update'%}" method="post" enctype="multipart/form-data">{% csrf_token %}
             <div class="lk-tab-profile-main-top">
                 <div class="lk-tab-profile-main-top-img">
                     <img src="{{ user.get_avatar }}" alt="">
                     <label class="" for="user_avatar"> <i class="fa fa-edit"></i> Изменить фото профиля
-                        <input id="user_avatar" type="file" accept="image/*">
+                        <input id="user_avatar" name="{{ form.avatar.name }}" type="file" accept="image/*">
                     </label>
                 </div>
-                <p>{{ user.first_name }} {% if user.last_name %}{{ user.last_name }}{% endif %}</p>
+                <p>{{ user.get_full_name }} </p>
             </div>
             <div class="lk-tab-profile-main-bottom">
                 <div class="form-row">
                      <i class="fa fa-user"></i>
                     <div class="form-row-group">
-                     <input required type="text" value="{% if user.first_name %}{{ user.first_name }}{% endif %}" placeholder="Ваше имя">
-                        <input required type="text" value="{% if user.last_name %}{{ user.last_name }}{% endif %}" placeholder="Ваша фамилия">
+                     <input required type="text" name="{{ form.first_name.name }}" value="{% if user.first_name %}{{ user.first_name }}{% endif %}" placeholder="Ваше имя">
+                        <input required type="text" name="{{ form.last_name.name }}" value="{% if user.last_name %}{{ user.last_name }}{% endif %}" placeholder="Ваша фамилия">
                     </div>
 
                 </div>
                 <div class="form-row">
                     <i class="fa fa-map-marker"></i>
                     <div class="city-select">
-                        <input required id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text" placeholder="Ваш город">
+                        <input autocomplete="off"  required id="city_select_input" class="city-select-input" onkeyup="getCities(this)" type="text"
+                               {% if user.city %}value="{{ user.city.region }}, {{ user.city.city }} " {% endif %}
+                               placeholder="Ваш город. Начинайте вводить название">
                         <div id="city_select_list" class="city-select-list ">
 
                         </div>
                     </div>
                 </div>
+
                 <div class="form-row">
                     <i class="fa fa-envelope"></i>
-                    <input required type="text" value="{% if user.email %}{{ user.email }}{% endif %}" placeholder="Ваш EMail">
+                    <input required type="text" name="{{ form.email.name }}" value="{% if user.email %}{{ user.email }}{% endif %}" placeholder="Ваш EMail">
 
                 </div>
+
                 <div class="form-row">
                     <i class="fa fa-phone"></i>
-                    <input required type="tel" pattern="+[0-9]{11}" value="{% if user.phone %}{{ user.phone }}{% endif %}" placeholder="Ваш телефон в формате +71112223344">
+                    <input required type="tel" name="{{ form.phone.name }}" pattern="+[0-9]{11}" value="{% if user.phone %}{{ user.phone }}{% endif %}" placeholder="Ваш телефон в формате +71112223344">
                 </div>
-                <div class="form-row">
-                    <i class="fa fa-calendar"></i>
-                    <input type="date" value="">
-                </div>
+{#                <div class="form-row">#}
+{#                    <i class="fa fa-calendar"></i>#}
+{#                    <input name="{{ form.birthday.name }}" type="date" value="">#}
+{#                </div>#}
+                <input id="city_id" type="hidden" name="{{ form.city.name }}"  {% if user.city %}value="{{ user.city.id }}" {% endif %} >
                 <button type="submit" class="btn btn-link">Сохранить изменения</button>
             </div>
             </form>

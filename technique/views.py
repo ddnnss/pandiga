@@ -30,6 +30,8 @@ def add_technique(request):
             newItem = form.save(commit=False)
             newItem.owner = request.user
             newItem.save()
+            request.user.technique_added += 1
+            request.user.save()
             print(newItem.id)
             messages.success(request, 'Спасибо, форма успешно отправлена')
         else:

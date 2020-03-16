@@ -3,11 +3,13 @@ from django.shortcuts import render, get_object_or_404
 from technique.models import *
 from .forms import *
 from django.contrib import messages
-
+import datetime
+from technique.models import TechniqueType
 
 def technique_all_orders(request):
     if request.user.is_authenticated and not request.user.is_customer:
-        all_orders = TechniqueOrder.objects.filter(is_active=True,is_moderated=True)
+        all_orders = TechniqueOrder.objects.filter(is_active=True,is_moderated=True,worker__isnull=True)
+        all_techique_types = TechniqueType.objects.all
         return render(request, 'techniqueOrder/all-technique-orders.html', locals())
     else:
         return HttpResponseRedirect('/')
@@ -45,3 +47,54 @@ def technique_order(request):
         return render(request, 'techniqueOrder/technique-order.html', locals())
     else:
         return HttpResponseRedirect('/')
+
+def technique_order_apply(request):
+    TechniqueOrderApply.objects.create(order_id=request.POST.get('order_id'),
+                                       technique_id=request.POST.get('technique_for_order'),
+                                       user_id=request.POST.get('user_id'),
+                                       price=request.POST.get('price'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def technique_order_apply_decline(request,apply_id):
+    apply = get_object_or_404(TechniqueOrderApply, id=apply_id)
+    if apply.order.customer == request.user:
+        apply.is_accepted = False
+        apply.decline_date = datetime.datetime.now()
+        apply.save()
+
+    return HttpResponseRedirect(f'/user/lk/?tab=tab-my-order-detail&order_id={apply.order.id}')
+
+def technique_order_apply_accept(request,apply_id):
+    apply = get_object_or_404(TechniqueOrderApply, id=apply_id)
+    if apply.order.customer == request.user:
+        apply.is_accepted = True
+        apply.accept_date = datetime.datetime.now()
+        apply.save()
+
+    return HttpResponseRedirect(f'/user/lk/?tab=tab-my-order-detail&order_id={apply.order.id}')
+
+def technique_order_apply_decline_by_worker(request,apply_id):
+    apply = get_object_or_404(TechniqueOrderApply, id=apply_id)
+    if apply.user == request.user:
+        apply.is_accepted = False
+        apply.decline_date = datetime.datetime.now()
+        apply.save()
+
+    return HttpResponseRedirect('/user/lk/?tab=tab-my-orders-apply')
+
+def technique_order_apply_accept_by_worker(request,apply_id):
+    apply = get_object_or_404(TechniqueOrderApply, id=apply_id)
+    if apply.user == request.user:
+        apply.is_choosen = True
+        apply.choose_date = datetime.datetime.now()
+        apply.save()
+        apply.order.worker=request.user
+        apply.order.order_apply = apply.id
+        apply.order.save()
+
+        for app in apply.order.applys.all():
+            if app.id != apply.id:
+                app.delete()
+
+
+    return HttpResponseRedirect('/user/lk/?tab=tab-my-orders-apply')

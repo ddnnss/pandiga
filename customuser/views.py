@@ -1,11 +1,15 @@
 import json
 from .utils import create_random_string
 from django.contrib.auth import login, logout
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
+from .forms import UpdateForm
 from customuser.models import *
 from django.http import JsonResponse, HttpResponseRedirect
 from twilio.rest import Client
+from ya_payment.models import *
+from partner.models import *
+import uuid
+from yandex_checkout import Configuration, Payment
 import settings
 
 from technique.models import *
@@ -89,6 +93,41 @@ def change_status(request):
 
 def lk_page(request):
     user = request.user
+    my_order_id = request.GET.get('order_id')
+    all_tarif = Tarif.objects.all()
+    all_payments_types = PaymentType.objects.all()
+    all_payments = PaymentObj.objects.filter(user=user)
+    all_partners = Parnter.objects.filter(code=user.partner_code)
+    all_partners_money = PartnerMoney.objects.filter(partner__code=user.partner_code)
+    form = UpdateForm()
+    if user.is_customer and  my_order_id:
+        my_order = get_object_or_404(TechniqueOrder, id=my_order_id)
+        if my_order.worker:
+            apply = TechniqueOrderApply.objects.get(id=my_order.order_apply)
+        else:
+            print('my_order.applys.all',my_order.applys.all)
+            all_orders = my_order.applys.filter(is_choosen=False)
+            order_apply = all_orders.filter(is_accepted__isnull=True)
+            order_apply_accepted = all_orders.filter(is_accepted=True)
+            order_apply_not_accepted = all_orders.filter(is_accepted=False)
 
+    if not user.is_customer:
+        in_progress = TechniqueOrder.objects.filter(worker=user,is_finished=False)
+        all_orders = TechniqueOrderApply.objects.filter(user=user,is_choosen=False)
+        order_apply = all_orders.filter(is_accepted__isnull=True)
+        order_apply_accepted = all_orders.filter(is_accepted=True)
+        order_apply_not_accepted = all_orders.filter(is_accepted=False)
 
     return render(request, 'user/lk.html', locals())
+
+def user_profile_update(request):
+    print(request.POST)
+    form = UpdateForm(request.POST, request.FILES, instance=request.user)
+    print(form.errors)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/user/lk/?tab=tab-profile')
+    else:
+        form = UpdateForm()
+    return HttpResponseRedirect("/user/lk/?tab=tab-profile")
+

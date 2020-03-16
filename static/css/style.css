@@ -326,7 +326,7 @@ section {
 }
 
 .not-visible {
-  display: none;
+  display: none !important;
 }
 
 .color-white {
@@ -1151,8 +1151,16 @@ section {
   grid-row-gap: 50px;
 }
 
+.features-wrapper.payment-wrapper {
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+}
+
 .features-item {
   text-align: center;
+}
+
+.features-item.payment-item p {
+  font-size: 16px;
 }
 
 .features-item-icon {
@@ -1171,8 +1179,13 @@ section {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
   border: 2px dashed #ff0000;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   margin: 0 auto;
   margin-bottom: 40px;
+  -webkit-transition: all .2s linear;
+  -o-transition: all .2s linear;
+  transition: all .2s linear;
 }
 
 .features-item-icon img {
@@ -1195,6 +1208,27 @@ section {
   font-weight: 300;
   font-size: 16px;
   color: #686868;
+}
+
+.features-item .payment-icon {
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.features-item .payment-icon img {
+  width: 50px;
+}
+
+.features-item .payment-icon:hover {
+  -webkit-transform: scale(1.1) rotate(45deg);
+  -ms-transform: scale(1.1) rotate(45deg);
+  transform: scale(1.1) rotate(45deg);
+}
+
+.features-item .payment-icon-active {
+  background: rgba(136, 0, 0, 0.48);
 }
 
 .home-catalog {
@@ -2383,6 +2417,25 @@ section {
   grid-gap: 10px;
 }
 
+.item-block-right {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.new-message {
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: all .2s linear;
+  -o-transition: all .2s linear;
+  transition: all .2s linear;
+}
+
+.new-message.new-message-active {
+  height: 200px;
+  overflow: visible;
+}
+
 .item-time-price-row {
   display: grid;
   grid-template-columns: 2fr 4fr;
@@ -2665,6 +2718,12 @@ section {
 
 .tarif-item-feature-item {
   font-size: 15px;
+}
+
+.payment-radio {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 @-webkit-keyframes fadeEffect {
@@ -3147,12 +3206,12 @@ section {
   margin-bottom: 20px;
 }
 
-.lk-tab-my-cars-item a {
+.lk-tab-my-cars-item-name {
   font-size: 20px;
   color: #333;
 }
 
-.lk-tab-my-cars-item a:hover {
+.lk-tab-my-cars-item-name:hover {
   color: #800;
 }
 

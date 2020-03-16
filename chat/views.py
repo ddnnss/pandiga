@@ -4,31 +4,77 @@ from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from technique.models import TechniqueItem
+from techniqueOrder.models import TechniqueOrder
 import json
 
 def new_msg(request):
+    return_dict = {}
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    chat = Chat.objects.filter(users__in=[body['msgFrom'], body['msgTo']])
-    for x in chat.all():
-        if x.id != request.user.id:
-            chat = False
+    chat = None
+    chat_found = False
+    chat_type = ''
+    techniqueItem = None
+    techniqueOrder = None
+    me = request.user
+    me_f = False
+    other_user = None
+    other_user_f = False
+    chat_id=0
+    print(body)
+    if body['chat_type'] == 'tech':
+        techniqueItem = get_object_or_404(TechniqueItem, id=body['id'])
+        chat = Chat.objects.filter(users__in=[techniqueItem.owner, request.user])
+        other_user = techniqueItem.owner
+        print(chat)
+        chat_type = body['chat_type']
+    elif body['chat_type'] == 'order':
+        techniqueOrder = get_object_or_404(TechniqueOrder, id=body['id'])
+        chat = Chat.objects.filter(users__in=[techniqueOrder.customer, request.user])
+        other_user = techniqueOrder.customer
+        chat_type = body['chat_type']
 
-    if chat:
+    for x in chat.all():
+        print('x=',x.id)
+        c = Chat.objects.get(id = x.id)
+        print(c.users.all())
+        for u in c.users.all():
+            if u == me:
+                print('me')
+                me_f = True
+            if u == other_user:
+                other_user_f =True
+                if me_f:
+                    chat_id = x.id
+                    print('chat_id',chat_id)
+
+
+
+    if me_f and other_user_f:
         print('chat found')
-        Message.objects.create(chat_id=chat[0].id, user_id=body['msgFrom'], message=body['msg'])
+        Message.objects.create(chat_id=chat_id,
+                               user=request.user,
+                               message=body['msg'])
     else:
         print('chat not found')
-        newChat = Chat.objects.create()
-        newChat.users.add(body['msgFrom'], body['msgTo'])
+        newChat = None
+        if chat_type == 'tech':
+            newChat = Chat.objects.create(techniqueitem=techniqueItem)
+            newChat.users.add(request.user, techniqueItem.owner)
+        elif chat_type == 'order':
+            newChat = Chat.objects.create(order=techniqueOrder)
+            newChat.users.add(request.user, techniqueOrder.customer)
+
         # if int(body['msgFrom']) == request.user.id:
         #     newChat.lastMessageOwn = True
         #     newChat.save()
         newChat.lastMsgBy_id = request.user.id
         newChat.save()
-        Message.objects.create(chat=newChat, user_id=body['msgFrom'], message=body['msg'])
+        Message.objects.create(chat=newChat, user=request.user,
+                               message=body['msg'])
     # Message.objects.create(messageTo_id=body['msgTo'],messageFrom_id=body['msgFrom'],message=body['msg'])
-    return JsonResponse({'foo': 'bar'})
+    return_dict['result'] = 'ok'
+    return JsonResponse(return_dict, safe=False)
 
 
 
@@ -60,13 +106,14 @@ def get_msg(request):
     for x in chat.message_set.all():
         chatItem = {}
         chatItemInner = []
-        if not x.user == request.user:
+        print('user', x.user.id)
+        if x.user == request.user:
             x.isUnread = False
             x.save()
         if x.user == request.user:
-            chatItem['own']=[x.message,x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
+            chatItem['own'] = [x.message, x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
         else:
-            chatItem['from'] = [x.message,x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
+            chatItem['from'] = [x.message, x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
         chatMsg.append(chatItem)
     return_dict['userInfo'] = userInfo
     return_dict['chatMsg'] = chatMsg
@@ -108,9 +155,11 @@ def get_chats(request):
 
     readChats = []
     allPages = {'last_page': chats_paginator.num_pages, 'curent_page': body['page']}
-
+    unread_count = 0
     for chat in allChats:
-        print(chat.updatedAt)
+
+
+        print('unread_count', chat.message_set.filter(isUnread=True).count)
         user_name = ''
         user_avatar = ''
         for user in chat.users.all():
@@ -141,12 +190,30 @@ def get_chats(request):
 def to_rent(request,item_id):
     techniqueItem = get_object_or_404(TechniqueItem,id=item_id)
     chat = Chat.objects.filter(users__in=[techniqueItem.owner, request.user])
+    me = request.user
+    me_f = False
+    other_user = None
+    other_user_f = False
+    chat_id = 0
     for x in chat.all():
-        if x.id != request.user.id:
-            chat = False
-    if chat:
+        print('x=',x.id)
+        c = Chat.objects.get(id = x.id)
+        print(c.users.all())
+        for u in c.users.all():
+            if u == me:
+                print('me')
+                me_f = True
+            if u == other_user:
+                other_user_f =True
+                if me_f:
+                    chat_id = x.id
+                    print('chat_id',chat_id)
+
+
+
+    if me_f and other_user_f:
         print('chat found')
-        Message.objects.create(chat_id=chat[0].id,
+        Message.objects.create(chat_id=chat_id,
                                user=request.user,
                                message='Привет, хочу взять технику в аренду')
     else:

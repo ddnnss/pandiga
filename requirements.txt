@@ -5,3 +5,5 @@ twilio
 django-ckeditor
 pillow
 pytils
+yandex_checkout
+python-dateutil

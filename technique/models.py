@@ -15,6 +15,7 @@ from pandiga.settings import BASE_DIR
 class TechniqueType(models.Model):
     name = models.CharField('Название типа техники', max_length=255, blank=False, null=True)
     image = models.ImageField('Изображение (420 x 225)', upload_to='technique/type/', blank=False, null=True)
+    icon = models.ImageField('Иконка для главной (40x45)', upload_to='technique/type/', blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     page_h1 = models.CharField('Тег H1 (если не указан, выводится название типа)',
@@ -153,6 +154,9 @@ class TechniqueItem(models.Model):
 
     def get_absolute_url(self):
         return f'/catalog/{self.sub_section.section.type.name_slug}/{self.sub_section.section.name_slug}/{self.sub_section.name_slug}/{self.name_slug}'
+
+
+
 
     def get_main_image(self):
         return self.images.first().image.url

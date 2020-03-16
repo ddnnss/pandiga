@@ -34,7 +34,9 @@ INSTALLED_APPS = [
     'tariff.apps.TariffConfig',
     'technique.apps.TechniqueConfig',
     'chat.apps.ChatConfig',
-    'techniqueOrder.apps.TechniqueorderConfig'
+    'techniqueOrder.apps.TechniqueorderConfig',
+    'ya_payment.apps.YaPaymentConfig'
+
 ]
 
 AUTHENTICATION_BACKENDS = (

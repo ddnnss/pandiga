@@ -10,7 +10,7 @@
 
             </div>
             <div class="lk-tab-my-cars-item-info">
-                <p class="lk-tab-my-cars-item-info-name"><a href="">{{ technique.name }}</a>.</p>
+                <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ technique.get_absolute_url }}">{{ technique.name }}</a>.</p>
                 <p class="lk-tab-my-cars-item-info-category"><span>{{technique.sub_section.section.type.name}}</span> / <span>{{technique.sub_section.section.name}}</span> / <span>{{technique.sub_section.name}}</span></p>
                 <div class="lk-tab-my-cars-item-info-price">
                     <p><i class="fa fa-clock-o"></i> от {{ technique.min_rent_time }}

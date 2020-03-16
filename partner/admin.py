@@ -1,5 +1,5 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(ParnterCode)
+admin.site.register(Parnter)
 admin.site.register(PartnerMoney)

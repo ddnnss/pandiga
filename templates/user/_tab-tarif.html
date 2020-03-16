@@ -1,57 +1,34 @@
  <div id="tab-tarif" class="lk-tab ">
                             <div class="section-header "><h3>тарифные планы</h3></div>
                             <div class="lk-tab-content-tarif">
+                                {% for tarif in all_tarif %}
                                 <div class="tarif-item">
-                                    <p class="tarif-item-header">pro</p>
-                                    <p class="tarif-item-price">0 <i class="fa fa-rub"></i></p>
-                                    <p class="tarif-item-name">Профессионал</p>
+                                    <p class="tarif-item-header">{{ tarif.short_name }}</p>
+                                    <p class="tarif-item-price">{{ tarif.price }} <i class="fa fa-rub"></i></p>
+                                    <p class="tarif-item-name">{{ tarif.name }}</p>
                                     <ul class="tarif-item-feature">
-                                        <li class="tarif-item-feature-item">Размещение техники в любой категории <span>5</span></li>
-                                        <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span>7</span></li>
-                                        <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span>5</span> минут после публикации</li>
-                                        <li class="tarif-item-feature-item">Доступ к разделу Работа <span>да</span></li>
-                                        <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span>да</span></li>
-                                        <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span>да</span></li>
-                                        <li class="tarif-item-feature-item">Возможность написать Работодателю <span>да</span></li>
-                                        <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span>15%</span></li>
+                                        <li class="tarif-item-feature-item">Размещение техники в любой категории <span class="color-red">{{ tarif.technique_count }}</span></li>
+                                        <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span class="color-red">{{ tarif.other_count }}</span></li>
+                                        <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span class="color-red">{{ tarif.new_orders_delay }}</span> минут после публикации</li>
+                                        <li class="tarif-item-feature-item">Доступ к разделу Работа <span class="color-red">{% if tarif.work_section %}ДА{% else %}НЕТ{% endif %}</span></li>
+                                        <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span class="color-red">{% if tarif.work_notify %}ДА{% else %}НЕТ{% endif %}</span></li>
+                                        <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span class="color-red">{% if tarif.can_call %}ДА{% else %}НЕТ{% endif %}</span></li>
+                                        <li class="tarif-item-feature-item">Возможность написать Работодателю <span class="color-red">{% if tarif.can_chat %}ДА{% else %}НЕТ{% endif %}</span></li>
+                                        <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span class="color-red">{{ tarif.parter_bonus }}%</span></li>
                                     </ul>
+                                {% if tarif.id == user.tarif.id %}
                                     <a href="" class="btn btn-disabled">текущий тариф</a>
+                                {% else %}
+                                    {% if user.balance >= tarif.price %}
+                                    <a href="{% url 'change_tarif' tarif.id %}" class="btn btn-link">перейти</a>
+                                        {% else %}
+                                        <a href="{% url 'lk_page' %}?tab=tab-balance" class="btn btn-link">нет средств для перехода</a>
+                                        {% endif %}
+                                {% endif %}
 
                                 </div>
-                                <div class="tarif-item">
-                                    <p class="tarif-item-header">pro</p>
-                                    <p class="tarif-item-price">0 <i class="fa fa-rub"></i></p>
-                                    <p class="tarif-item-name">Профессионал</p>
-                                    <ul class="tarif-item-feature">
-                                        <li class="tarif-item-feature-item">Размещение техники в любой категории <span>3</span></li>
-                                        <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span>5</span></li>
-                                        <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span>20</span> минут после публикации</li>
-                                        <li class="tarif-item-feature-item">Доступ к разделу Работа <span>да</span></li>
-                                        <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span>нет</span></li>
-                                        <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span>нет</span></li>
-                                        <li class="tarif-item-feature-item">Возможность написать Работодателю <span>да</span></li>
-                                        <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span>10%</span></li>
-                                    </ul>
-                                    <a href="" class="btn ">перейти</a>
+                                {% endfor %}
 
-                                </div>
-                                <div class="tarif-item">
-                                    <p class="tarif-item-header">pro</p>
-                                    <p class="tarif-item-price">0 <i class="fa fa-rub"></i></p>
-                                    <p class="tarif-item-name">Профессионал</p>
-                                    <ul class="tarif-item-feature">
-                                        <li class="tarif-item-feature-item">Размещение техники в любой категории <span>1</span></li>
-                                        <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span>1</span></li>
-                                        <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span>40</span> минут после публикации</li>
-                                        <li class="tarif-item-feature-item">Доступ к разделу Работа <span>нет</span></li>
-                                        <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span>нет</span></li>
-                                        <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span>нет</span></li>
-                                        <li class="tarif-item-feature-item">Возможность написать Работодателю <span>нет</span></li>
-                                        <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span>5%</span></li>
-                                    </ul>
-                                    <a href="" class="btn ">перейти</a>
-
-                                </div>
 
                             </div>
                         </div><!--//tab-tarif-->

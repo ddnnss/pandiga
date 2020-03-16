@@ -59,12 +59,10 @@
                             </div>
                             {% if techniqueItem.owner.id != request.user.id %}
                                 {% if request.user.is_authenticated %}
-                                    <span class="btn btn-link">отправить сообщение</span>
-                                    <div class="new-message block-bordered ">
-                                        <form action="">
-                                            <textarea style="width: 100%" name="" id="" cols="30" rows="10"></textarea>
-                                            <button class="btn btn-link">отправить</button>
-                                        </form>
+                                    <span id="message_toggle" class="btn btn-link " onclick="messageToggle()">отправить сообщение</span>
+                                    <div id="new_message" class="new-message " >
+                                        <textarea id="message" style="width: 100%" name="message" cols="30" rows="10"></textarea>
+                                        <span class="btn btn-link" onclick="sendMsg('tech',{{ techniqueItem.id }})">отправить</span>
                                     </div>
                                 {% else %}
                                     <span class="btn btn-link" onclick="openModal()">отправить сообщение</span>
@@ -162,5 +160,40 @@
             controls:false,
             mouseDrag:true,
         });
+    </script>
+    <script>
+        let openBtn = document.getElementById('message_toggle'),
+            messageForm = document.getElementById('new_message'),
+            msg = document.getElementById('message')
+        function messageToggle() {
+            messageForm.classList.toggle('new-message-active')
+            openBtn.classList.toggle('not-visible')
+            msg.focus()
+        }
+
+        function sendMsg(type,id) {
+
+            let body = {
+                chat_type: type,
+                id: id,
+                msgTo: {{ techniqueItem.owner.id }},
+                msgFrom: {{ request.user.id }},
+                msg: msg.value
+            }
+            fetch('/chat/new_msg/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                    msg.value = ''
+                    messageToggle()
+
+                })
+
+        }
+
     </script>
 {% endblock %}

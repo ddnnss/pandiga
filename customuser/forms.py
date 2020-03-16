@@ -7,6 +7,6 @@ from .models import User
 class UpdateForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone', 'photo','birthday')
+        fields = ('avatar','city','email', 'first_name', 'last_name', 'phone', 'photo')
 
 

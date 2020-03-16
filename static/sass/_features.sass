@@ -5,8 +5,13 @@
     grid-template-columns: repeat(auto-fill,minmax(215px,1fr))
     grid-column-gap: 20px
     grid-row-gap: 50px
+    &.payment-wrapper
+      grid-template-columns: repeat(auto-fill,minmax(130px,1fr))
   &-item
     text-align: center
+    &.payment-item
+      p
+        font-size: 16px
     &-icon
       width: 110px
       height: 110px
@@ -15,8 +20,10 @@
       justify-content: center
       transform: rotate(45deg)
       border: 2px dashed $color-red
+      box-sizing: border-box
       margin: 0 auto
       margin-bottom: 40px
+      transition: all .2s linear
       img
         transform: rotate(315deg)
         user-select: none
@@ -28,7 +35,19 @@
         font-weight: 300
         font-size: 16px
         color: $color-text-grey
+    & .payment-icon
+      width: 90px
+      height: 90px
+      cursor: pointer
+      margin-bottom: 30px
+      img
+        width: 50px
+      &:hover
+        //background: rgba(136,0,0,.48)
+        transform: scale(1.1) rotate(45deg)
 
+    & .payment-icon-active
+         background: rgba(136,0,0,.48)
 
 
 

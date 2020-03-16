@@ -1,0 +1,262 @@
+{% if request.user.is_authenticated and  request.user.is_customer%}
+    <div id="tab-my-order-detail" class="lk-tab ">
+        <div class="technique-order-item block-bordered no-hover">
+
+            <div style="max-width: 100%" class="technique-order-item-top">
+                <p>Номер заявки: {{ my_order.id }}</p>
+                <p>Срок аренды : {{ my_order.rent_time }} {{my_order.get_rent_type_short}}</p>
+                <p>Предложений : {{ my_order.applys.count }} </p>
+                <p>Исполнитель :
+                {% if my_order.worker %}
+                    {{ my_order.worker.get_full_name }}
+                    {% else %}
+                    Не назначен
+                    {% endif %}
+                </p>
+
+            </div>
+            <div class="technique-order-item-middle">
+                <p>Название: {{ my_order.name }}</p>
+            </div>
+            <div class="technique-order-item-bottom">
+                <ul>
+                    <li>{{ my_order.type.name }}</li>
+                    <li>{{ my_order.section.name }}</li>
+                    <li>{{ my_order.sub_section.name }}</li>
+                </ul>
+                <p><i class="fa fa-map-marker"></i>{{ my_order.get_location }}</p>
+                <p><i class="fa fa-calendar"></i> {{ my_order.order_date }}</p>
+            </div>
+        </div><!--//technique-order-item-->
+
+        {% if my_order.applys.all and not my_order.worker %}
+             {% if order_apply %}
+               <div class="section-header"><h3>предложения исполнителей </h3></div>
+            {% endif %}
+            {% for apply in order_apply %}
+                <div class="lk-tab-my-cars-item">
+                    <div class="lk-tab-my-cars-item-img" style="background: url({{ apply.technique.get_main_image }}) no-repeat center; background-size: cover">
+
+                    </div>
+                    <div class="lk-tab-my-cars-item-info">
+                        <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ apply.technique.get_absolute_url }}">{{ apply.technique.name }}</a></p>
+                        <div style="position: relative" class="lk-tab-my-cars-item-info-category">Исполнитель: {{apply.technique.owner.get_full_name}}
+                            <div  class="rating ">
+                                <p class="rating-value">{{ apply.user.rating }}</p>
+                                <div class="rating-inner">
+                                    <ul class="rating-inner-stars">
+                                        {% for r in rating%}
+                                            <li class="rating-inner-star
+                                                               {% if forloop.counter <= apply.user.rating %}star-colored{% endif %}">
+                                                <i class="fa fa-star"></i></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lk-tab-my-cars-item-info-price">
+                            <p><i class="fa fa-clock-o"></i> от {{ apply.technique.min_rent_time }}
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    ч
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    д
+                                {% endif %}
+                            </p>
+                            <p><i class="fa fa-money"></i> от {{ apply.technique.rent_price }} в
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    час
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    день
+                                {% endif %}
+                            </p>
+                        </div>
+
+
+                    </div>
+                    <div style="flex-basis: 230px; display: flex; flex-direction: column; align-items: center;justify-content: space-between">
+                        <p>Предложенная цена: {{ apply.price }}</p>
+
+                        <a href="{% url 'technique_order_apply_accept' apply.id%}" class="btn btn-link ">Принять предложение</a>
+                        <a href="{% url 'technique_order_apply_decline' apply.id%}" class="btn btn-link btn-outline">Отклонить предложение</a>
+
+
+
+                    </div>
+
+                </div><!-- //lk-tab-my-cars-item-->
+            {% endfor %}
+            {% if order_apply_accepted %}
+               <div class="section-header"><h3>Принятые предложения исполнителей </h3></div>
+            {% endif %}
+            {% for apply in order_apply_accepted %}
+                <div class="lk-tab-my-cars-item">
+                    <div class="lk-tab-my-cars-item-img" style="background: url({{ apply.technique.get_main_image }}) no-repeat center; background-size: cover">
+
+                    </div>
+                    <div class="lk-tab-my-cars-item-info">
+                        <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ apply.technique.get_absolute_url }}">{{ apply.technique.name }}</a></p>
+                        <div style="position: relative" class="lk-tab-my-cars-item-info-category">Исполнитель: {{apply.technique.owner.get_full_name}}
+                            <div  class="rating ">
+                                <p class="rating-value">{{ apply.user.rating }}</p>
+                                <div class="rating-inner">
+                                    <ul class="rating-inner-stars">
+                                        {% for r in rating%}
+                                            <li class="rating-inner-star
+                                                               {% if forloop.counter <= apply.user.rating %}star-colored{% endif %}">
+                                                <i class="fa fa-star"></i></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lk-tab-my-cars-item-info-price">
+                            <p><i class="fa fa-clock-o"></i> от {{ apply.technique.min_rent_time }}
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    ч
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    д
+                                {% endif %}
+                            </p>
+                            <p><i class="fa fa-money"></i> от {{ apply.technique.rent_price }} в
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    час
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    день
+                                {% endif %}
+                            </p>
+                        </div>
+
+
+                    </div>
+                    <div style="flex-basis: 230px; display: flex; flex-direction: column; align-items: center;justify-content: space-between">
+                        <p>Предложенная цена: {{ apply.price }}</p>
+
+
+                            {% if apply.order.worker %}
+                            {% else %}
+                                <p>Исполнитель еще не подтвердил</p>
+                            {% endif %}
+
+
+
+
+                    </div>
+
+                </div><!-- //lk-tab-my-cars-item-->
+            {% endfor %}
+            {% if order_apply_not_accepted %}
+                 <div class="section-header"><h3>Отклоненные предложения исполнителей </h3></div>
+
+            {% endif %}
+            {% for apply in order_apply_not_accepted %}
+                <div class="lk-tab-my-cars-item">
+                    <div class="lk-tab-my-cars-item-img" style="background: url({{ apply.technique.get_main_image }}) no-repeat center; background-size: cover">
+
+                    </div>
+                    <div class="lk-tab-my-cars-item-info">
+                        <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ apply.technique.get_absolute_url }}">{{ apply.technique.name }}</a></p>
+                        <div style="position: relative" class="lk-tab-my-cars-item-info-category">Исполнитель: {{apply.technique.owner.get_full_name}}
+                            <div  class="rating ">
+                                <p class="rating-value">{{ apply.user.rating }}</p>
+                                <div class="rating-inner">
+                                    <ul class="rating-inner-stars">
+                                        {% for r in rating%}
+                                            <li class="rating-inner-star
+                                                               {% if forloop.counter <= apply.user.rating %}star-colored{% endif %}">
+                                                <i class="fa fa-star"></i></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lk-tab-my-cars-item-info-price">
+                            <p><i class="fa fa-clock-o"></i> от {{ apply.technique.min_rent_time }}
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    ч
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    д
+                                {% endif %}
+                            </p>
+                            <p><i class="fa fa-money"></i> от {{ apply.technique.rent_price }} в
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    час
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    день
+                                {% endif %}
+                            </p>
+                        </div>
+
+
+                    </div>
+
+
+                </div><!-- //lk-tab-my-cars-item-->
+            {% endfor %}
+        {% else %}
+            {% if not my_order.worker %}
+             <div class="section-header"><h3>Предложений от исполнителей пока не поступало</h3></div>
+                {% else %}
+                 <div class="section-header"><h3>Исполнитель</h3></div>
+                <div class="lk-tab-my-cars-item">
+                    <div class="lk-tab-my-cars-item-img" style="background: url({{ apply.technique.get_main_image }}) no-repeat center; background-size: cover">
+
+                    </div>
+                    <div class="lk-tab-my-cars-item-info">
+                        <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ apply.technique.get_absolute_url }}">{{ apply.technique.name }}</a></p>
+                        <div style="position: relative" class="lk-tab-my-cars-item-info-category">Исполнитель: {{my_order.worker.get_full_name}}
+                            <div  class="rating ">
+                                <p class="rating-value">{{ my_order.worker.rating }}</p>
+                                <div class="rating-inner">
+                                    <ul class="rating-inner-stars">
+                                        {% for r in rating%}
+                                            <li class="rating-inner-star
+                                                               {% if forloop.counter <=  my_order.worker.rating %}star-colored{% endif %}">
+                                                <i class="fa fa-star"></i></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lk-tab-my-cars-item-info-price">
+                            <p><i class="fa fa-clock-o"></i> от {{ apply.technique.min_rent_time }}
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    ч
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    д
+                                {% endif %}
+                            </p>
+                            <p><i class="fa fa-money"></i> от {{ apply.technique.rent_price }} в
+                                {% if apply.technique.rent_type == 'hour' %}
+                                    час
+                                {% elif apply.technique.rent_type == 'day'%}
+                                    день
+                                {% endif %}
+                            </p>
+                        </div>
+
+
+                    </div>
+                    <div style="flex-basis: 230px; display: flex; flex-direction: column; align-items: center;justify-content: space-between">
+                        <p>Предложенная цена: {{ apply.price }}</p>
+
+
+
+
+
+
+
+                    </div>
+
+                </div><!-- //lk-tab-my-cars-item-->
+                {% endif %}
+
+        {% endif %}
+
+
+
+    </div><!--//tab-my-order-detail-->
+{% endif %}

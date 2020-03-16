@@ -11,9 +11,13 @@ class TechniqueOrder(models.Model):
     sub_section = models.ForeignKey(TechniqueSubSection, blank=False, null=True, on_delete=models.SET_NULL,
                                     verbose_name='Относится к подразделу')
     customer = models.ForeignKey(User, blank=False, null=True, on_delete=models.SET_NULL,
-                              verbose_name='Владелец', related_name='customer')
+                              verbose_name='Заказчик', related_name='customer')
     city = models.ForeignKey(City, blank=True, null=True, on_delete=models.SET_NULL,
                              verbose_name='Местоположение')
+    worker = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL,
+                              verbose_name='Исполнитель', related_name='worker')
+
+    order_apply = models.IntegerField('Выбранная заявка', blank=True,null=True)
     name = models.CharField('Название', max_length=255, blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
@@ -24,6 +28,7 @@ class TechniqueOrder(models.Model):
     comment = models.TextField('Описание', blank=False, null=True)
     is_moderated = models.BooleanField('Проверена?', default=True)
     is_active = models.BooleanField('Учавстует в выдаче?', default=True)
+    is_finished = models.BooleanField('Выполнена?', default=False)
     created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
 
     def save(self, *args, **kwargs):
@@ -71,13 +76,13 @@ class TechniqueOrderViewed(models.Model):
 
 class TechniqueOrderApply(models.Model):
     order = models.ForeignKey(TechniqueOrder, blank=True, null=True, on_delete=models.CASCADE,
-                             verbose_name='Относится к')
+                             verbose_name='Относится к', related_name='applys')
     user = models.ForeignKey(User, blank=False, null=True, on_delete=models.CASCADE,
                       verbose_name='Предложение от')
     technique = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,
                       verbose_name='Предложенная техника')
     price = models.IntegerField('Предложенная цена', blank=True, null=True)
-    is_choosen = models.BooleanField('Заказчик выбрал исполнителем?',blank=True, null=True)
+    is_choosen = models.BooleanField('Заказчик выбрал исполнителя?',blank=True, default=False)
     choose_date = models.DateTimeField("Дата выбора исполнителем", blank=True, null=True)
     is_accepted = models.BooleanField('Предложение принято?',blank=True, null=True)
     accept_date = models.DateTimeField("Дата принятия предложения", blank=True, null=True)

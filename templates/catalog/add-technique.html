@@ -28,21 +28,21 @@
                         <label for="">название</label>
                         <input type="text" required name="{{ form.name.name}}">
                     </div><!--//form-row-->
-                     <div class="form-row">
-                    <label for="">местоположение</label>
-                     <div class="city-select">
-                         <input autocomplete="off" required id="city_select_input" placeholder="Начните вводить город" class="city-select-input" onkeyup="getCities(this)" type="text">
-                         <div id="city_select_list" class="city-select-list ">
+                    <div class="form-row">
+                        <label for="">местоположение</label>
+                        <div class="city-select">
+                            <input autocomplete="off" required id="city_select_input" placeholder="Начните вводить город" class="city-select-input" onkeyup="getCities(this)" type="text">
+                            <div id="city_select_list" class="city-select-list ">
 
-                         </div>
-                     </div>
-                </div><!--//form-row-->
+                            </div>
+                        </div>
+                    </div><!--//form-row-->
                     <div class="form-row">
                         <label for="">фотографии</label>
                         <div class="upload-wrapper">
-                            <label for="upload_img" class="upload-label">
-                                <input id="upload_img" required multiple name="item_images" accept="image/*"  type="file" >
-                            </label>
+                            {#                            <label for="upload_img" class="upload-label">#}
+                            <input id="upload_img" required multiple name="item_images" accept="image/*"  type="file" >
+                            {#                            </label>#}
                             <div id="preview" class="images-preview"></div>
                         </div>
                     </div><!--//form-row-->
@@ -99,18 +99,36 @@
                         <textarea required name="{{ form.features.name }}"  cols="30" rows="10"></textarea>
 
                     </div><!--//form-row-->
-                  <div class="form-row">
+                    <div class="form-row">
                         <label for="">Документы</label>
 
-                                <input required multiple name="item_docs" accept="image/*"  type="file" >
+                        <input required multiple name="item_docs" accept="image/*"  type="file" >
 
 
                     </div><!--//form-row-->
                     <input id="city_id" type="hidden" name="{{ form.city.name }}" value="0">
+
                     {% if request.user.is_authenticated %}
-                        <button type="submit" class="btn btn-link by-center">добавить технику</button>
+                        {% if can_add_technique %}
+
+                            {% if profile_ok %}
+                                <button type="submit" class="btn btn-link by-center">добавить технику</button>
+                            {% else %}
+                                <p class="text-center mb-20">Ваш профиль не заполнен</p>
+                                <a class="btn btn-link by-center" href="{% url 'lk_page' %}?tab=tab-profile">Заполнить профиль</a>
+                            {% endif %}
+
+                        {% else %}
+
+                            <p class="text-center mb-20">Вам доступно добавление {{ my_tarif.technique_count }} ед. техники.</p>
+                            <a class="btn btn-link by-center" href="{% url 'lk_page' %}?tab=tab-tarif">Изменить тариф</a>
+
+                        {% endif %}
+
                     {% else %}
+
                         <span class="btn btn-link by-center" onclick="openModal()">добавить технику</span>
+
                     {% endif %}
                 </form>
 
@@ -119,22 +137,22 @@
         </section><!--//main-catalog-->
 
     </div><!--//main-->
-{% if not request.user.is_authenticated %}
-    <div id="openModal" class="modal">
-        <div id="modal_login" class="modal-dialog " >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title section-header">Ошибка</h3>
-                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
-                </div>
-                <div  class="modal-body">
-                    <p class="modal-error-text">Необходима регистрация</p>
-                    <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+    {% if not request.user.is_authenticated %}
+        <div id="openModal" class="modal">
+            <div id="modal_login" class="modal-dialog " >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title section-header">Ошибка</h3>
+                        <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                    </div>
+                    <div  class="modal-body">
+                        <p class="modal-error-text">Необходима регистрация</p>
+                        <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 {% endblock %}
 {% block js %}
     {{ block.super }}
@@ -211,7 +229,7 @@
                 .then(res => {
                     console.log(res)
                     if (target === 'section'){
-                      sectionSelect.appendChild(createOption('all','Выберите раздел',target))
+                        sectionSelect.appendChild(createOption('all','Выберите раздел',target))
                         for (x of res) {
                             //console.log(x['id'])
                             sectionSelect.appendChild(createOption(x['name_slug'],x['name'],target))

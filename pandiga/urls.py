@@ -10,6 +10,9 @@ urlpatterns = [
     path('catalog/', include('technique.urls')),
     path('chat/', include('chat.urls')),
     path('technique/', include('techniqueOrder.urls')),
+    path('pay/', include('ya_payment.urls')),
+    path('partner/', include('partner.urls')),
+    path('tarif/', include('tariff.urls')),
     path('', include('social_django.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 

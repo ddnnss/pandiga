@@ -60,6 +60,7 @@
                         <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: pro <span>изменить</span></li>
                         <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги (5 / 0)</li>
                         <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника (0)</li>
+                        <li class="tablinks" onclick="opentab(event, 'tab-my-order-', 'link-active')" >мои заявки на технику (0)</li>
                         <li class="tablinks" onclick="opentab(event, 'tab-my-order', 'link-active')" >отклики на заявки (0)</li>
                         <li class="tablinks" onclick="opentab(event, 'tab-my-job', 'link-active')" >отклики на работу (0)</li>
                         <li class="tablinks" onclick="opentab(event, 'tab-finance', 'link-active')" >финансовые операции</li>
@@ -72,9 +73,37 @@
                 </div><!--//lk-menu-->
                 <div class="lk-content">
                     <div id="tab-balance" class="lk-tab ">
-                        <div class="section-header "><h3>пополнить баланс</h3></div>
+
                         <div class="lk-tab-content-bg">
-                            fg
+                            <div class="section-header "><h3>пополнить баланс</h3></div>
+                            <form action="">
+                                <div class="form-row mb-40">
+                                     <label style="flex-basis: 230px"  for="">сумма пополнения (руб)</label>
+
+                                     <input  required type="number" min="0">
+
+
+                                </div>
+                                 <div class="features-wrapper payment-wrapper mb-40">
+                                    <div class="features-item payment-item">
+                                        <div data-type="1" class="features-item-icon payment-icon " onclick="setPaymentType(this)">
+                                            <img src="img/cards.png" draggable="false" alt="">
+                                        </div>
+                                        <p>VISA/MASTERCARD</p>
+                                    </div><!-- //features-item-->
+                                      <div class="features-item payment-item">
+                                        <div data-type="2" class="features-item-icon payment-icon " onclick="setPaymentType(this)">
+                                            <img src="img/cards.png" draggable="false" alt="">
+                                        </div>
+                                        <p>СБЕР</p>
+                                    </div><!-- //features-item-->
+
+            </div><!-- //features-wrapper-->
+
+
+                                <input id="payment_type"  required type="hidden" name="payment_type" value="1" >
+                            <button type="submit"  class="btn btn-link by-center">пополнить</button>
+                            </form>
                         </div>
                     </div><!--//tab-balance-->
                     <div id="tab-tarif" class="lk-tab ">
@@ -506,6 +535,19 @@
             </div>
         </div>
     </div>
+<script>
+    function setPaymentType(el) {
+        let allTypes = document.getElementsByClassName('payment-icon'),
+            typeInput = document.getElementById('payment_type')
+
+        for(x of allTypes){
+            x.classList.remove('payment-icon-active')
+        }
+        el.classList.add('payment-icon-active')
+        typeInput.value = el.dataset.type
+
+    }
+</script>
 <script>
       function openModal() {
             document.getElementsByClassName('modal')[0].classList.toggle('modal-active')

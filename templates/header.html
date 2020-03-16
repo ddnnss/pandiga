@@ -31,8 +31,8 @@
                 {% endif %}
                 {% if request.user.is_authenticated %}
                     <li class="user-menu">
-                        <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }}</a>
-                        <a class="user-menu-link user-menu-mail" href="">
+                        <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }} {{ request.user.id }}</a>
+                        <a class="user-menu-link user-menu-mail" href="{% url 'lk_page' %}?tab=tab-chat">
                             <i class="fa fa-envelope">
                                 <span>{{ allUnreadChats.count }}</span>
                             </i>
@@ -89,11 +89,11 @@
                             {% else %}
                                 <ul  class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-balance">баланс: 100 <i class="fa fa-rub"></i></a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-balance">баланс: {{ my_balance }} <i class="fa fa-rub"></i></a>
                                         <a class="user-menu-dropdown-link link-small" href="">пополнить</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-tarif">тариф: pro </a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-tarif">тариф: {{ my_tarif.short_name }} </a>
                                         <a class="user-menu-dropdown-link link-small" href="">изменить</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
@@ -103,7 +103,7 @@
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-cars">моя техника ({{ my_technique.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-order">отклики на заявки (0)</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-orders-apply">отклики на заявки ({{ all_orders_apply.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-job">отклики на работу (0)</a>

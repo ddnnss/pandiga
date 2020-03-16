@@ -1,4 +1,144 @@
-<div id="tab-my-order-apply" class="lk-tab ">
-<div class="section-header "><h3>отклики на заявки</h3></div>
+{% if request.user.is_authenticated and not request.user.is_customer%}
+<div id="tab-my-orders-apply" class="lk-tab ">
+
+
+            {% if in_progress %}
+                 <div class="section-header"><h3>Выполняются</h3></div>
+                  {% for apply in in_progress %}
+                 <div class="technique-order-item block-bordered no-hover">
+                <a style="display: block" class="mb-20" href="{% url 'technique_order_detail' apply.name_slug%}">
+                    <div style="max-width: 100%" class="technique-order-item-top">
+                        <p>Номер заявки: {{ apply.id }}</p>
+                        <p>Срок аренды : {{ apply.rent_time }} {{apply.get_rent_type_short}}</p>
+                        <p><i class="fa fa-map-marker"></i>{{ apply.get_location }}</p>
+                        <p><i class="fa fa-calendar"></i> {{ apply.order_date }}</p>
+
+                    </div>
+                    <div class="technique-order-item-middle">
+                        <p>Название: {{ apply.name }}</p>
+                    </div>
+                    <div class="technique-order-item-bottom">
+                        <ul>
+                            <li>{{ apply.type.name }}</li>
+                            <li>{{ apply.section.name }}</li>
+                            <li>{{ apply.sub_section.name }}</li>
+                        </ul>
+
+
+                    </div>
+
+
+                </a>
+
+            </div><!--//technique-order-item-->
+            {% endfor %}
+
+            {% endif %}
+
+             {% if order_apply %}
+               <div class="section-header"><h3>отклики без ответа</h3></div>
+            {% endif %}
+
+
+            {% for apply in order_apply %}
+                 <div class="technique-order-item block-bordered no-hover">
+                <a style="display: block" class="mb-20" href="{% url 'technique_order_detail' apply.order.name_slug%}">
+                    <div style="max-width: 100%" class="technique-order-item-top">
+                        <p>Номер заявки: {{ apply.order.id }}</p>
+                        <p>Срок аренды : {{ apply.order.rent_time }} {{apply.order.get_rent_type_short}}</p>
+                        <p><i class="fa fa-map-marker"></i>{{ apply.order.get_location }}</p>
+                        <p><i class="fa fa-calendar"></i> {{ apply.order.order_date }}</p>
+
+                    </div>
+                    <div class="technique-order-item-middle">
+                        <p>Название: {{ apply.order.name }}</p>
+                    </div>
+                    <div class="technique-order-item-bottom">
+                        <ul>
+                            <li>{{ apply.order.type.name }}</li>
+                            <li>{{ apply.order.section.name }}</li>
+                            <li>{{ apply.order.sub_section.name }}</li>
+                        </ul>
+
+
+                    </div>
+
+
+                </a>
+
+            </div><!--//technique-order-item-->
+            {% endfor %}
+            {% if order_apply_accepted %}
+               <div class="section-header"><h3>Принятые предложения</h3></div>
+            {% endif %}
+            {% for apply in order_apply_accepted %}
+              <div class="technique-order-item block-bordered no-hover">
+                <a style="display: block" class="mb-20" href="{% url 'technique_order_detail' apply.order.name_slug%}">
+                    <div style="max-width: 100%" class="technique-order-item-top">
+                        <p>Номер заявки: {{ apply.order.id }}</p>
+                        <p>Срок аренды : {{ apply.order.rent_time }} {{apply.order.get_rent_type_short}}</p>
+                        <p><i class="fa fa-map-marker"></i>{{ apply.order.get_location }}</p>
+                        <p><i class="fa fa-calendar"></i> {{ apply.order.order_date }}</p>
+
+                    </div>
+                    <div class="technique-order-item-middle">
+                        <p>Название: {{ apply.order.name }}</p>
+                    </div>
+                    <div class="technique-order-item-bottom">
+                        <ul>
+                            <li>{{ apply.order.type.name }}</li>
+                            <li>{{ apply.order.section.name }}</li>
+                            <li>{{ apply.order.sub_section.name }}</li>
+                        </ul>
+
+
+                    </div>
+
+
+                </a>
+              <div style="display: flex; justify-content: space-between">
+                   <a style="color: #ffffff" href="{% url 'technique_order_apply_accept_by_worker' apply.id %}" class="btn btn-link">Принять</a>
+                        <a href="{% url 'technique_order_apply_decline_by_worker' apply.id %}" class="btn btn-link btn-outline">Отклонить</a>
+              </div>
+            </div><!--//technique-order-item-->
+            {% endfor %}
+            {% if order_apply_not_accepted %}
+                 <div class="section-header"><h3>Отклоненные предложения</h3></div>
+
+            {% endif %}
+            {% for apply in order_apply_not_accepted %}
+                  <div class="technique-order-item block-bordered no-hover">
+                <a style="display: block" class="mb-20" href="{% url 'technique_order_detail' apply.order.name_slug%}">
+                    <div style="max-width: 100%" class="technique-order-item-top">
+                        <p>Номер заявки: {{ apply.order.id }}</p>
+                        <p>Срок аренды : {{ apply.order.rent_time }} {{apply.order.get_rent_type_short}}</p>
+                        <p><i class="fa fa-map-marker"></i>{{ apply.order.get_location }}</p>
+                        <p><i class="fa fa-calendar"></i> {{ apply.order.order_date }}</p>
+
+                    </div>
+                    <div class="technique-order-item-middle">
+                        <p>Название: {{ apply.order.name }}</p>
+                    </div>
+                    <div class="technique-order-item-bottom">
+                        <ul>
+                            <li>{{ apply.order.type.name }}</li>
+                            <li>{{ apply.order.section.name }}</li>
+                            <li>{{ apply.order.sub_section.name }}</li>
+                        </ul>
+
+
+                    </div>
+
+
+                </a>
+
+            </div><!--//technique-order-item-->
+            {% endfor %}
+
+
+
+
+
 
 </div><!--//tab-my-order-->
+{% endif %}

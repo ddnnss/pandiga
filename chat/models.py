@@ -1,13 +1,16 @@
 from django.db import models
 from customuser.models import User
 from technique.models import TechniqueItem
+from techniqueOrder.models import TechniqueOrder
 
 class Chat(models.Model):
     users = models.ManyToManyField(User, blank=True, null=True, verbose_name='Пользователи',
                                     related_name='chatusers')
 
-    techniqueitem = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,
-                                      verbose_name='Тема чата')
+    techniqueitem = models.ForeignKey(TechniqueItem, blank=True, null=True, on_delete=models.CASCADE,
+                                      verbose_name='Тема чата техника')
+    order = models.ForeignKey(TechniqueOrder, blank=True, null=True, on_delete=models.CASCADE,
+                                      verbose_name='Тема чата заявка')
     isNewMessages = models.BooleanField('Есть новые сообщения', default=False)
     lastMessageOwn = models.BooleanField( default=False)
     lastMsgBy = models.ForeignKey(User, blank=False, null=True, on_delete=models.CASCADE, verbose_name='Сообщение от')

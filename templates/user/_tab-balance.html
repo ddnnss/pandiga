@@ -1,6 +1,31 @@
- <div id="tab-balance" class="lk-tab ">
-                            <div class="section-header "><h3>пополнить баланс</h3></div>
-                            <div class="lk-tab-content-bg">
-                                fg
-                            </div>
-                        </div><!--//tab-balance-->
+<div id="tab-balance" class="lk-tab ">
+
+    <div class="lk-tab-content-bg">
+        <div class="section-header "><h3>пополнить баланс</h3></div>
+        <form action="{% url 'new_pay' %}" method="post">{% csrf_token %}
+            <div class="form-row mb-40">
+                <label style="flex-basis: 230px"  for="">сумма пополнения (руб)</label>
+
+                <input  required type="number" name="amount" min="0">
+
+
+            </div>
+            <div class="features-wrapper payment-wrapper mb-40">
+                {% for type in all_payments_types %}
+                <div class="features-item payment-item">
+                    <div data-type="{{ type.method }}" class="features-item-icon payment-icon {% if forloop.counter == 1 %}payment-icon-active{% endif %}" onclick="setPaymentType(this)">
+                        <img src="{{ type.icon.url }}" draggable="false" alt="">
+                    </div>
+                    <p>{{ type.name }}</p>
+                </div><!-- //features-item-->
+                {% endfor %}
+
+
+            </div><!-- //features-wrapper-->
+
+
+            <input id="payment_type"  required type="hidden" name="payment_type" value="{{ all_payments_types.first.method }}" >
+            <button type="submit"  class="btn btn-link by-center">пополнить</button>
+        </form>
+    </div>
+</div><!--//tab-balance-->

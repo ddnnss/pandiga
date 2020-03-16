@@ -2,8 +2,8 @@ from .utils import create_random_string
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_save
-from partner.models import ParnterCode
 from staticPage.models import City
+from tariff.models import Tarif
 
 
 
@@ -36,10 +36,12 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
 
     username = None
-    own_partner_code = models.ForeignKey(ParnterCode,blank=True,null=True,
-                                         on_delete=models.SET_NULL,
-                                         related_name='own_partner_code',
-                                         verbose_name='Персональный портнерский код')
+    tarif = models.ForeignKey(Tarif,blank=True,null=True,on_delete=models.SET_NULL,
+                              related_name='Тариф')
+    # own_partner_code = models.ForeignKey(ParnterCode,blank=True,null=True,
+    #                                      on_delete=models.SET_NULL,
+    #                                      related_name='own_partner_code',
+    #                                      verbose_name='Персональный портнерский код')
     city = models.ForeignKey(City, blank=True, null=True, on_delete=models.SET_NULL,
                              verbose_name='Местоположение')
     avatar = models.ImageField('Фото', upload_to='user',blank=True,null=True)
@@ -51,9 +53,9 @@ class User(AbstractUser):
     phone = models.CharField('Телефон', max_length=50, blank=True, null=True, unique=True)
     email = models.EmailField('Эл. почта', blank=True, null=True, unique=True)
     birthday = models.DateField('День рождения', blank=True, null=True)
-    partner_code = models.CharField('Используемый партнерский код', max_length=100, blank=True, null=True, unique=True)
-    balance = models.DecimalField('Баланс',decimal_places=2, max_digits=10, default=0)
-    partner_balance = models.DecimalField('Баланс',decimal_places=2, max_digits=10, default=0)
+    partner_code = models.CharField('Партнерский код', max_length=100, blank=True, null=True, unique=True)
+    balance = models.IntegerField('Баланс', default=0)
+    partner_balance = models.IntegerField('Партнерский баланс', default=0)
     rating = models.IntegerField('Рейтинг',default=0)
     tariff_update = models.DateField('Дата начала тарифа', blank=True, null=True)
     tariff_expire = models.DateField('Дата завершения тарифа', blank=True, null=True)
@@ -63,6 +65,8 @@ class User(AbstractUser):
     is_email_verified = models.BooleanField('EMail подтвержден?', default=False)
     verify_code = models.CharField('Код подтверждения', max_length=50, blank=True, null=True)
     notification_id = models.CharField('ID для сообщений', max_length=100, blank=True, null=True, unique=True)
+    technique_added = models.IntegerField(default=0)
+    other_added = models.IntegerField(default=0)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -74,6 +78,12 @@ class User(AbstractUser):
         else:
             return self.email
 
+    def get_full_name(self):
+        if self.last_name:
+            return f'{self.last_name} {self.first_name}'
+        else:
+            return f'{self.first_name}'
+
     def get_avatar(self):
         if self.avatar:
             return self.avatar.url
@@ -82,12 +92,15 @@ class User(AbstractUser):
         else:
             return '/static/img/n_a.png'
 
+
+
+
 def user_post_save(sender, instance, created, **kwargs):
     """Создание всех значений по-умолчанию для нового пользовыателя"""
     if created:
-        new_code = ParnterCode.objects.create(user=instance,
-                                              code=create_random_string(digits=True,num=8))
-        instance.own_partner_code = new_code
+        default_tarif = Tarif.objects.get(is_default=True)
+        instance.partner_code = create_random_string(digits=True,num=8)
+        instance.tarif = default_tarif
         instance.save()
 
 post_save.connect(user_post_save, sender=User)
