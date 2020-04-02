@@ -113,6 +113,43 @@
         }
     </script>
     <!-- //tabs-->
+    <!--send message -->
+     <script>
+        let openBtn = document.getElementById('message_toggle'),
+            messageForm = document.getElementById('new_message'),
+            msg = document.getElementById('message')
+        function messageToggle() {
+            messageForm.classList.toggle('new-message-active')
+            openBtn.classList.toggle('not-visible')
+            msg.focus()
+        }
+
+        function sendMsg(type,id,msgTo,msgFrom) {
+
+            let body = {
+                chat_type: type,
+                id: id,
+                msgTo: msgTo,
+                msgFrom: msgFrom,
+                msg: msg.value
+            }
+            fetch('/chat/new_msg/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                    msg.value = ''
+                    messageToggle()
+
+                })
+
+        }
+
+    </script>
+    <!--send message -->
 {% endblock %}
 </body>
 </html>

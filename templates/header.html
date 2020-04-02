@@ -31,10 +31,12 @@
                 {% endif %}
                 {% if request.user.is_authenticated %}
                     <li class="user-menu">
-                        <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }} {{ request.user.id }}</a>
+                        <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }}</a>
                         <a class="user-menu-link user-menu-mail" href="{% url 'lk_page' %}?tab=tab-chat">
                             <i class="fa fa-envelope">
+                             {% if allUnreadChats.count > 0 %}
                                 <span>{{ allUnreadChats.count }}</span>
+                             {% endif %}
                             </i>
                         </a>
 
@@ -53,7 +55,7 @@
                                 <ul class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
 
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }})</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-fav">избранное ({{ techniqueItemsFavorite.count }})</a>
@@ -97,7 +99,7 @@
                                         <a class="user-menu-dropdown-link link-small" href="">изменить</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
-                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</a>
+                                        <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} )</a>
                                     </li>
                                     <li class="user-menu-dropdown-item">
                                         <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-cars">моя техника ({{ my_technique.count }})</a>

@@ -8,7 +8,7 @@ from technique.models import TechniqueType
 
 def technique_all_orders(request):
     if request.user.is_authenticated and not request.user.is_customer:
-        all_orders = TechniqueOrder.objects.filter(is_active=True,is_moderated=True,worker__isnull=True)
+        all_orders = TechniqueOrder.objects.filter(is_active=True,is_moderated=True,worker__isnull=True).order_by('-created_at')
         all_techique_types = TechniqueType.objects.all
         return render(request, 'techniqueOrder/all-technique-orders.html', locals())
     else:
@@ -18,7 +18,23 @@ def technique_all_orders(request):
 def technique_order_detail(request,order_slug):
     if request.user.is_authenticated and not request.user.is_customer:
         order = get_object_or_404(TechniqueOrder, name_slug=order_slug)
+        can_apply = False
+        try:
+            viewed = TechniqueOrderViewed.objects.get(order=order)
+            viewed.users.add(request.user)
+            viewed.save()
+        except:
+            viewed = TechniqueOrderViewed.objects.create(order=order)
+            viewed.users.add(request.user)
+            viewed.save()
         my_technique = TechniqueItem.objects.filter(owner=request.user).filter(sub_section=order.sub_section)
+        try:
+            my_applys = TechniqueOrderApply.objects.get(order=order, user=request.user)
+        except:
+            can_apply = True
+            print('can_apply = True')
+
+
         print(my_technique)
         return render(request, 'techniqueOrder/technique-order-detail.html', locals())
     else:

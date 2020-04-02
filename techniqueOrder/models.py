@@ -44,11 +44,16 @@ class TechniqueOrder(models.Model):
         self.type = self.sub_section.section.type
         super(TechniqueOrder, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+
+        return f'/technique/orders/{self.name_slug}'
+
     def get_rent_type_short(self):
         if self.rent_type == 'day':
             return 'Д'
         else:
             return 'Ч'
+
     def get_location(self):
         if self.city:
             return f'{self.city.region}, {self.city.city}'
@@ -71,8 +76,8 @@ class TechniqueOrderViewed(models.Model):
         return f'Просмотры заявки №{self.order.id}'
 
     class Meta:
-        verbose_name = "Заявка на технику"
-        verbose_name_plural = "Заявки на технику"
+        verbose_name = "Просмотры заявок"
+        verbose_name_plural = "Просмотры заявок"
 
 class TechniqueOrderApply(models.Model):
     order = models.ForeignKey(TechniqueOrder, blank=True, null=True, on_delete=models.CASCADE,

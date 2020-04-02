@@ -34,26 +34,22 @@
                                 </p>
                                 <p class="item-owner-contact-row">
                                     <i class="fa fa-map-marker"></i>
-                                    {% if techniqueItem.owner.city.city %}
-                                        {{ techniqueItem.owner.city.city }}, {{ techniqueItem.owner.city.region }}
+                                    {% if order.customer.city.city %}
+                                        {{ order.customer.city.city }}, {{ order.customer.city.region }}
                                     {% else %}
                                         не указано
                                     {% endif %}
                                 </p>
                             </div>
-                            {% if techniqueItem.owner.id != request.user.id %}
+                           {% if order.customer != request.user %}
                                 {% if request.user.is_authenticated %}
-                                    <span class="btn btn-link">отправить сообщение</span>
-                                        <div class="new-message block-bordered ">
-                                        <form action="">
-                                            <textarea style="width: 100%" name="" id="" cols="30" rows="10"></textarea>
-                                            <button class="btn btn-link">отправить</button>
-                                        </form>
-
+                                    <span id="message_toggle" class="btn btn-link " onclick="messageToggle()">отправить сообщение</span>
+                                    <div id="new_message" class="new-message " >
+                                        <textarea id="message" style="width: 100%" name="message" cols="30" rows="10"></textarea>
+                                        <span class="btn btn-link" onclick="sendMsg('order',{{ order.id }},{{ order.customer.id }},{{ request.user.id }})">отправить</span>
                                     </div>
                                 {% else %}
                                     <span class="btn btn-link" onclick="openModal()">отправить сообщение</span>
-
                                 {% endif %}
                             {% endif %}
                         </div><!--//item-owner-->
@@ -130,8 +126,10 @@
 
 
                         </div><!--//technique-order-item-->
-                    {% if not order.worker %}
+                    {% if can_apply %}
                         <span class="btn btn-link by-center" onclick="openModal()">предложить свою технику</span>
+                        {% else %}
+                        <span class="btn btn-link by-center btn-disabled">Вы уже сделали отклик</span>
                     {% endif %}
                     </div><!--//item-block-right-->
                 </div><!--//item-block-wrapper-->

@@ -24,35 +24,41 @@ def new_msg(request):
     print(body)
     if body['chat_type'] == 'tech':
         techniqueItem = get_object_or_404(TechniqueItem, id=body['id'])
-        chat = Chat.objects.filter(users__in=[techniqueItem.owner, request.user])
+        try:
+            chat = Chat.objects.get(techniqueitem=techniqueItem)
+        except:
+            pass
         other_user = techniqueItem.owner
         print(chat)
         chat_type = body['chat_type']
     elif body['chat_type'] == 'order':
         techniqueOrder = get_object_or_404(TechniqueOrder, id=body['id'])
-        chat = Chat.objects.filter(users__in=[techniqueOrder.customer, request.user])
+        try:
+            chat = Chat.objects.get(order=techniqueOrder)
+        except:
+            pass
         other_user = techniqueOrder.customer
         chat_type = body['chat_type']
 
-    for x in chat.all():
-        print('x=',x.id)
-        c = Chat.objects.get(id = x.id)
-        print(c.users.all())
-        for u in c.users.all():
-            if u == me:
-                print('me')
-                me_f = True
-            if u == other_user:
-                other_user_f =True
-                if me_f:
-                    chat_id = x.id
-                    print('chat_id',chat_id)
+    # for x in chat:
+    #     print('x=',x.id)
+    #     c = Chat.objects.get(id = x.id)
+    #     print(c.users.all())
+    #     for u in c.users.all():
+    #         if u == me:
+    #             print('me')
+    #             me_f = True
+    #         if u == other_user:
+    #             other_user_f =True
+    #             if me_f:
+    #                 chat_id = x.id
+    #                 print('chat_id',chat_id)
 
 
 
-    if me_f and other_user_f:
+    if chat:
         print('chat found')
-        Message.objects.create(chat_id=chat_id,
+        Message.objects.create(chat=chat,
                                user=request.user,
                                message=body['msg'])
     else:
@@ -95,14 +101,33 @@ def get_msg(request):
             user_qs = User.objects.get(id=user.id)
             user_name = user_qs.first_name
             user_avatar = user_qs.get_avatar()
-            userInfo = {
-                'user_name': user_name,
-                'user_avatar': user_avatar,
-                'technique_img': chat.techniqueitem.images.first().image.url,
-                'technique_name': chat.techniqueitem.name,
-                'technique_url': chat.techniqueitem.get_absolute_url()
+            if chat.techniqueitem:
+                userInfo = {
+                    'user_name': user_name,
+                    'user_avatar': user_avatar,
+                    'technique_img': chat.techniqueitem.images.first().image.url,
+                    'technique_name': chat.techniqueitem.name,
+                    'technique_url': chat.techniqueitem.get_absolute_url()
 
-            }
+                }
+            if chat.order:
+
+                if not request.user.is_customer:
+                    userInfo = {
+                        'user_name': user_name,
+                        'user_avatar': user_avatar,
+                        'technique_img': False,
+                        'technique_name': f'Заявка № {chat.order.id}',
+                        'technique_url': f'/technique/orders/{chat.order.name_slug}'
+                    }
+                else:
+                    userInfo = {
+                        'user_name': user_name,
+                        'user_avatar': user_avatar,
+                        'technique_img': False,
+                        'technique_name': f'Заявка № {chat.order.id}',
+                        'technique_url': f'/user/lk/?tab=tab-my-order-detail&order_id={chat.order.id}'
+                    }
     for x in chat.message_set.all():
         chatItem = {}
         chatItemInner = []
@@ -142,8 +167,6 @@ def get_chats(request):
 
     chats_paginator = Paginator(allChats_temp, 5)
 
-
-
     try:
         allChats = chats_paginator.get_page(body['page'])
     except PageNotAnInteger:
@@ -152,12 +175,10 @@ def get_chats(request):
         allChats = chats_paginator.page(chats_paginator.num_pages)
 
 
-
     readChats = []
     allPages = {'last_page': chats_paginator.num_pages, 'curent_page': body['page']}
     unread_count = 0
     for chat in allChats:
-
 
         print('unread_count', chat.message_set.filter(isUnread=True).count)
         user_name = ''
@@ -168,18 +189,50 @@ def get_chats(request):
                 user_name = user_qs.first_name
                 user_avatar = user_qs.get_avatar()
 
-        readChats.append({
-            'chat_id': chat.id,
-            'chat_from': user_name,
-            'user_avatar': user_avatar,
-            'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
-            'last_msg': chat.message_set.last().message,
-            'last_msg_time': chat.message_set.last().createdAt.strftime("%d.%m.%Y,%H:%M:%S"),
-            'technique_img': chat.techniqueitem.images.first().image.url,
-            'technique_name': chat.techniqueitem.name,
-            'technique_url': chat.techniqueitem.get_absolute_url()
+        if chat.techniqueitem:
+            readChats.append({
+                'chat_id': chat.id,
+                'chat_from': user_name,
+                'user_avatar': user_avatar,
+                'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
+                'last_msg': chat.message_set.last().message,
+                'last_msg_time': chat.message_set.last().createdAt.strftime("%d.%m.%Y,%H:%M:%S"),
+                'technique_img': chat.techniqueitem.images.first().image.url,
+                'technique_name': chat.techniqueitem.name,
+                'technique_url': chat.techniqueitem.get_absolute_url()
 
-        })
+            })
+        if chat.order:
+
+            if not request.user.is_customer:
+                readChats.append({
+                    'chat_id': chat.id,
+                    'chat_from': user_name,
+                    'user_avatar': user_avatar,
+                    'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
+                    'last_msg': chat.message_set.last().message,
+                    'last_msg_time': chat.message_set.last().createdAt.strftime("%d.%m.%Y,%H:%M:%S"),
+                    'technique_img': False,
+                    'technique_name': f'Заявка № {chat.order.id}',
+                    'technique_url': f'/technique/orders/{chat.order.name_slug}'
+
+                })
+
+            else:
+                readChats.append({
+                    'chat_id': chat.id,
+                    'chat_from': user_name,
+                    'user_avatar': user_avatar,
+                    'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
+                    'last_msg': chat.message_set.last().message,
+                    'last_msg_time': chat.message_set.last().createdAt.strftime("%d.%m.%Y,%H:%M:%S"),
+                    'technique_img': False,
+                    'technique_name': f'Заявка № {chat.order.id}',
+                    'technique_url': f'/user/lk/?tab=tab-my-order-detail&order_id={chat.order.id}'
+
+                })
+
+
     print(readChats)
     return_dict['readChats'] = readChats
     return_dict['pages'] = allPages
@@ -189,33 +242,40 @@ def get_chats(request):
 
 def to_rent(request,item_id):
     techniqueItem = get_object_or_404(TechniqueItem,id=item_id)
-    chat = Chat.objects.filter(users__in=[techniqueItem.owner, request.user])
+    chat = None
+    try:
+        chat = Chat.objects.get(techniqueitem=techniqueItem)
+    except:
+        pass
+    print('chat=',chat)
     me = request.user
     me_f = False
     other_user = None
     other_user_f = False
     chat_id = 0
-    for x in chat.all():
-        print('x=',x.id)
-        c = Chat.objects.get(id = x.id)
-        print(c.users.all())
-        for u in c.users.all():
-            if u == me:
-                print('me')
-                me_f = True
-            if u == other_user:
-                other_user_f =True
-                if me_f:
-                    chat_id = x.id
-                    print('chat_id',chat_id)
+    # for x in chat.all():
+    #     print('x=',x.id)
+    #     c = Chat.objects.get(id = x.id)
+    #     print(c.users.all())
+    #     for u in c.users.all():
+    #         if u == me:
+    #             print('me')
+    #             me_f = True
+    #         if u == other_user:
+    #             other_user_f =True
+    #             if me_f:
+    #                 chat_id = x.id
+    #                 print('chat_id',chat_id)
 
 
 
-    if me_f and other_user_f:
+    if chat: #me_f and other_user_f:
         print('chat found')
-        Message.objects.create(chat_id=chat_id,
+        Message.objects.create(chat=chat,
                                user=request.user,
                                message='Привет, хочу взять технику в аренду')
+        chat.lastMsgBy = request.user
+        chat.save()
     else:
         print('chat not found')
         newChat = Chat.objects.create(techniqueitem=techniqueItem)
@@ -223,7 +283,7 @@ def to_rent(request,item_id):
         # if int(body['msgFrom']) == request.user.id:
         #     newChat.lastMessageOwn = True
         #     newChat.save()
-        newChat.lastMsgBy_id = request.user.id
+        newChat.lastMsgBy = request.user
         newChat.save()
         Message.objects.create(chat=newChat,user=request.user,
                                message='Привет, хочу взять технику в аренду')

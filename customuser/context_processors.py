@@ -30,7 +30,7 @@ def check_profile(request):
         allChats = Chat.objects.filter(users__in=[user.id])
         all_orders_apply = TechniqueOrderApply.objects.filter(user=user,is_choosen=False)
 
-        allUnreadChats = allChats.filter(isNewMessages=True)
+        allUnreadChats = allChats.filter(isNewMessages=True).exclude(lastMsgBy=user)
         allReadChats = allChats.filter(isNewMessages=False)
 
 

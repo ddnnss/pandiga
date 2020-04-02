@@ -17,7 +17,7 @@
                     <div class="lk-menu">
                         <ul>
                             {% if request.user.is_customer %}
-                                <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ( {{ allChats.count }} )</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-fav', 'link-active')" >избранное ({{ techniqueItemsFavorite.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-orders', 'link-active')" >мои заявки на технику ({{ my_technique_orders.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-job-orders', 'link-active')" >мои заявки на работу (0)</li>
@@ -29,7 +29,7 @@
                             {% else %}
                                 <li class="tablinks" onclick="opentab(event, 'tab-balance', 'link-active')">баланс: {{ my_balance }} р <span>пополнить</span></li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-tarif', 'link-active')" >тариф: {{  my_tarif.short_name }} <span>изменить</span></li>
-                                <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ({{ allChats.count }} / {{ allUnreadChats.count }})</li>
+                                <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ( {{ allChats.count }} )</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-cars', 'link-active')" >моя техника ({{ my_technique.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-orders-apply', 'link-active')" >отклики на заявки ({{ all_orders_apply.count }})</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-job-apply', 'link-active')" >отклики на работу (0)</li>
@@ -140,34 +140,65 @@
                     if (res['readChats'].length > 0){
                         for (chat of res['readChats']){
                             paginator.innerHTML = ''
-                            readChatsList.innerHTML = readChatsList.innerHTML + `
-                             <li>
-                                    <div data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
-                                        <div  class="lk-tab-chat-item-img ">
-                                            <img src="${chat['user_avatar']}" alt="">
-                                        </div>
+                            if(chat['technique_img']){
+                                 readChatsList.innerHTML = readChatsList.innerHTML + `
+                                 <li>
+                                        <div data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
+                                            <div  class="lk-tab-chat-item-img ">
+                                                <img src="${chat['user_avatar']}" alt="">
+                                            </div>
 
-                                        <div class="lk-tab-chat-item-user">
-                                            <p>${chat['chat_from']}</p>
-                                            <span>${chat['last_msg']}</span>
+                                            <div class="lk-tab-chat-item-user">
+                                                <p>${chat['chat_from']}</p>
+                                                <span>${chat['last_msg']}</span>
+                                            </div>
+                                              <div class="lk-tab-chat-item-theme-img">
+                                                <a href="${chat['technique_url']}">
+                                                    <img src="${chat['technique_img']}" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="lk-tab-chat-item-theme">
+                                                <a href="${chat['technique_url']}">
+                                                    <p>${chat['technique_name']}</p>
+                                                </a>
+                                            </div>
+                                            <div class="lk-tab-chat-item-date">
+                                                <span>${chat['last_msg_time']}</span>
+                                            </div>
                                         </div>
-                                          <div class="lk-tab-chat-item-theme-img">
-                                            <a href="${chat['technique_url']}">
-                                                <img src="${chat['technique_img']}" alt="">
-                                            </a>
+                                    </li>
+                                `
+                            }
+                            else{
+                                 readChatsList.innerHTML = readChatsList.innerHTML + `
+                                 <li>
+                                        <div data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
+                                            <div  class="lk-tab-chat-item-img ">
+                                                <img src="${chat['user_avatar']}" alt="">
+                                            </div>
 
+                                            <div class="lk-tab-chat-item-user">
+                                                <p>${chat['chat_from']}</p>
+                                                <span>${chat['last_msg']}</span>
+                                            </div>
+                                              <div class="lk-tab-chat-item-theme-img">
+                                                <a href="${chat['technique_url']}">
+                                                    <img src="http://placehold.it/50" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="lk-tab-chat-item-theme">
+                                                <a href="${chat['technique_url']}">
+                                                    <p>${chat['technique_name']}</p>
+                                                </a>
+                                            </div>
+                                            <div class="lk-tab-chat-item-date">
+                                                <span>${chat['last_msg_time']}</span>
+                                            </div>
                                         </div>
-                                        <div class="lk-tab-chat-item-theme">
-                                            <a href="${chat['technique_url']}">
-                                                <p>${chat['technique_name']}</p>
-                                            </a>
-                                        </div>
-                                        <div class="lk-tab-chat-item-date">
-                                            <span>${chat['last_msg_time']}</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            `
+                                    </li>
+                                `
+                            }
+
                         }
                         if ( res['pages']['last_page'] > 1){
                             for(var i = 1; i <= res['pages']['last_page']; i++){
@@ -255,7 +286,11 @@
 
                     chatUserName.innerText = res['userInfo']['user_name']
                     chatUserAvatar.setAttribute('src',res['userInfo']['user_avatar'])
-                    chatThemeImg.setAttribute('src',res['userInfo']['technique_img'])
+                    if(res['userInfo']['technique_img']){
+                          chatThemeImg.setAttribute('src',res['userInfo']['technique_img'])
+                    }else {
+                         chatThemeImg.setAttribute('src','http://placehold.it/50')
+                    }
                     chatTheme.setAttribute('href',res['userInfo']['technique_url'])
                     chatTheme.innerText = res['userInfo']['technique_name']
 
