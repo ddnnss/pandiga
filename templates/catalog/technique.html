@@ -28,7 +28,7 @@
                             </div>
                             {% if techniqueItem.owner.id != request.user.id %}
                                 {% if request.user.is_authenticated  %}
-                                    {% if not  request.user.is_customer %}
+                                    {% if request.user.is_customer %}
                                         <a href="{% url 'to_rent' techniqueItem.id %}" class="btn btn-link">взять в аренду</a>
                                     {% endif %}
                                 {% else %}
@@ -61,7 +61,7 @@
                             </div>
                             {% if techniqueItem.owner.id != request.user.id %}
                                 {% if request.user.is_authenticated %}
-                                    {% if not  request.user.is_customer %}
+                                    {% if request.user.is_customer %}
                                         <span id="message_toggle" class="btn btn-link " onclick="messageToggle()">отправить сообщение</span>
                                         <div id="new_message" class="new-message " >
                                             <textarea id="message" style="width: 100%" name="message" cols="30" rows="10"></textarea>
