@@ -7,6 +7,10 @@ urlpatterns = [
 
     path('', views.technique_catalog, name='technique_catalog'),
     path('add-technique/', views.add_technique, name='add_technique'),
+    path('del-technique/<id>', views.del_technique, name='del_technique'),
+    path('edit-technique/<id>', views.edit_technique, name='edit_technique'),
+    path('updateTechnique/', views.updateTechnique, name='updateTechnique'),
+    path('change_technique_status/<id>', views.change_technique_status, name='change_technique_status'),
     path('add-to-favorite/<item_id>', views.add_to_favorite, name='add_to_favorite'),
     path('del_from_favorite/<item_id>', views.del_from_favorite, name='del_from_favorite'),
     path('get_type_sublists/', views.get_type_sublists, name='get_type_sublists'),

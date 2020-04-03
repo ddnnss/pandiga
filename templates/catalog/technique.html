@@ -18,6 +18,13 @@
                 <div class="item-block-wrapper">
                     <div class="item-block-left">
                         <div class="item-time-price block-bordered mb-10">
+                        {% if request.user.is_authenticated and not techniqueItem.owner == request.user and request.user.is_customer%}
+                            {% if techniqueItem.id in wishlist_ids %}
+                                <a href="{% url 'del_from_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">удалить из избранного</a>
+                            {% else %}
+                                <a href="{% url 'add_to_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">добавить в избранное</a>
+                            {% endif %}
+                        {% endif %}
                             <div class="item-time-price-row">
                                 <img src="{% static 'img/money-icon.png' %}" alt="">
                                 <p>Стоимость: {{ techniqueItem.rent_price }} <i class="fa fa-rub"></i>/{{ techniqueItem.get_rent_type_long }} </p>
@@ -105,13 +112,7 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        {% if request.user.is_authenticated %}
-                            {% if techniqueItem.id in wishlist_ids %}
-                                <a href="{% url 'del_from_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">удалить из избранного</a>
-                            {% else %}
-                                <a href="{% url 'add_to_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">добавить в избранное</a>
-                            {% endif %}
-                        {% endif %}
+
                         <div class="tab">
                             <button  class="h-tablinks htab-active" onclick="openHTab(event, 'description_tab')">описание</button>
                             <button class="h-tablinks" onclick="openHTab(event, 'features_tab')">характеристики</button>

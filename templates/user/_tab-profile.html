@@ -2,8 +2,13 @@
 
     <div class="lk-tab-profile">
         <div class="lk-tab-profile-summary">
-            <p>Едениц техники: 0</p>
+            {% if request.user.is_customer %}
+            <p>Заявок на технику: {{ my_technique_orders.count }}</p>
             <p>Отклики на заявки: 0</p>
+            {% else %}
+                <p>Едениц техники: {{ my_technique.count }}</p>
+                <p>Отклики на заявки: {{ all_orders_apply.count }}</p>
+            {% endif %}
         </div>
         <div class="lk-tab-profile-main">
             <form action="{% url 'user_profile_update'%}" method="post" enctype="multipart/form-data">{% csrf_token %}

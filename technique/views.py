@@ -22,6 +22,52 @@ def del_from_favorite(request,item_id):
     item.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+def del_technique(request,id):
+    techniqueItem = get_object_or_404(TechniqueItem, id=id)
+    if techniqueItem.owner == request.user:
+        request.user.technique_added -= 1
+        request.user.save()
+        techniqueItem.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def edit_technique(request,id):
+    techniqueItem = get_object_or_404(TechniqueItem, id=id)
+    if techniqueItem.owner == request.user:
+        form = EditTechniqueForm()
+        all_types = TechniqueType.objects.filter(is_active=True)
+        return render(request, 'catalog/edit-technique.html', locals())
+    else:
+        return HttpResponseRedirect('/')
+
+def updateTechnique(request):
+    new_image = 0
+    item = TechniqueItem.objects.get(id=request.POST.get('item_id'))
+    for f in request.FILES.getlist('item_images'):
+        print(f)
+    form = EditTechniqueForm(request.POST, request.FILES, instance=item)
+    if form.is_valid():
+        new_image = form.save()
+        print(new_image.id)
+    else:
+        print(form.errors)
+    if request.FILES.getlist('item_images'):
+        print('have images')
+        all_images = item.images.all()
+        all_images.delete()
+        for f in request.FILES.getlist('item_images'):
+            TechniqueItemImage.objects.create(techniqueitem=item, image=f)
+    return HttpResponseRedirect('/user/lk/?tab=tab-my-cars')
+
+def change_technique_status(request,id):
+    techniqueItem = get_object_or_404(TechniqueItem, id=id)
+    if techniqueItem.owner == request.user:
+        if techniqueItem.is_free:
+            techniqueItem.is_free = False
+        else:
+            techniqueItem.is_free = True
+        techniqueItem.save()
+        return HttpResponseRedirect('/user/lk/?tab=tab-my-cars')
+
 def add_technique(request):
     if request.POST:
         newItem = None

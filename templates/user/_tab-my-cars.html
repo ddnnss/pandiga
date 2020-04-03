@@ -29,11 +29,21 @@
                     </p>
                 </div>
                 <p><i class="fa fa-map-marker"></i>{{ technique.city.region }}, {{ technique.city.city }}</p>
+                <div class="user-menu-dropdown-group">
+                                {% if technique.is_free %}
+                                    <a href="#" class="user-menu-dropdown-toggle user-menu-active">Свободен</a>
+                                    <a href="{% url 'change_technique_status' technique.id %}" class="user-menu-dropdown-toggle">занят</a>
+                                {% else %}
+                                    <a href="{% url 'change_technique_status' technique.id %}" class="user-menu-dropdown-toggle ">Свободен</a>
+                                    <a href="#" class="user-menu-dropdown-toggle user-menu-active">занят</a>
+
+                                {% endif %}
+                            </div>
 
             </div>
             <div class="lk-tab-my-cars-item-info-buttons">
-                <a href=""><i class="fa fa-edit"></i></a>
-                <a href=""><i class="fa fa-trash"></i></a>
+                <a href="{% url 'edit_technique' technique.id %}"><i class="fa fa-edit"></i></a>
+                <a href="{% url 'del_technique' technique.id %}" onclick="return confirm('Вы уверены?')"><i class="fa fa-trash"></i></a>
             </div>
         </div><!-- //lk-tab-my-cars-item-->
         {% endfor %}
