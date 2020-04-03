@@ -812,6 +812,10 @@ section {
 .header {
   background: #333333;
   margin-bottom: 30px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header.home-header {
@@ -819,6 +823,7 @@ section {
   background-size: cover;
   height: 500px;
   margin-bottom: 0;
+  position: unset;
 }
 
 .header-wrapper {
