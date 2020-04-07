@@ -19,6 +19,7 @@ def technique_order_detail(request,order_slug):
     if request.user.is_authenticated and not request.user.is_customer:
         order = get_object_or_404(TechniqueOrder, name_slug=order_slug)
         can_apply = False
+        apply_accepted = False
         try:
             viewed = TechniqueOrderViewed.objects.get(order=order)
             viewed.users.add(request.user)
@@ -33,7 +34,11 @@ def technique_order_detail(request,order_slug):
         except:
             can_apply = True
             print('can_apply = True')
-
+        if order.order_apply:
+            order_apply = TechniqueOrderApply.objects.get(id=order.order_apply)
+            if order_apply.user == request.user:
+                apply_accepted = True
+                print(' apply_accepted = True')
 
         print(my_technique)
         return render(request, 'techniqueOrder/technique-order-detail.html', locals())
@@ -85,10 +90,27 @@ def technique_order_apply_accept(request,apply_id):
     if apply.order.customer == request.user:
         apply.is_accepted = True
         apply.accept_date = datetime.datetime.now()
+        # ----------added----------------------
+        apply.is_choosen = True
+        apply.choose_date = datetime.datetime.now()
         apply.save()
+        apply.order.worker = apply.user
+        apply.order.order_apply = apply.id
+        apply.order.save()
 
+        for app in apply.order.applys.all():
+            if app.id != apply.id:
+                app.delete()
+    # ----------added----------------------
     return HttpResponseRedirect(f'/user/lk/?tab=tab-my-order-detail&order_id={apply.order.id}')
 
+
+def order_apply_done(request, order_id):
+    order = get_object_or_404(TechniqueOrder, id=order_id)
+    if order.customer == request.user:
+        order.is_finished = True
+        order.save()
+    return HttpResponseRedirect(f'/user/lk/?tab=tab-my-order-detail&order_id={order.id}')
 def technique_order_apply_decline_by_worker(request,apply_id):
     apply = get_object_or_404(TechniqueOrderApply, id=apply_id)
     if apply.user == request.user:

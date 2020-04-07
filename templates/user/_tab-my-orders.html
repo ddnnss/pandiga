@@ -2,7 +2,7 @@
 <div id="tab-orders" class="lk-tab ">
     <div class="technique-order-wrapper">
         {% for order in my_technique_orders %}
-            <div class="technique-order-item block-bordered">
+            <div {% if order.is_finished %}style="background:  #7dec97" {% endif %} class="technique-order-item block-bordered">
                 <a href="{% url 'lk_page'%}?tab=tab-my-order-detail&order_id={{ order.id }}">
                     <div style="max-width: 100%" class="technique-order-item-top">
                         <p>Номер заявки: {{ order.id }}</p>
@@ -13,7 +13,7 @@
                            {{ order.applys.count }}</p>
                             {% endif %}
 
-
+                        {% if not order.is_finished %}
                         <p>Исполнитель :
                         {% if order.worker %}
                             {{ order.worker.get_full_name }}
@@ -21,6 +21,9 @@
                             Не назначен
                             {% endif %}
                         </p>
+                    {% else %}
+                            <p>Заявка выполнена</p>
+                    {% endif %}
 
                     </div>
                     <div class="technique-order-item-middle">

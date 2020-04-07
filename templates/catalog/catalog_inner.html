@@ -188,13 +188,13 @@
                                         <div class="item-info">
                                             <div class="item-info-top">
                                                 <div class="rating item-rating">
-                                                    <p class="rating-value">{{ technique.rating }}</p>
+                                                    <p class="rating-value">{{ technique.get_rating }}</p>
                                                     <div class="rating-inner">
                                                         <ul class="rating-inner-stars">
                                                             {% for r in rating%}
 
                                                                 <li class="rating-inner-star
-                                                               {% if forloop.counter <= technique.rating %}star-colored{% endif %}">
+                                                               {% if forloop.counter <= technique.get_rating %}star-colored{% endif %}">
                                                                     <i class="fa fa-star"></i></li>
                                                             {% endfor %}
 

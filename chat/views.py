@@ -181,6 +181,7 @@ def get_chats(request):
     for chat in allChats:
 
         print('unread_count', chat.message_set.filter(isUnread=True).count)
+
         user_name = ''
         user_avatar = ''
         for user in chat.users.all():
@@ -189,7 +190,7 @@ def get_chats(request):
                 user_name = user_qs.first_name
                 user_avatar = user_qs.get_avatar()
 
-        if chat.techniqueitem:
+        if chat.techniqueitem and not request.user.is_customer:
             readChats.append({
                 'chat_id': chat.id,
                 'chat_from': user_name,
@@ -202,8 +203,7 @@ def get_chats(request):
                 'technique_url': chat.techniqueitem.get_absolute_url()
 
             })
-        if chat.order:
-
+        if chat.order and request.user.is_customer:
             if not request.user.is_customer:
                 readChats.append({
                     'chat_id': chat.id,
@@ -217,7 +217,6 @@ def get_chats(request):
                     'technique_url': f'/technique/orders/{chat.order.name_slug}'
 
                 })
-
             else:
                 readChats.append({
                     'chat_id': chat.id,

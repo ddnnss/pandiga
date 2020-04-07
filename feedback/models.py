@@ -5,9 +5,9 @@ from technique.models import TechniqueItem
 
 class UserFeedback(models.Model):
     from_user = models.ForeignKey(User, blank=False, null=True, on_delete=models.CASCADE,
-                                  verbose_name='Отзыв от',related_name='from')
+                                  verbose_name='Отзыв от',related_name='from_user')
     about_user = models.ForeignKey(User, blank=False, null=True, on_delete=models.CASCADE,
-                                      verbose_name='Отзыв о',related_name='about')
+                                      verbose_name='Отзыв о',related_name='about_user')
     text = models.TextField('Отзыв', blank=False, null=True)
     rating = models.IntegerField('Оценка', blank=False, null=True)
     createdAt = models.DateField(auto_now_add=True)

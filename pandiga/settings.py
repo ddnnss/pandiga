@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'technique.apps.TechniqueConfig',
     'chat.apps.ChatConfig',
     'techniqueOrder.apps.TechniqueorderConfig',
-    'ya_payment.apps.YaPaymentConfig'
+    'ya_payment.apps.YaPaymentConfig',
+    'feedback.apps.FeedbackConfig'
 
 ]
 

@@ -66,6 +66,7 @@ class User(AbstractUser):
     verify_code = models.CharField('Код подтверждения', max_length=50, blank=True, null=True)
     notification_id = models.CharField('ID для сообщений', max_length=100, blank=True, null=True, unique=True)
     technique_added = models.IntegerField(default=0)
+    rate_times = models.IntegerField(default=0)
     other_added = models.IntegerField(default=0)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -77,7 +78,11 @@ class User(AbstractUser):
             return self.phone
         else:
             return self.email
-
+    def get_rating(self):
+        try:
+            return round(self.rating / self.rate_times)
+        except:
+            return 0
     def get_full_name(self):
         if self.last_name:
             return f'{self.last_name} {self.first_name}'

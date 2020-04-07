@@ -98,12 +98,12 @@
                         <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ apply.technique.get_absolute_url }}">{{ apply.technique.name }}</a></p>
                         <div style="position: relative" class="lk-tab-my-cars-item-info-category">Исполнитель: {{apply.technique.owner.get_full_name}}
                             <div  class="rating ">
-                                <p class="rating-value">{{ apply.user.rating }}</p>
+                                <p class="rating-value">{{ apply.user.get_rating }}</p>
                                 <div class="rating-inner">
                                     <ul class="rating-inner-stars">
                                         {% for r in rating%}
                                             <li class="rating-inner-star
-                                                               {% if forloop.counter <= apply.user.rating %}star-colored{% endif %}">
+                                                               {% if forloop.counter <= apply.user.get_rating %}star-colored{% endif %}">
                                                 <i class="fa fa-star"></i></li>
                                         {% endfor %}
                                     </ul>
@@ -159,12 +159,12 @@
                         <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ apply.technique.get_absolute_url }}">{{ apply.technique.name }}</a></p>
                         <div style="position: relative" class="lk-tab-my-cars-item-info-category">Исполнитель: {{apply.technique.owner.get_full_name}}
                             <div  class="rating ">
-                                <p class="rating-value">{{ apply.user.rating }}</p>
+                                <p class="rating-value">{{ apply.user.get_rating }}</p>
                                 <div class="rating-inner">
                                     <ul class="rating-inner-stars">
                                         {% for r in rating%}
                                             <li class="rating-inner-star
-                                                               {% if forloop.counter <= apply.user.rating %}star-colored{% endif %}">
+                                                               {% if forloop.counter <= apply.user.get_rating %}star-colored{% endif %}">
                                                 <i class="fa fa-star"></i></li>
                                         {% endfor %}
                                     </ul>
@@ -199,8 +199,8 @@
             {% if not my_order.worker %}
              <div class="section-header"><h3>Предложений от исполнителей пока не поступало</h3></div>
                 {% else %}
-                 <div class="section-header"><h3>Исполнитель</h3></div>
-                <div class="lk-tab-my-cars-item">
+                    <div class="section-header"><h3>Исполнитель</h3></div>
+                    <div class="lk-tab-my-cars-item">
                     <div class="lk-tab-my-cars-item-img" style="background: url({{ apply.technique.get_main_image }}) no-repeat center; background-size: cover">
 
                     </div>
@@ -208,12 +208,12 @@
                         <p class="lk-tab-my-cars-item-info-name"><a class="lk-tab-my-cars-item-name" href="{{ apply.technique.get_absolute_url }}">{{ apply.technique.name }}</a></p>
                         <div style="position: relative" class="lk-tab-my-cars-item-info-category">Исполнитель: {{my_order.worker.get_full_name}}
                             <div  class="rating ">
-                                <p class="rating-value">{{ my_order.worker.rating }}</p>
+                                <p class="rating-value">{{ my_order.worker.get_rating }}</p>
                                 <div class="rating-inner">
                                     <ul class="rating-inner-stars">
                                         {% for r in rating%}
                                             <li class="rating-inner-star
-                                                               {% if forloop.counter <=  my_order.worker.rating %}star-colored{% endif %}">
+                                                               {% if forloop.counter <=  my_order.worker.get_rating %}star-colored{% endif %}">
                                                 <i class="fa fa-star"></i></li>
                                         {% endfor %}
                                     </ul>
@@ -252,6 +252,33 @@
                     </div>
 
                 </div><!-- //lk-tab-my-cars-item-->
+
+                    {% if not my_order.is_finished %}
+                        <a href="{% url 'order_apply_done' my_order.id %}" class="btn btn-link by-center">Заявка выполнена</a>
+                        {% else %}
+                        
+                            {% if not my_order.customer_feedback %}
+                                 <form action="{% url 'create_feedback' %}" method="post">{% csrf_token %}
+                                <div class="form-row">
+                                    <label >Оценка</label>
+                                    <select required name="rating" >
+                                        <option  value="5">Отлично, рекомендую!</option>
+                                        <option value="4">Хорошо, можно работать</option>
+                                        <option value="3">Не плохо, но можно лучше</option>
+                                        <option value="2">Не рекомендую</option>
+                                        <option value="1">Ужасно</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label >Отвыз о исполнителе</label>
+                                    <textarea required name="feedback"></textarea>
+                                </div>
+                                    <input type="hidden" name="id" value="{{ my_order.id }}">
+                                     <input type="hidden" name="type" value="by_c">
+                                <button type="submit" class="btn btn-link by-center">Сохранить отзыв</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
                 {% endif %}
 
         {% endif %}

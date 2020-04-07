@@ -134,6 +134,7 @@ class TechniqueItem(models.Model):
     description = models.TextField('Описание', blank=False,null=True)
     features = models.TextField('Характеристики', blank=False, null=True)
     rating = models.IntegerField('Рейтинг',default=0)
+    rate_times = models.IntegerField('РейтингT',default=0)
     is_moderated = models.BooleanField('Проверена?', default=True)
     is_free = models.BooleanField('Статус свободен?', default=True)
     is_active = models.BooleanField('Учавстует в выдаче?', default=True)
@@ -152,6 +153,11 @@ class TechniqueItem(models.Model):
         self.type = self.sub_section.section.type
         super(TechniqueItem, self).save(*args, **kwargs)
 
+    def get_rating(self):
+        try:
+            return round(self.rating / self.rate_times)
+        except:
+            return 0
     def get_absolute_url(self):
         return f'/catalog/{self.sub_section.section.type.name_slug}/{self.sub_section.section.name_slug}/{self.sub_section.name_slug}/{self.name_slug}'
 

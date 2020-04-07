@@ -126,10 +126,38 @@
 
 
                         </div><!--//technique-order-item-->
-                    {% if can_apply %}
-                        <span class="btn btn-link by-center" onclick="openModal()">предложить свою технику</span>
+                    {% if not apply_accepted %}
+                        {% if can_apply %}
+                            <span class="btn btn-link by-center" onclick="openModal()">предложить свою технику</span>
+                            {% else %}
+                            <span class="btn btn-link by-center btn-disabled">Вы уже сделали отклик</span>
+                        {% endif %}
                         {% else %}
-                        <span class="btn btn-link by-center btn-disabled">Вы уже сделали отклик</span>
+                            {% if not order.is_finished %}
+                                <p class="text-center">Вас выбрали исполнителем</p>
+                            {% else %}
+                                {% if  not order.worker_feedback%}
+                                    <form action="{% url 'create_feedback' %}" method="post">{% csrf_token %}
+                                <div class="form-row">
+                                    <label >Оценка</label>
+                                    <select required name="rating" >
+                                        <option  value="5">Отлично, рекомендую!</option>
+                                        <option value="4">Хорошо, можно работать</option>
+                                        <option value="3">Не плохо, но можно лучше</option>
+                                        <option value="2">Не рекомендую</option>
+                                        <option value="1">Ужасно</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label >Отвыз о заказчике</label>
+                                    <textarea required name="feedback"></textarea>
+                                </div>
+                                    <input type="hidden" name="id" value="{{ order.id }}">
+                                    <input type="hidden" name="type" value="by_w">
+                                <button type="submit" class="btn btn-link by-center">Сохранить отзыв</button>
+                                </form>
+                                {% endif %}
+                            {% endif %}
                     {% endif %}
                     </div><!--//item-block-right-->
                 </div><!--//item-block-wrapper-->

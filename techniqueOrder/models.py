@@ -29,6 +29,8 @@ class TechniqueOrder(models.Model):
     is_moderated = models.BooleanField('Проверена?', default=True)
     is_active = models.BooleanField('Учавстует в выдаче?', default=True)
     is_finished = models.BooleanField('Выполнена?', default=False)
+    customer_feedback = models.BooleanField('Отзыв от заказчика', default=False)
+    worker_feedback = models.BooleanField('Отзыв от исполнителя', default=False)
     created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
 
     def save(self, *args, **kwargs):

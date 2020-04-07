@@ -104,12 +104,15 @@ def lk_page(request):
         my_order = get_object_or_404(TechniqueOrder, id=my_order_id)
         if my_order.worker:
             apply = TechniqueOrderApply.objects.get(id=my_order.order_apply)
+        elif my_order.is_finished:
+            apply = TechniqueOrderApply.objects.get(id=my_order.order_apply)
         else:
             print('my_order.applys.all',my_order.applys.all)
             all_orders = my_order.applys.filter(is_choosen=False)
             order_apply = all_orders.filter(is_accepted__isnull=True)
             order_apply_accepted = all_orders.filter(is_accepted=True)
             order_apply_not_accepted = all_orders.filter(is_accepted=False)
+
 
     if not user.is_customer:
         in_progress = TechniqueOrder.objects.filter(worker=user,is_finished=False)
