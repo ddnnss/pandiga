@@ -1,0 +1,58 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+ <div class="main">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ul>
+                <li><a href="/">главная</a>
+                <li>контакты</li>
+            </ul>
+        </div><!--//breadcrumbs-->
+    </div><!--//container-->
+
+    <section class="static-content">
+        <div class="container">
+            <div class="static-content-wrapper">
+                <div class="static-content-menu">
+                   <ul >
+                        <li><a href="{% url 'about' %}" >о проекте</a></li>
+                        <li><a href="{% url 'vacancies' %}">вакансии</a></li>
+                        <li><a href="{% url 'forpartners' %}">партнёрская программа</a></li>
+                        <li><a href="{% url 'servicerules' %}">правила сервиса</a></li>
+                        <li><a href="{% url 'questions' %}">частые вопросы</a></li>
+                        <li><a href="{% url 'forpartners' %}">для заказчиков</a></li>
+                        <li><a href="{% url 'fortechniqueowners' %}">для исполнителей</a></li>
+                        <li><a href="{% url 'contacts' %}" class="link-active">контакты</a></li>
+                    </ul>
+                </div><!--//content-menu-->
+                <div class="static-content-block">
+                    <h1>контакты</h1>
+                    <p >Будем рады ответить на ваши вопросы, предложения или жалобы.</p>
+                    <h3> Служба поддержки </h3>
+                    <p>Телефон службы поддержки:</p>
+                    <p>в Москве — +7(499)112-44-88</p>
+                    <p>Поддержка пользователей с 9:00 до 21:00 по московскому времени, без выходных.</p>
+                    <h3> Пишите нам </h3>
+                    <p>Технические проблемы, пожелания, предложения:info@pandiga.ru</p>
+                    <p>Все вопросы связанные с верификацией исполнителей:info@pandiga.ru</p>
+                    <p>Реклама и маркетинг: info@pandiga.ru</p>
+                    <p>Для СМИ: info@pandiga.ru</p>
+                    <p>Проблемы c вводом/выводом денег: info@pandiga.ru</p>
+                    <h3> Почтовый адрес </h3>
+                    <p>123100, Россия, г. Москва, а/я 27</p>
+
+
+                </div><!--//content-block-->
+            </div><!--//content-wrapper-->
+        </div><!--//container-->
+    </section><!--//static-content-->
+
+</div><!--//main-->
+{% endblock %}
+{% block js %}
+      {{ block.super }}
+
+{% endblock %}
+
+

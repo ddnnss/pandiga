@@ -833,13 +833,37 @@ section {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   height: 65px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   border-bottom: 2px solid #ffffff;
+}
+
+.header-logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-right: 100px;
+}
+
+.header-logo span {
+  line-height: 10px;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .header-nav-wrapper {
@@ -903,6 +927,65 @@ section {
   opacity: 1;
 }
 
+.header-dropdown-toggle {
+  cursor: pointer;
+  margin-right: 30px;
+}
+
+.header-dropdown-toggle i {
+  font-size: 20px;
+  color: #ffffff;
+  line-height: 62px;
+}
+
+.header-dropdown-menu {
+  opacity: 0;
+  top: 72px;
+  pointer-events: none;
+  position: absolute;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 2px;
+  left: 0;
+  width: 290px;
+  background: #ffffff;
+  z-index: 100;
+  -webkit-transition: all .2s linear;
+  -o-transition: all .2s linear;
+  transition: all .2s linear;
+}
+
+.header-dropdown-menu ul li {
+  margin-bottom: 10px;
+}
+
+.header-dropdown-menu ul li:last-child {
+  margin-bottom: 0;
+}
+
+.header-dropdown-menu ul li a {
+  color: #333;
+  text-transform: uppercase;
+  -webkit-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
+  transition: color 0.2s linear;
+}
+
+.header-dropdown-menu ul li a:hover {
+  color: #800;
+}
+
+.header-dropdown {
+  position: relative;
+}
+
+.header-dropdown:hover > .header-dropdown-menu {
+  top: 62px;
+  opacity: 1;
+  pointer-events: all;
+}
+
 .user-menu {
   position: relative;
   background: rgba(0, 0, 0, 0.25);
@@ -964,6 +1047,7 @@ section {
 .user-menu:hover > .user-menu-dropdown {
   opacity: 1;
   pointer-events: all;
+  top: 62px;
 }
 
 .user-menu-dropdown {
@@ -1023,6 +1107,10 @@ section {
 .user-menu-dropdown {
   opacity: 0;
   pointer-events: none;
+  top: 72px;
+  -webkit-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
 }
 
 .user-menu-dropdown-wrapper {

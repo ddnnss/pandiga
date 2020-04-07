@@ -1,0 +1,57 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ul>
+                <li><a href="/">главная</a></li>
+                <li>вакансии</li>
+            </ul>
+        </div><!--//breadcrumbs-->
+    </div><!--//container-->
+
+    <section class="static-content">
+        <div class="container">
+            <div class="static-content-wrapper">
+                <div class="static-content-menu">
+                    <ul >
+                        <li><a href="{% url 'about' %}">о проекте</a></li>
+                        <li><a href="{% url 'vacancies' %}" class="link-active">вакансии</a></li>
+                        <li><a href="{% url 'forpartners' %}">партнёрская программа</a></li>
+                        <li><a href="{% url 'servicerules' %}"  >правила сервиса</a></li>
+                        <li><a href="{% url 'questions' %}">частые вопросы</a></li>
+                        <li><a href="{% url 'forpartners' %}">для заказчиков</a></li>
+                        <li><a href="{% url 'fortechniqueowners' %}">для исполнителей</a></li>
+                        <li><a href="{% url 'contacts' %}">контакты</a></li>
+                    </ul>
+                </div><!--//content-menu-->
+                <div class="static-content-block">
+                    <h1>Вакансии</h1>
+                    <h3>Что мы предлагаем соискателям?</h3>
+                    <p>Мы считает, что успех всей компании неотделим от благополучия и успеха каждого сотрудника.</p>
+                    <h4>В PANDIGAЕ ВЫ НАЙДЕТЕ:</h4>
+                    <ul class="static-content-list">
+                        <li> интересную работу;</li>
+                        <li> дружный коллектив;</li>
+                        <li> достойную заработную плату;</li>
+                        <li> официальное трудоустройство;</li>
+                        <li> программы профессионального развития;</li>
+                        <li> возможность карьерного роста;</li>
+                        <li> финансовую стабильность и уверенность в завтрашнем дне.</li>
+                    </ul>
+                     <h4 class="mb-20">НАШ ПЕРСОНАЛ – НАША ГОРДОСТЬ</h4>
+                     <h3>ВАКАНСИИ</h3>
+                </div><!--//content-block-->
+            </div><!--//content-wrapper-->
+        </div><!--//container-->
+    </section><!--//static-content-->
+
+</div><!--//main-->
+{% endblock %}
+{% block js %}
+      {{ block.super }}
+
+{% endblock %}
+
+

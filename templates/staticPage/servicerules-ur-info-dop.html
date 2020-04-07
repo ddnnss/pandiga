@@ -1,0 +1,44 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ul>
+                <li><a href="/">главная</a></li>
+                <li><a href="/">правила сервиса</a></li>
+                <li>правовая информация дополнение</li>
+            </ul>
+        </div><!--//breadcrumbs-->
+    </div><!--//container-->
+
+    <section class="static-content">
+        <div class="container">
+            <div class="static-content-wrapper">
+                <div class="static-content-menu">
+                    <ul >
+                        <li><a href="{% url 'about' %}">о проекте</a></li>
+                        <li><a href="{% url 'vacancies' %}">вакансии</a></li>
+                        <li><a href="{% url 'forpartners' %}">партнёрская программа</a></li>
+                        <li><a href="{% url 'servicerules' %}"  class="link-active">правила сервиса</a></li>
+                        <li><a href="{% url 'questions' %}">частые вопросы</a></li>
+                        <li><a href="{% url 'forpartners' %}">для заказчиков</a></li>
+                        <li><a href="{% url 'fortechniqueowners' %}">для исполнителей</a></li>
+                        <li><a href="{% url 'contacts' %}">контакты</a></li>
+                    </ul>
+                </div><!--//content-menu-->
+                <div class="static-content-block">
+                    <h1>правовая информация дополнение</h1>
+                <p>правовая информация дополнение</p>
+                </div><!--//content-block-->
+            </div><!--//content-wrapper-->
+        </div><!--//container-->
+    </section><!--//static-content-->
+
+</div><!--//main-->
+{% endblock %}
+{% block js %}
+      {{ block.super }}
+
+{% endblock %}
+

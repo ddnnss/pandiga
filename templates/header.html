@@ -1,10 +1,20 @@
 {% load static %}
 <header class="header {% if indexPage %}home-header{% endif %}">
     <div class="header-wrapper">
-        <div class="header-dropdown">
-            <div class="header-dropdown-toggle"></div><!-- //header-dropdown-toggle-->
+            <div class="header-dropdown">
+            <div class="header-dropdown-toggle">
+                <i class="fa fa-list"></i>
+            </div><!-- //header-dropdown-toggle-->
             <div class="header-dropdown-menu">
-
+           <ul>
+                <li><a href="{% url 'about' %}">как это работает</a></li>
+                <li><a href="{% url 'forpartners' %}">партнерская программа</a></li>
+                <li><a href="{% url 'servicerules' %}">правовая информация</a></li>
+                <li><a href="{% url 'fortechniqueowners' %}">для владельцев техники</a></li>
+                <li><a href="{% url 'tariff' %}">Тарифы</a></li>
+                <li><a href="{% url 'questions' %}">Вопрос/ответ</a></li>
+                <li><a href="{% url 'contacts' %}">Контакты</a></li>
+            </ul>
             </div><!-- //header-dropdown-menu-->
         </div><!-- //header-dropdown-->
         <div class="header-logo">

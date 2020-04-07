@@ -1,0 +1,55 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ul>
+                <li><a href="/">главная</a></li>
+                <li>правила сервиса</li>
+            </ul>
+        </div><!--//breadcrumbs-->
+    </div><!--//container-->
+
+    <section class="static-content">
+        <div class="container">
+            <div class="static-content-wrapper">
+                <div class="static-content-menu">
+                   <ul >
+                        <li><a href="{% url 'about' %}">о проекте</a></li>
+                        <li><a href="{% url 'vacancies' %}">вакансии</a></li>
+                        <li><a href="{% url 'forpartners' %}">партнёрская программа</a></li>
+                        <li><a href="{% url 'servicerules' %}"  class="link-active">правила сервиса</a></li>
+                        <li><a href="{% url 'questions' %}">частые вопросы</a></li>
+                        <li><a href="{% url 'forpartners' %}">для заказчиков</a></li>
+                        <li><a href="{% url 'fortechniqueowners' %}">для исполнителей</a></li>
+                        <li><a href="{% url 'contacts' %}">контакты</a></li>
+                    </ul>
+                </div><!--//content-menu-->
+                <div class="static-content-block">
+                    <h1>правила сервиса</h1>
+                    <h3>основные положения</h3>
+                    <ul class="mb-10">
+                        <li><a class="static-content-link" href="{% url 'licenzionnoe_soglashenie' %}">Лицензионное соглашение</a></li>
+                        <li><a class="static-content-link" href="{% url 'privacypolicy' %}">Политика конфиденциальности</a></li>
+                        <li><a class="static-content-link" href="{% url 'publichnyj_agentskij_dogovor' %}">Публичный Агентский договор</a></li>
+                        <li><a class="static-content-link" href="{% url 'usloviya_ispolzovaniya' %}">Условия использования</a></li>
+                    </ul>
+                    <h3>правовая информация</h3>
+                    <ul>
+                        <li><a class="static-content-link" href="#">Правовая информация</a></li>
+                        <li><a class="static-content-link" href="#">Правовая информация дополнение</a></li>
+                    </ul>
+
+                </div><!--//content-block-->
+            </div><!--//content-wrapper-->
+        </div><!--//container-->
+    </section><!--//static-content-->
+
+</div><!--//main-->
+{% endblock %}
+{% block js %}
+      {{ block.super }}
+
+{% endblock %}
+

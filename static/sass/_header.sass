@@ -11,14 +11,24 @@
     margin-bottom: 0
     position: unset
   &-wrapper
+
     display: flex
     align-items: center
-    justify-content: space-between
+    justify-content: center
     height: 65px
     box-sizing: border-box
     border-bottom: 2px solid #ffffff
   &-logo
-
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    justify-content: center
+    margin-right: 100px
+    span
+      line-height: 10px
+      color: #ffffff
+      text-transform: uppercase
+      font-size: 12px
   &-nav
     &-wrapper
       display: flex
@@ -53,6 +63,49 @@
         transition: all .2s linear
         left: 0
         opacity: 1
+
+
+.header-dropdown-toggle
+  cursor: pointer
+  margin-right: 30px
+  i
+    font-size: 20px
+    color: #ffffff
+    line-height: 62px
+
+
+
+.header-dropdown-menu
+  opacity: 0
+  top: 72px
+  pointer-events: none
+  position: absolute
+  padding: 10px
+  box-sizing: border-box
+  border-radius: 2px
+  left: 0
+  width: 290px
+  background: #ffffff
+  z-index: 100
+  transition: all .2s linear
+  ul
+    li
+      margin-bottom: 10px
+      &:last-child
+        margin-bottom: 0
+      a
+        color: $color-text
+        text-transform: uppercase
+        transition: color 0.2s linear
+        &:hover
+          color: $color-link
+
+.header-dropdown
+  position: relative
+  &:hover > .header-dropdown-menu
+    top: 62px
+    opacity: 1
+    pointer-events: all
 
 .user-menu
   position: relative
@@ -91,7 +144,7 @@
   &:hover > .user-menu-dropdown
     opacity: 1
     pointer-events: all
-
+    top: 62px
 
 .user-menu-dropdown
   padding: 10px
@@ -132,6 +185,8 @@
 .user-menu-dropdown
   opacity: 0
   pointer-events: none
+  top: 72px
+  transition: all 0.2s linear
   &-wrapper
     padding: 5px 10px
   &-item

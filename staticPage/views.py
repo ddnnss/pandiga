@@ -36,4 +36,29 @@ def login_page(request):
 
 
 
+def about(request):
+    return render(request, 'staticPage/about.html', locals())
+def forpartners(request):
+    return render(request, 'staticPage/forpartners.html', locals())
+def servicerules(request):
+    return render(request, 'staticPage/servicerules.html', locals())
+def fortechniqueowners(request):
+    return render(request, 'staticPage/forperformers.html', locals())
+def tariff(request):
+    return render(request, 'staticPage/tariff.html', locals())
+def questions(request):
+    return render(request, 'staticPage/questions.html', locals())
+def contacts(request):
+    return render(request, 'staticPage/contacts.html', locals())
+def licenzionnoe_soglashenie(request):
+    return render(request, 'staticPage/servicerules-licenzionnoe_soglashenie.html', locals())
 
+def privacypolicy(request):
+    return render(request, 'staticPage/servicerules-privacypolicy.html', locals())
+
+def publichnyj_agentskij_dogovor(request):
+    return render(request, 'staticPage/servicerules-publichnyj_agentskij_dogovor.html', locals())
+def usloviya_ispolzovaniya(request):
+    return render(request, 'staticPage/servicerules-usloviya_ispolzovaniya.html', locals())
+def vacancies(request):
+    return render(request, 'staticPage/vacancies.html', locals())
