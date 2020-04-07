@@ -19,6 +19,13 @@
         </div><!-- //header-dropdown-->
         <div class="header-logo">
             <a href="/"><img src="{% static 'img/logo.png' %}" alt=""></a>
+            {% if request.user.is_authenticated and request.user.is_customer %}
+                <span>заказчик</span>
+            {% elif request.user.is_authenticated and not request.user.is_customer %}
+                   <span>исполнитель</span>
+                {% else %}
+
+            {% endif %}
         </div>
         <div class="header-nav">
             <ul class="header-nav-wrapper">
