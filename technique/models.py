@@ -16,7 +16,7 @@ from pandiga.settings import BASE_DIR
 
 class TechniqueType(models.Model):
     name = models.CharField('Название типа техники', max_length=255, blank=False, null=True)
-    image = models.ImageField('Изображение (420 x 225)', upload_to='technique/type/', blank=False, null=True)
+    image = models.ImageField('Изображение (370 x 130)', upload_to='technique/type/', blank=False, null=True)
     icon = models.ImageField('Иконка для главной (40x45)', upload_to='technique/type/', blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
@@ -227,7 +227,7 @@ class TechniqueItemImage(models.Model):
         width, height = base_image.size
         transparent = Image.new('RGB', (width, height), (0, 0, 0, 0))
         transparent.paste(base_image, (0, 0))
-        transparent.paste(watermark, (0, 0), mask=watermark)
+        transparent.paste(watermark, (100, 100), mask=watermark)
         transparent.thumbnail((800, 800), Image.ANTIALIAS)
        # transparent.show()
         transparent.save(blob, 'JPEG')

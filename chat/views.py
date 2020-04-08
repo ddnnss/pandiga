@@ -190,7 +190,7 @@ def get_chats(request):
                 user_name = user_qs.first_name
                 user_avatar = user_qs.get_avatar()
 
-        if chat.techniqueitem and not request.user.is_customer:
+        if chat.techniqueitem :
             readChats.append({
                 'chat_id': chat.id,
                 'chat_from': user_name,
@@ -203,8 +203,8 @@ def get_chats(request):
                 'technique_url': chat.techniqueitem.get_absolute_url()
 
             })
-        if chat.order and request.user.is_customer:
-            if not request.user.is_customer:
+        if chat.order :
+            if request.user.is_customer:
                 readChats.append({
                     'chat_id': chat.id,
                     'chat_from': user_name,
