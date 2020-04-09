@@ -18,10 +18,17 @@ def check_profile(request):
         my_technique_orders = TechniqueOrder.objects.filter(customer=user)
         my_tarif = user.tarif
         my_balance = user.balance
-        if my_tarif.technique_count <= user.technique_added:
-            can_add_technique = False
-        can_call = my_tarif.can_call
-        can_chat = my_tarif.can_chat
+        try:
+            if my_tarif.technique_count <= user.technique_added:
+                can_add_technique = False
+        except:
+            pass
+        try:
+            can_call = my_tarif.can_call
+            can_chat = my_tarif.can_chat
+        except:
+            can_call = False
+            can_chat = False
 
 
 

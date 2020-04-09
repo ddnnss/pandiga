@@ -47,6 +47,8 @@ class TechniqueType(models.Model):
         verbose_name = "Тип техники"
         verbose_name_plural = "Типы техники"
 
+    def get_absolute_url(self):
+        return f'/catalog/{self.name_slug}/'
 
 class TechniqueSection(models.Model):
     type = models.ForeignKey(TechniqueType,blank=False,null=True,on_delete=models.SET_NULL,
@@ -79,7 +81,8 @@ class TechniqueSection(models.Model):
     class Meta:
         verbose_name = "Раздел техники"
         verbose_name_plural = "Разделы техники"
-
+    def get_absolute_url(self):
+        return f'/catalog/{self.type.name_slug}/{self.name_slug}/'
 
 class TechniqueSubSection(models.Model):
     section = models.ForeignKey(TechniqueSection,blank=False,null=True,on_delete=models.SET_NULL,
@@ -114,7 +117,8 @@ class TechniqueSubSection(models.Model):
         verbose_name = "Подраздел техники"
         verbose_name_plural = "Подразделы техники"
 
-
+    def get_absolute_url(self):
+        return f'/catalog/{self.section.type.name_slug}//{self.section.name_slug}/{self.name_slug}/'
 
 class TechniqueItem(models.Model):
     type = models.ForeignKey(TechniqueType, blank=True, null=True, on_delete=models.SET_NULL,
@@ -161,7 +165,8 @@ class TechniqueItem(models.Model):
         except:
             return 0
     def get_absolute_url(self):
-        return f'/catalog/{self.sub_section.section.type.name_slug}/{self.sub_section.section.name_slug}/{self.sub_section.name_slug}/{self.name_slug}'
+        # return f'/catalog/{self.sub_section.section.type.name_slug}/{self.sub_section.section.name_slug}/{self.sub_section.name_slug}/{self.name_slug}'
+        return f'/catalog/{self.type.name_slug}/{self.section.name_slug}/{self.sub_section.name_slug}/{self.name_slug}'
 
 
 

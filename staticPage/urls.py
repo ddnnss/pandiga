@@ -1,7 +1,6 @@
-
-
 from django.urls import path
 from . import views
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -21,7 +20,9 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('create_city/', views.create_city, name='create_city'),
     path('get_city/', views.get_city, name='get_city'),
-
+    path('index.html', RedirectView.as_view(url='/', permanent=False), name='index1'),
+    path('index.php', RedirectView.as_view(url='/', permanent=False), name='index2'),
+    path('robots.txt', views.robots, name='robots'),
 
 
 ]

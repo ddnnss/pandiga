@@ -47,7 +47,6 @@ class TechniqueOrder(models.Model):
         super(TechniqueOrder, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-
         return f'/technique/orders/{self.name_slug}'
 
     def get_rent_type_short(self):

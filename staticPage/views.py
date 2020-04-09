@@ -2,6 +2,7 @@ import json
 from .models import City
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.http import HttpResponse
 
 def create_city(request):
     from .sity_search import cities
@@ -34,7 +35,9 @@ def login_page(request):
     else:
         return HttpResponseRedirect('/')
 
-
+def robots(request):
+    robotsTxt = f"User-agent: *\nDisallow: /admin/\nHost: https://www.pandiga.ru/\nSitemap: https://www.pandiga.ru/sitemap.xml"
+    return HttpResponse(robotsTxt, content_type="text/plain")
 
 def about(request):
     return render(request, 'staticPage/about.html', locals())

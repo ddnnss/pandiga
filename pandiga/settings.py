@@ -20,6 +20,7 @@ LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
 INSTALLED_APPS = [
+    'django.contrib.sitemaps',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
