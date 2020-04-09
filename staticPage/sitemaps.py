@@ -24,6 +24,8 @@ class TechniqueSitemap(Sitemap):
     def items(self):
         return TechniqueItem.objects.all()
 
+    def lastmod(self, obj):
+        return obj.created_at
 
 class TypeSitemap(Sitemap):
     changefreq = "monthly"
@@ -31,8 +33,8 @@ class TypeSitemap(Sitemap):
     def items(self):
         return TechniqueType.objects.all()
 
-    def lastmod(self, obj):
-        return obj.created_at
+    # def lastmod(self, obj):
+    #     return obj.created_at
 
 class SectionSitemap(Sitemap):
     changefreq = "monthly"
@@ -40,8 +42,8 @@ class SectionSitemap(Sitemap):
     def items(self):
         return TechniqueSection.objects.all()
 
-    def lastmod(self, obj):
-        return obj.created_at
+    # def lastmod(self, obj):
+    #     return obj.created_at
 
 class SubSectionSitemap(Sitemap):
     changefreq = "monthly"
@@ -49,8 +51,8 @@ class SubSectionSitemap(Sitemap):
     def items(self):
         return TechniqueSubSection.objects.all()
 
-    def lastmod(self, obj):
-        return obj.created_at
+    # def lastmod(self, obj):
+    #     return obj.created_at
 
 class OrdersSitemap(Sitemap):
     changefreq = "monthly"
