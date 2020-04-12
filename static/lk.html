@@ -78,31 +78,31 @@
                             <div class="section-header "><h3>пополнить баланс</h3></div>
                             <form action="">
                                 <div class="form-row mb-40">
-                                     <label style="flex-basis: 230px"  for="">сумма пополнения (руб)</label>
+                                    <label style="flex-basis: 230px"  for="">сумма пополнения (руб)</label>
 
-                                     <input  required type="number" min="0">
+                                    <input  required type="number" min="0">
 
 
                                 </div>
-                                 <div class="features-wrapper payment-wrapper mb-40">
+                                <div class="features-wrapper payment-wrapper mb-40">
                                     <div class="features-item payment-item">
                                         <div data-type="1" class="features-item-icon payment-icon " onclick="setPaymentType(this)">
                                             <img src="img/cards.png" draggable="false" alt="">
                                         </div>
                                         <p>VISA/MASTERCARD</p>
                                     </div><!-- //features-item-->
-                                      <div class="features-item payment-item">
+                                    <div class="features-item payment-item">
                                         <div data-type="2" class="features-item-icon payment-icon " onclick="setPaymentType(this)">
                                             <img src="img/cards.png" draggable="false" alt="">
                                         </div>
                                         <p>СБЕР</p>
                                     </div><!-- //features-item-->
 
-            </div><!-- //features-wrapper-->
+                                </div><!-- //features-wrapper-->
 
 
                                 <input id="payment_type"  required type="hidden" name="payment_type" value="1" >
-                            <button type="submit"  class="btn btn-link by-center">пополнить</button>
+                                <button type="submit"  class="btn btn-link by-center">пополнить</button>
                             </form>
                         </div>
                     </div><!--//tab-balance-->
@@ -331,6 +331,15 @@
 
                     <div id="tab-my-order" class="lk-tab ">
                         <div class="section-header "><h3>отклики на заявки</h3></div>
+                        <div class="technique-order-item block-bordered">
+                                <div style="max-width: 100%" class="technique-order-item-top">
+                                    <p><i class="fa fa-calendar"></i> Апрель 25, 2020</p>
+                                </div>
+                                <div class="technique-order-item-middle">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti dolor ducimus eligendi est excepturi laborum odio possimus quod sapiente sit?</p>
+                                </div>
+
+                        </div>
 
                     </div><!--//tab-my-order-->
                     <div id="tab-my-job" class="lk-tab ">
@@ -487,16 +496,16 @@
                                         <label>Сумма</label>
                                         <div class="form-row-group">
                                             <input type="number" value="0">
-                                           <span class="btn">Доступно 1000 <i class="fa fa-rub"></i> Снять всю сумму</span>
+                                            <span class="btn">Доступно 1000 <i class="fa fa-rub"></i> Снять всю сумму</span>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <label >Тип</label>
                                         <div class="form-row-group">
                                             <select name="" id="">
-                                            <option value="">Перечислить на счет сайта</option>
-                                            <option value="">Вывод на банковскую карту</option>
-                                        </select>
+                                                <option value="">Перечислить на счет сайта</option>
+                                                <option value="">Вывод на банковскую карту</option>
+                                            </select>
                                             <input type="number" autocomplete="cardnumber" placeholder="Номер карты">
                                         </div>
 
@@ -517,24 +526,24 @@
     </section><!--//lk-->
 
 </div><!--//main-->
- <div id="openModal" class="modal">
-        <div id="modal_login" class="modal-dialog " >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title section-header">ВВЕДИТЕ ПРОМО-КОД</h3>
-                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
-                </div>
-                <div  class="modal-body">
-                    <form action="">
-                        <input class="mb-20" style="width: 100%" type="number"  placeholder="ПРОМО-КОД">
-                        <button type="submit" class="btn btn-link by-center">Подтвердить</button>
-                    </form>
+<div id="openModal" class="modal">
+    <div id="modal_login" class="modal-dialog " >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title section-header">ВВЕДИТЕ ПРОМО-КОД</h3>
+                <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+            </div>
+            <div  class="modal-body">
+                <form action="">
+                    <input class="mb-20" style="width: 100%" type="number"  placeholder="ПРОМО-КОД">
+                    <button type="submit" class="btn btn-link by-center">Подтвердить</button>
+                </form>
 
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 <script>
     function setPaymentType(el) {
         let allTypes = document.getElementsByClassName('payment-icon'),
@@ -549,9 +558,9 @@
     }
 </script>
 <script>
-      function openModal() {
-            document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
-        }
+    function openModal() {
+        document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
+    }
     document.addEventListener("DOMContentLoaded", function(event) {
 
         let url = new URL(location.href);

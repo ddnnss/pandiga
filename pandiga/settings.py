@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'techniqueOrder.apps.TechniqueorderConfig',
     'ya_payment.apps.YaPaymentConfig',
     'feedback.apps.FeedbackConfig'
-
 ]
 
 AUTHENTICATION_BACKENDS = (

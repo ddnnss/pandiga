@@ -52,7 +52,8 @@
                             <div class="item-owner-contact">
                                 <p class="item-owner-contact-row">
                                     {% if request.user.is_authenticated %}
-                                        <i class="fa fa-phone"></i> <a href="tel:+71231112233">+71231112233</a><span>... показать номер</span>
+                                              <i class="fa fa-phone"></i> <a id="user_phone" href="#">{{ techniqueItem.owner.phone | truncatechars:10 }}</a>
+                                        <span onclick="getPhone({{ techniqueItem.owner.id}},this)">... показать номер</span>
                                     {% else %}
                                         <i class="fa fa-phone"></i> недоступно
                                     {% endif %}

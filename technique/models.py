@@ -232,8 +232,8 @@ class TechniqueItemImage(models.Model):
         width, height = base_image.size
         transparent = Image.new('RGB', (width, height), (0, 0, 0, 0))
         transparent.paste(base_image, (0, 0))
-        transparent.paste(watermark, (100, 100), mask=watermark)
         transparent.thumbnail((800, 800), Image.ANTIALIAS)
+        transparent.paste(watermark, (50, 50), mask=watermark)
        # transparent.show()
         transparent.save(blob, 'JPEG')
         self.image.save(f'{self.techniqueitem.name_slug}.jpg',File(blob), save=False)

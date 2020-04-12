@@ -4,6 +4,9 @@
   position: sticky
   top: 0
   z-index: 100
+  &-inner
+    border-bottom: 2px solid #ffffff
+    box-sizing: border-box
   &.home-header
     background: url(../img/header-bg.png) no-repeat top
     background-size: cover
@@ -14,22 +17,29 @@
 
     display: flex
     align-items: center
-    justify-content: center
+    justify-content: space-between
     height: 65px
     box-sizing: border-box
-    border-bottom: 2px solid #ffffff
+    max-width: 1140px
+
+    margin: 0 auto
   &-logo
     display: flex
     flex-direction: column
     align-items: flex-end
     justify-content: center
-    margin-right: 100px
+    &-wrapper
+      display: flex
+
     span
       line-height: 10px
       color: #ffffff
       text-transform: uppercase
       font-size: 12px
   &-nav
+    flex-grow: 1
+    display: flex
+    justify-content: flex-end
     &-wrapper
       display: flex
       align-items: center
@@ -67,9 +77,9 @@
 
 .header-dropdown-toggle
   cursor: pointer
-  margin-right: 30px
+  margin-right: 20px
   i
-    font-size: 20px
+    font-size: 25px
     color: #ffffff
     line-height: 62px
 
@@ -119,7 +129,7 @@
   justify-content: space-evenly
   &-link
     color: #ffffff
-    margin-right: 30px
+    margin-right: 10px
     &:last-child
       margin-right: 0
     &:hover::after

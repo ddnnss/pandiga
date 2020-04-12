@@ -1,7 +1,7 @@
 {% extends 'basic.html' %}
 {% load static %}
 {% block content %}
-    <div  class="main">
+    <div style="min-height: 100vh" class="main">
         <div class="container">
             <div class="breadcrumbs">
                 <ul>
@@ -16,6 +16,7 @@
                 <div class="lk-wrapper">
                     <div class="lk-menu">
                         <ul>
+                         <li class="tablinks" onclick="opentab(event, 'tab-notification', 'link-active')" >Оповещения ( {{ allNotificatons.count }} )</li>
                             {% if request.user.is_customer %}
                                 <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ( {{ allChats.count }} )</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-fav', 'link-active')" >избранное ({{ techniqueItemsFavorite.count }})</li>
@@ -43,6 +44,7 @@
                         <a href="" class="btn">выход</a>
                     </div><!--//lk-menu-->
                     <div class="lk-content">
+                        {% include 'user/_tab-notify.html' %}
                         {% include 'user/_tab-balance.html' %}
                         {% include 'user/_tab-tarif.html' %}
                         {% include 'user/_tab-chat.html' %}

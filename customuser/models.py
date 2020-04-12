@@ -89,6 +89,8 @@ class User(AbstractUser):
         else:
             return f'{self.first_name}'
 
+
+
     def get_avatar(self):
         if self.avatar:
             return self.avatar.url
@@ -98,6 +100,11 @@ class User(AbstractUser):
             return '/static/img/n_a.png'
 
 
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True)
+    text = models.TextField(blank=True,null=True)
+    is_read = models.BooleanField(default=False)
+    createdAt = models.DateTimeField(auto_now_add=True)
 
 
 def user_post_save(sender, instance, created, **kwargs):

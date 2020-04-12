@@ -23,7 +23,16 @@
 
 
             <section class="items-block">
-                <div class="section-header"><h1>название категории</h1></div>
+                <div class="section-header">
+                    <h1>
+                    {% if current_technique_section and not current_technique_subsection%}
+                        {{ current_technique_section.name }}
+                    {% elif current_technique_subsection%}
+                       {{ current_technique_subsection.name }}
+                    {% else %}
+                        {{ current_technique_type.name }}
+                    {% endif %}
+                </h1></div>
                 <div class="items-block-wrapper">
                     <div class="items-block-left">
                         <div class="category-menu mb-10">
@@ -209,10 +218,12 @@
                                                 <div class="item-info-user">
                                                     <div class="item-info-user-avatar"><img src="{{ technique.owner.get_avatar }}" alt=""></div>
                                                     <div class="item-info-user-name"><p>
+                                                        <a href="#">
                                                         {{ technique.owner.first_name }}
                                                         {% if  technique.owner.last_name %}
                                                             {{ technique.owner.last_name }}
                                                         {% endif %}
+                                                    </a>
                                                     </p></div>
                                                 </div>
                                                 <div class="item-info-price">

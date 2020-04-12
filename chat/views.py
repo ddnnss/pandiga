@@ -2,12 +2,13 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from customuser.models import Notification
 from technique.models import TechniqueItem
 from techniqueOrder.models import TechniqueOrder
 import json
 
 def new_msg(request):
+    print(request.POST == request.method)
     return_dict = {}
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -146,6 +147,7 @@ def get_msg(request):
 
 
 def add_msg(request):
+    print(request.POST == request.method)
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     Message.objects.create(chat_id=body['chatId'], user_id=body['msgFrom'], message=body['msg'])
@@ -277,6 +279,7 @@ def to_rent(request,item_id):
         chat.save()
     else:
         print('chat not found')
+        Notification.objects.create(user=techniqueItem.owner,text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}')
         newChat = Chat.objects.create(techniqueitem=techniqueItem)
         newChat.users.add(request.user, techniqueItem.owner)
         # if int(body['msgFrom']) == request.user.id:

@@ -1,7 +1,7 @@
 from technique.models import TechniqueItemFavorite,TechniqueItem
 from chat.models import *
 from techniqueOrder.models import *
-
+from .models import Notification
 import random
 def check_profile(request):
     num1 = random.randint(0, 9)
@@ -36,6 +36,7 @@ def check_profile(request):
             profile_ok = True
         allChats = Chat.objects.filter(users__in=[user.id])
         all_orders_apply = TechniqueOrderApply.objects.filter(user=user,is_choosen=False)
+        allNotificatons = Notification.objects.filter(user=user,is_read=False)
 
         allUnreadChats = allChats.filter(isNewMessages=True).exclude(lastMsgBy=user)
         allReadChats = allChats.filter(isNewMessages=False)

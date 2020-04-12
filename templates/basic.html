@@ -15,6 +15,7 @@
 <body>
 <form style="display: none" id="dummy_form" >{% csrf_token %}</form>
 {% include 'header.html' %}
+{% csrf_token %}
 {% block content %}
 {% endblock %}
 {% include 'footer.html' %}
@@ -150,6 +151,35 @@
 
     </script>
     <!--send message -->
+      <!--getPhone -->
+       <script>
+    let user_phone = document.getElementById('user_phone')
+    function getPhone(id,el) {
+         let body = {iid: id,'ee':'ee'}
+            fetch('/user/user_phone/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": '{{ csrf_token  }}' },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                    if (res['phone']){
+                      el.style.display = 'none'
+                    user_phone.innerText = res['phone']
+                    user_phone.setAttribute('href',`tel:${res['phone']}`)
+                    }
+                    else {
+                        user_phone.style.display = 'none'
+                         el.innerHTML='Для просмотра номера нужно <a href = "/user/lk/?tab=tab-tarif">сменить тариф </a>'
+                    }
+                    getChats(1);
+
+                })
+
+    }
+    </script>
+      <!--getPhone -->
 {% endblock %}
 </body>
 </html>

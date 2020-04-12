@@ -12,6 +12,7 @@
                                         <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span class="color-red">{{ tarif.new_orders_delay }}</span> минут после публикации</li>
                                         <li class="tarif-item-feature-item">Доступ к разделу Работа <span class="color-red">{% if tarif.work_section %}ДА{% else %}НЕТ{% endif %}</span></li>
                                         <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span class="color-red">{% if tarif.work_notify %}ДА{% else %}НЕТ{% endif %}</span></li>
+                                        <li class="tarif-item-feature-item">Возможность видеть номер заказчика <span class="color-red">{% if tarif.can_see_phone %}ДА{% else %}НЕТ{% endif %}</span></li>
                                         <li class="tarif-item-feature-item">Возможность позвонить Работодателю <span class="color-red">{% if tarif.can_call %}ДА{% else %}НЕТ{% endif %}</span></li>
                                         <li class="tarif-item-feature-item">Возможность написать Работодателю <span class="color-red">{% if tarif.can_chat %}ДА{% else %}НЕТ{% endif %}</span></li>
                                         <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span class="color-red">{{ tarif.parter_bonus }}%</span></li>
