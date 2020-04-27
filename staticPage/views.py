@@ -3,6 +3,45 @@ from .models import City
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
+from openpyxl import load_workbook
+
+def type(request):
+    wb = load_workbook(filename='C:/Users/ххх/PycharmProjects/ideaHome/cats.xlsx')
+    sheet = wb.active
+
+    max_row = sheet.max_row
+
+    max_column = sheet.max_column
+    for i in range(1, max_row + 1):
+        # worksheet.write('A{}'.format(row), cat_id)
+        # worksheet.write('B{}'.format(row), cat_name)
+        # worksheet.write('C{}'.format(row), cat_parent_id)
+        # worksheet.write('D{}'.format(row), cat_description)
+        # worksheet.write('E{}'.format(row), cat_img)
+        # worksheet.write('F{}'.format(row), cat_title)
+        # worksheet.write('G{}'.format(row), cat_keywords)
+        # worksheet.write('H{}'.format(row), cat_meta_description)
+        old_id = sheet.cell(row=i, column=1).value
+        cat_name = sheet.cell(row=i, column=2).value
+        cat_parent_id = sheet.cell(row=i, column=3).value
+        try:
+            cat_description = sheet.cell(row=i, column=4).value.replace('_x000D_', '')
+        except:
+            cat_description = sheet.cell(row=i, column=4).value
+        cat_img = sheet.cell(row=i, column=5).value
+        cat_title = sheet.cell(row=i, column=6).value
+        cat_keywords = sheet.cell(row=i, column=7).value
+        cat_meta_description = sheet.cell(row=i, column=8).value
+        # if cat_parent_id ==0:
+        #     Category.objects.create(old_id=old_id,name=cat_name,description=cat_description,image='images/catalog/categories/'+cat_img,
+        #                             page_title=cat_title,page_description=cat_meta_description,page_keywords=cat_keywords)
+        if cat_parent_id != 0:
+            cat = Category.objects.get(old_id=cat_parent_id)
+            SubCategory.objects.create(old_id=old_id, name=cat_name, description=cat_description, category=cat,
+                                       page_title=cat_title, page_description=cat_meta_description,
+                                       page_keywords=cat_keywords)
+    return render(request, 'page/about.html', locals())
+
 
 def create_city(request):
     from .sity_search import cities
