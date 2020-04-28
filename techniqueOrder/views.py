@@ -5,6 +5,7 @@ from .forms import *
 from django.contrib import messages
 import datetime
 from technique.models import TechniqueType
+from customuser.models import Notification
 
 def technique_all_orders(request):
     if request.user.is_authenticated and not request.user.is_customer:
@@ -70,10 +71,14 @@ def technique_order(request):
         return HttpResponseRedirect('/')
 
 def technique_order_apply(request):
-    TechniqueOrderApply.objects.create(order_id=request.POST.get('order_id'),
+    new_order = TechniqueOrderApply.objects.create(order_id=request.POST.get('order_id'),
                                        technique_id=request.POST.get('technique_for_order'),
                                        user_id=request.POST.get('user_id'),
                                        price=request.POST.get('price'))
+    Notification.objects.create(user=new_order.order.customer,
+                                text='Новый отклик на заявку',
+                                is_chat_notification=False,
+                                redirect_url=f'/user/lk/?tab=tab-my-order-detail&order_id={new_order.order.id}')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def technique_order_apply_decline(request,apply_id):
@@ -102,6 +107,10 @@ def technique_order_apply_accept(request,apply_id):
             if app.id != apply.id:
                 app.delete()
     # ----------added----------------------
+        Notification.objects.create(user=apply.technique.owner,
+                                    text='Ваше предложение на заявку принято',
+                                    is_chat_notification=False,
+                                    redirect_url=f'/technique/orders/{apply.order.name_slug}')
     return HttpResponseRedirect(f'/user/lk/?tab=tab-my-order-detail&order_id={apply.order.id}')
 
 
@@ -110,6 +119,10 @@ def order_apply_done(request, order_id):
     if order.customer == request.user:
         order.is_finished = True
         order.save()
+        Notification.objects.create(user=order.worker,
+                                    text='Заявка успешно завершена',
+                                    is_chat_notification=False,
+                                    redirect_url=f'/technique/orders/{order.name_slug}')
     return HttpResponseRedirect(f'/user/lk/?tab=tab-my-order-detail&order_id={order.id}')
 
 def technique_order_apply_decline_by_worker(request,apply_id):

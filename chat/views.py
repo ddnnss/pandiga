@@ -148,7 +148,6 @@ def get_msg(request):
 
 
 def add_msg(request):
-    print(request.POST == request.method)
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     Message.objects.create(chat_id=body['chatId'], user_id=body['msgFrom'], message=body['msg'])
@@ -159,9 +158,15 @@ def add_msg(request):
     chat_qs = Chat.objects.get(id=int(body['chatId']))
     chat_qs.lastMsgBy_id = request.user.id
     chat_qs.save()
-    Notification.objects.create(user=request.user,
+    msg_to = None
+    for u in chat_qs.users.all():
+        if not u == request.user:
+            msg_to = u
+
+    Notification.objects.create(user=msg_to,
                                 text='Новое сообщение в чате',
-                                is_chat_notification=True)
+                                is_chat_notification=True,
+                                redirect_url='/user/lk/?tab=tab-chat')
     return JsonResponse('ok',safe=False)
 
 
@@ -282,7 +287,8 @@ def to_rent(request,item_id):
         chat.lastMsgBy = request.user
         chat.save()
         Notification.objects.create(user=techniqueItem.owner,
-                                    text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}')
+                                    text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}',
+                                    redirect_url='/user/lk/?tab=tab-chat')
     else:
         print('chat not found')
         Notification.objects.create(user=techniqueItem.owner,text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}')
@@ -297,3 +303,11 @@ def to_rent(request,item_id):
                                message='Привет, хочу взять технику в аренду')
     # Message.objects.create(messageTo_id=body['msgTo'],messageFrom_id=body['msgFrom'],message=body['msg'])
     return HttpResponseRedirect('/user/lk/?tab=tab-chat')
+
+
+def delete_chat(request):
+    request_unicode = request.body.decode('utf-8')
+    request_body = json.loads(request_unicode)
+    chat_id = request_body['id']
+    Chat.objects.get(id=chat_id).delete()
+    return JsonResponse({'result': 'ok'})

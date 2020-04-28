@@ -174,8 +174,10 @@ def get_notifications(request):
     all_notify = Notification.objects.filter(user_id=user_id,is_read=False,is_user_notified=False)
     for notify in all_notify:
         notify.is_user_notified = True
+        # notify.save()
         notifications.append({
-           'text':notify.text
+           'text':notify.text,
+            'url':notify.redirect_url
         })
     response_dict['notify'] = notifications
     return JsonResponse(response_dict)

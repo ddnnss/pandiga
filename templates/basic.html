@@ -189,6 +189,7 @@
         }
     </script>
     <!--getPhone -->
+    {% if request.user.is_authenticated %}
     <script>
         function get_notifications() {
             let body = {id: '{{ request.user.id }}'}
@@ -199,11 +200,34 @@
                 credentials: 'same-origin'
             }).then(res=>res.json())
                 .then(res => {
-                    console.log(res)
+                    console.log(res['notify'])
+                    for (n of res['notify']){
+                        console.log(n)
+                        Toastify({
+                          text: `${n['text']}`,
+                          duration: 5000,
+                          destination: `${n['url']}`,
+                          newWindow: false,
+                          close: true,
+                          gravity: "bottom", // `top` or `bottom`
+                          position: 'right', // `left`, `center` or `right`
+                          backgroundColor: "#f80000",
+                          stopOnFocus: true, // Prevents dismissing of toast on hover
+                          onClick: function(){} // Callback after click
+                        }).showToast();
+                    }
                 })
 
         }
+        function get_info(){
+           setInterval(() => get_notifications(), 5000)
+        }
+        get_info()
     </script>
+
+
+
+    {% endif %}
 {% endblock %}
 </body>
 </html>

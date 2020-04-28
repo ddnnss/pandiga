@@ -257,11 +257,26 @@
         });
     </script>
     <script>
+        function deleteChat() {
+             let body = {id: curChat}
+            fetch('/chat/delete_chat/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": '{{ csrf_token  }}' },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                   closeChat()
+                })
+
+        }
         function closeChat(){
             getChats(curPage)
             document.getElementById('chat-messages').classList.remove('show-messages')
         }
         function openChat(el){
+
             chatMsgWrapper.innerHTML = ''
             msgTextArea.value = ''
 

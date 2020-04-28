@@ -8,8 +8,40 @@ from openpyxl import load_workbook
 from customuser.models import *
 from technique.models import *
 
+def tech(request):
+
+    wb = load_workbook(filename='C:/Users/ххх/PycharmProjects/pandiga/pandiga_technique.xlsx')
+    sheet = wb.active
+    max_row = sheet.max_row
+    max_column = sheet.max_column
+    for i in range(1, max_row + 1):
+        print(sheet.cell(row=i, column=1).value)
+        name = sheet.cell(row=i, column=2).value
+        city_name = sheet.cell(row=i, column=3).value
+        all_city = City.objects.all()
+        city_id = None
+
+        for c in all_city:
+            if f'{c.region},{c.city}' == city_name:
+                city_id=c.id
+        image = sheet.cell(row=i, column=4).value.replace('"','')
+        renttime = sheet.cell(row=i, column=5).value
+        subsection = sheet.cell(row=i, column=8).value
+        sub_id = TechniqueSubSection.objects.get(old_id=subsection)
+        price = sheet.cell(row=i, column=9).value
+        rent_type = sheet.cell(row=i, column=10).value
+        descr = sheet.cell(row=i, column=11).value
+        tech = sheet.cell(row=i, column=12).value
+        user_id = sheet.cell(row=i, column=13).value
+        user=User.objects.get(old_id=user_id)
+
+        newitem = TechniqueItem.objects.create(name=name,city_id=city_id,rent_type=rent_type,min_rent_time=renttime,
+                                               rent_price=price,description=descr,features=tech,owner=user,
+                                               sub_section=sub_id)
+        TechniqueItemImage.objects.create(techniqueitem=newitem,image=f'technique/items/{image}')
+
 def user(request):
-    wb = load_workbook(filename='C:/Users/xxx/PycharmProjects/pandiga/pandiga_users.xlsx')
+    wb = load_workbook(filename='C:/Users/ххх/PycharmProjects/pandiga/pandiga_users.xlsx')
     sheet = wb.active
     max_row = sheet.max_row
     max_column = sheet.max_column
@@ -53,7 +85,7 @@ def user(request):
         #                                page_keywords=cat_keywords)
 
 def type(request):
-    wb = load_workbook(filename='C:/Users/xxx/PycharmProjects/pandiga/pandiga_techniquetype.xlsx')
+    wb = load_workbook(filename='C:/Users/ххх/PycharmProjects/pandiga/pandiga_techniquetype.xlsx')
     sheet = wb.active
     max_row = sheet.max_row
     max_column = sheet.max_column
@@ -64,7 +96,7 @@ def type(request):
         TechniqueType.objects.create(old_id=old_id,image=img,name=name)
 
 def section(request):
-    wb = load_workbook(filename='C:/Users/xxx/PycharmProjects/pandiga/pandiga_techniquesections.xlsx')
+    wb = load_workbook(filename='C:/Users/ххх/PycharmProjects/pandiga/pandiga_techniquesections.xlsx')
     sheet = wb.active
     max_row = sheet.max_row
     max_column = sheet.max_column
@@ -76,7 +108,7 @@ def section(request):
         TechniqueSection.objects.create(old_id=old_id,type=type,name=name)
 
 def subsection(request):
-    wb = load_workbook(filename='C:/Users/xxx/PycharmProjects/pandiga/pandiga_techniquesubsections.xlsx')
+    wb = load_workbook(filename='C:/Users/ххх/PycharmProjects/pandiga/pandiga_techniquesubsections.xlsx')
     sheet = wb.active
     max_row = sheet.max_row
     max_column = sheet.max_column
@@ -90,7 +122,7 @@ def subsection(request):
         print(sect)
         TechniqueSubSection.objects.create(old_id=old_id,section=sect,name=name)
 def create_city(request):
-   pass
+    pass
     # from .sity_search import cities
     #
     # for i in cities:
