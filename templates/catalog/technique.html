@@ -121,10 +121,10 @@
                         </div>
                         <!-- Tab content -->
                         <div id="description_tab" class="h-tabcontent" style="display: block">
-                            <p>{{ techniqueItem.description }}</p>
+                            <p>{{ techniqueItem.description | safe }}</p>
                         </div>
                         <div id="features_tab" class="h-tabcontent">
-                            <p>{{ techniqueItem.features }}</p>
+                            <p>{{ techniqueItem.features | safe }}</p>
                         </div>
                         <div id="feedback_tab" class="h-tabcontent">
                             <p>Отзывы</p>

@@ -36,7 +36,7 @@ def check_profile(request):
             profile_ok = True
         allChats = Chat.objects.filter(users__in=[user.id])
         all_orders_apply = TechniqueOrderApply.objects.filter(user=user,is_choosen=False)
-        allNotificatons = Notification.objects.filter(user=user,is_read=False)
+        allNotificatons = Notification.objects.filter(user=user,is_read=False,is_chat_notification=False)
 
         allUnreadChats = allChats.filter(isNewMessages=True).exclude(lastMsgBy=user)
         allReadChats = allChats.filter(isNewMessages=False)

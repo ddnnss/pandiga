@@ -6,13 +6,18 @@
         {% for notify in all_notificatons %}
                <div class="technique-order-item block-bordered no-hover">
                                 <div style="max-width: 100%" class="technique-order-item-top">
-                                    <p><i class="fa fa-calendar"></i> {{ notify.createdAt | date }}</p>
+                                    <p><i class="fa fa-calendar"></i> {{ notify.createdAt |date:'Y-m-d H:i' }} </p>
+
+                                    {% if not notify.is_read %}
+                                        <p>НОВОЕ</p>
+                                    {% endif %}
+                                    <span><i class="fa fa-times"></i></span>
                                 </div>
                                 <div class="technique-order-item-middle">
                                     <p>{{ notify.text }}</p>
                                 </div>
 
-                        </div>
+               </div>
         {% endfor %}
     </div>
 </div><!--//tab-my-cars-->

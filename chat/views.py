@@ -81,6 +81,9 @@ def new_msg(request):
                                message=body['msg'])
     # Message.objects.create(messageTo_id=body['msgTo'],messageFrom_id=body['msgFrom'],message=body['msg'])
     return_dict['result'] = 'ok'
+    Notification.objects.create(user=request.user,
+                                text='Новое сообщение в чате',
+                                is_chat_notification=True)
     return JsonResponse(return_dict, safe=False)
 
 
@@ -109,10 +112,8 @@ def get_msg(request):
                     'technique_img': chat.techniqueitem.images.first().image.url,
                     'technique_name': chat.techniqueitem.name,
                     'technique_url': chat.techniqueitem.get_absolute_url()
-
                 }
             if chat.order:
-
                 if not request.user.is_customer:
                     userInfo = {
                         'user_name': user_name,
@@ -158,6 +159,9 @@ def add_msg(request):
     chat_qs = Chat.objects.get(id=int(body['chatId']))
     chat_qs.lastMsgBy_id = request.user.id
     chat_qs.save()
+    Notification.objects.create(user=request.user,
+                                text='Новое сообщение в чате',
+                                is_chat_notification=True)
     return JsonResponse('ok',safe=False)
 
 
@@ -277,6 +281,8 @@ def to_rent(request,item_id):
                                message='Привет, хочу взять технику в аренду')
         chat.lastMsgBy = request.user
         chat.save()
+        Notification.objects.create(user=techniqueItem.owner,
+                                    text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}')
     else:
         print('chat not found')
         Notification.objects.create(user=techniqueItem.owner,text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}')

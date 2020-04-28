@@ -102,11 +102,9 @@ def lk_page(request):
     all_payments = PaymentObj.objects.filter(user=user)
     all_partners = Parnter.objects.filter(code=user.partner_code)
     all_partners_money = PartnerMoney.objects.filter(partner__code=user.partner_code)
-    all_notificatons = Notification.objects.filter(user=user).order_by('-createdAt')
-    if request.GET.get('tab') == 'tab-notification':
-        for notificaton in all_notificatons:
-            notificaton.is_read = True
-            notificaton.save()
+    all_notificatons = Notification.objects.filter(user=user, is_chat_notification=False).order_by('-createdAt')
+
+
     form = UpdateForm()
     if user.is_customer and  my_order_id:
         my_order = get_object_or_404(TechniqueOrder, id=my_order_id)
@@ -156,3 +154,28 @@ def user_phone(request):
     else:
         return JsonResponse({'status': 'error'}, safe=False)
 
+def mark_notify_read(request):
+    request_unicode = request.body.decode('utf-8')
+    request_body = json.loads(request_unicode)
+    user_id = request_body['id']
+    all_notify = Notification.objects.filter(user_id=user_id)
+    for notify in all_notify:
+        notify.is_read = True
+        notify.save()
+    return JsonResponse({'result': 'ok'})
+
+
+def get_notifications(request):
+    response_dict={}
+    notifications=[]
+    request_unicode = request.body.decode('utf-8')
+    request_body = json.loads(request_unicode)
+    user_id = request_body['id']
+    all_notify = Notification.objects.filter(user_id=user_id,is_read=False,is_user_notified=False)
+    for notify in all_notify:
+        notify.is_user_notified = True
+        notifications.append({
+           'text':notify.text
+        })
+    response_dict['notify'] = notifications
+    return JsonResponse(response_dict)

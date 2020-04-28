@@ -108,6 +108,8 @@
             let url = new URL(location.href);
             let tab = url.searchParams.get("tab");
             opentab(event, tab, 'link-active')
+            console.log('notify')
+            markNotificationRead()
 
         });
     </script>
@@ -137,8 +139,6 @@
             }).then(res=>res.json())
                 .then(res => {
                     console.log(res)
-
-
                     if (res['readChats'].length > 0){
                         for (chat of res['readChats']){
                             paginator.innerHTML = ''
@@ -223,13 +223,11 @@
 
         function sendMsg() {
             let msg = msgTextArea.value
-
             let body = {
                 chatId: curChat,
                 msgFrom: {{ request.user.id }},
                 msg: msg
             }
-
             fetch('/chat/add_msg/', {
                 method: 'post',
                 body: JSON.stringify(body),
@@ -249,7 +247,6 @@
                 }
             )
         }
-
     </script>
 
     <script>
@@ -320,6 +317,23 @@
                 }
             )
         }
+    </script>
+    <script>
+    function markNotificationRead() {
+        let body = {id: '{{ request.user.id }}'}
+            fetch('/user/mark_notify_read/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": '{{ csrf_token  }}' },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                })
+
+    }
+
+
     </script>
 
 {% endblock %}

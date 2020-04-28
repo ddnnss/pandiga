@@ -9,4 +9,6 @@ urlpatterns = [
    path('lk/', views.lk_page, name='lk_page'),
    path('update/', views.user_profile_update, name='user_profile_update'),
    path('user_phone/', views.user_phone, name='user_phone'),
+   path('mark_notify_read/', views.mark_notify_read, name='mark_notify_read'),
+   path('get_notifications/', views.get_notifications, name='get_notifications'),
 ]

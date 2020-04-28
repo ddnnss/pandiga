@@ -111,6 +111,7 @@ def order_apply_done(request, order_id):
         order.is_finished = True
         order.save()
     return HttpResponseRedirect(f'/user/lk/?tab=tab-my-order-detail&order_id={order.id}')
+
 def technique_order_apply_decline_by_worker(request,apply_id):
     apply = get_object_or_404(TechniqueOrderApply, id=apply_id)
     if apply.user == request.user:

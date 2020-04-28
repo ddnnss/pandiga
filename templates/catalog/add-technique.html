@@ -102,7 +102,7 @@
                     <div class="form-row">
                         <label for="">Документы</label>
 
-                        <input required multiple name="item_docs" accept="image/*"  type="file" >
+                        <input  multiple name="item_docs" accept="image/*"  type="file" >
 
 
                     </div><!--//form-row-->
@@ -157,6 +157,11 @@
 {% block js %}
     {{ block.super }}
     <!-- preview images-->
+    <script src="https://cdn.ckeditor.com/4.14.0/basic/ckeditor.js"></script>
+     <script>
+          CKEDITOR.replace( '{{ form.description.name }}' );
+          CKEDITOR.replace( '{{ form.features.name }}' );
+     </script>
     <script>
         let priceLabel = document.getElementById('price_label')
         let rentTimeInput = document.getElementById('rent_time_input')

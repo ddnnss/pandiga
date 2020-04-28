@@ -28,6 +28,7 @@ class TechniqueType(models.Model):
     seo_text = RichTextUploadingField('СЕО текст на страницу', blank=True, null=True)
     views = models.IntegerField('Просмотров категории',blank=True, default=0)
     is_active =models.BooleanField('Отображается на сайте?', default=True)
+    old_id = models.IntegerField(blank=True, null=True, editable=False)
 
     def save(self, *args, **kwargs):
         slug = slugify(self.name)
@@ -64,6 +65,7 @@ class TechniqueSection(models.Model):
     seo_text = RichTextUploadingField('СЕО текст на страницу', blank=True, null=True)
     views = models.IntegerField('Просмотров категории',blank=True, default=0)
     is_active = models.BooleanField('Отображается на сайте?', default=True)
+    old_id = models.IntegerField(blank=True, null=True, editable=False)
     def save(self, *args, **kwargs):
         slug = slugify(self.name)
         if not self.name_slug:
@@ -98,6 +100,7 @@ class TechniqueSubSection(models.Model):
     seo_text = RichTextUploadingField('СЕО текст на страницу', blank=True, null=True)
     views = models.IntegerField('Просмотров категории',blank=True, default=0)
     is_active = models.BooleanField('Отображается на сайте?', default=True)
+    old_id = models.IntegerField(blank=True, null=True, editable=False)
 
     def save(self, *args, **kwargs):
         slug = slugify(self.name)
@@ -243,7 +246,7 @@ class TechniqueItemImage(models.Model):
 
 
 class TechniqueItemDoc(models.Model):
-    techniqueitem = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,
+    techniqueitem = models.ForeignKey(TechniqueItem, blank=True, null=True, on_delete=models.CASCADE,
                                 verbose_name='Документ для',related_name='docs')
     image = models.ImageField('Документ', upload_to='technique/docs/', blank=False, null=True)
     is_moderated = models.BooleanField('Документ проверен?', default=True)

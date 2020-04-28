@@ -22,8 +22,8 @@ class PaymentObj(models.Model):
     type = models.ForeignKey(PaymentType, blank=False, null=True,
                                   on_delete=models.CASCADE,
                                   verbose_name='Вид платежа')
-    status = models.CharField('Статус платежа',max_length=255,blank=True,null=True)
-    amount = models.IntegerField('Сумма платежа',max_length=255,blank=True,null=True)
+    status = models.CharField('Статус платежа', max_length=255,blank=True,null=True)
+    amount = models.IntegerField('Сумма платежа', blank=True,null=True)
     is_payed = models.BooleanField("Оплачен?", default=False)
     created_at = models.DateTimeField("Дата платежа", auto_now_add=True)
 

@@ -68,6 +68,7 @@ class User(AbstractUser):
     technique_added = models.IntegerField(default=0)
     rate_times = models.IntegerField(default=0)
     other_added = models.IntegerField(default=0)
+    old_id = models.IntegerField(blank=True,null=True,editable=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -76,8 +77,11 @@ class User(AbstractUser):
     def __str__(self):
         if self.phone:
             return self.phone
-        else:
+        elif self.email:
             return self.email
+        else:
+            return self.first_name
+
     def get_rating(self):
         try:
             return round(self.rating / self.rate_times)
@@ -104,6 +108,9 @@ class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True)
     text = models.TextField(blank=True,null=True)
     is_read = models.BooleanField(default=False)
+    is_chat_notification = models.BooleanField(default=False)
+    is_user_notified = models.BooleanField(default=False)
+    redirect_url = models.CharField(max_length=255,blank=True,null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
 
 

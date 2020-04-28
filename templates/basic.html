@@ -10,7 +10,13 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/nouislider.css' %}">
-      <link rel="stylesheet" href="{% static 'css/tiny-slider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tiny-slider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toastify.css' %}">
+    <style>
+        .cke_1, .cke_2{
+            flex-grow: 1 ;
+        }
+    </style>
 </head>
 <body>
 <form style="display: none" id="dummy_form" >{% csrf_token %}</form>
@@ -21,69 +27,69 @@
 {% include 'footer.html' %}
 
 {% block js %}
+    <script src="{% static 'js/toastify.js' %}"></script>
     <script>
-     let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
-      let cityId = document.getElementById('city_id')
-       function openModal() {
+        let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+        let cityId = document.getElementById('city_id')
+        function openModal() {
             document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
         }
     </script>
-     <!-- getCities-->
+    <!-- getCities-->
     <script>
-    function getCities(el) {
-        let citySelectList = document.getElementById('city_select_list')
+        function getCities(el) {
+            let citySelectList = document.getElementById('city_select_list')
 
-        if (el.value.length <= 2){
-            console.log('too small')
-             cityId.value = 'all'
-            return
-        }else{
-            console.log(el.value)
-            el.disabled = true
-            let body = {'query':el.value}
-            fetch('/get_city/', {
-                method: 'post',
-                body: JSON.stringify(body),
-                headers: { "X-CSRFToken": csrfmiddlewaretoken },
-                credentials: 'same-origin'
-            }).then(res=>res.json())
-                .then(res => {
-                    console.log(res)
-                    el.disabled = false
-                    el.focus()
-                    if (res.length >= 1){
-                        citySelectList.innerHTML = ''
-                        for(i of res){
+            if (el.value.length <= 2){
+                console.log('too small')
+                cityId.value = 'all'
+                return
+            }else{
+                console.log(el.value)
+                el.disabled = true
+                let body = {'query':el.value}
+                fetch('/get_city/', {
+                    method: 'post',
+                    body: JSON.stringify(body),
+                    headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                    credentials: 'same-origin'
+                }).then(res=>res.json())
+                    .then(res => {
+                        console.log(res)
+                        el.disabled = false
+                        el.focus()
+                        if (res.length >= 1){
+                            citySelectList.innerHTML = ''
+                            for(i of res){
 
-                            citySelectList.innerHTML = citySelectList.innerHTML +
-                                `<p data-id="${i['id']}" data-city="${i['city']}" data-region="${i['region']}" class="city-select-list-item" onclick="setCity(this)">
+                                citySelectList.innerHTML = citySelectList.innerHTML +
+                                    `<p data-id="${i['id']}" data-city="${i['city']}" data-region="${i['region']}" class="city-select-list-item" onclick="setCity(this)">
                                  ${i['city']}
                                  <span>${i['region']}</span>
                              </p>`
+                            }
+                            citySelectList.classList.add('list-active')
+                        }else{
+                            citySelectList.classList.remove('list-active')
                         }
-                        citySelectList.classList.add('list-active')
-                    }else{
-                        citySelectList.classList.remove('list-active')
-                    }
 
-                })
+                    })
+            }
+
         }
+        function setCity(el) {
+            let citySelectInput = document.getElementById('city_select_input')
+            let citySelectList = document.getElementById('city_select_list')
 
-    }
-    function setCity(el) {
-        let citySelectInput = document.getElementById('city_select_input')
-        let citySelectList = document.getElementById('city_select_list')
-
-        citySelectList.classList.remove('list-active')
-        citySelectInput.value = `${el.dataset.region}, ${el.dataset.city}`
-        cityId.value = el.dataset.id
-    }
+            citySelectList.classList.remove('list-active')
+            citySelectInput.value = `${el.dataset.region}, ${el.dataset.city}`
+            cityId.value = el.dataset.id
+        }
     </script>
     <!-- //getCities-->
-
     <!-- tabs-->
     <script>
-       function openHTab(evt, tabName) {
+        function openHTab(evt, tabName) {
             let i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("h-tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
@@ -96,7 +102,7 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " htab-active";
         }
-       function opentab(evt, TabName, type) {
+        function opentab(evt, TabName, type) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("lk-tab");
             for (i = 0; i < tabcontent.length; i++) {
@@ -107,7 +113,10 @@
                 tablinks[i].className = tablinks[i].className.replace(` ${type}`, "");
             }
             document.getElementById(TabName).style.display = "block";
-
+            if (TabName==='tab-notification'){
+                console.log('nottify')
+                markNotificationRead()
+            }
             console.log(evt)
             evt.currentTarget.className += ` ${type}`;
             closeChat()
@@ -115,7 +124,7 @@
     </script>
     <!-- //tabs-->
     <!--send message -->
-     <script>
+    <script>
         let openBtn = document.getElementById('message_toggle'),
             messageForm = document.getElementById('new_message'),
             msg = document.getElementById('message')
@@ -151,11 +160,11 @@
 
     </script>
     <!--send message -->
-      <!--getPhone -->
-       <script>
-    let user_phone = document.getElementById('user_phone')
-    function getPhone(id,el) {
-         let body = {iid: id,'ee':'ee'}
+    <!--getPhone -->
+    <script>
+        let user_phone = document.getElementById('user_phone')
+        function getPhone(id,el) {
+            let body = {iid: id,'ee':'ee'}
             fetch('/user/user_phone/', {
                 method: 'post',
                 body: JSON.stringify(body),
@@ -165,21 +174,36 @@
                 .then(res => {
                     console.log(res)
                     if (res['phone']){
-                      el.style.display = 'none'
-                    user_phone.innerText = res['phone']
-                    user_phone.setAttribute('href',`tel:${res['phone']}`)
+                        el.style.display = 'none'
+                        user_phone.innerText = res['phone']
+                        user_phone.setAttribute('href',`tel:${res['phone']}`)
                     }
                     else {
                         user_phone.style.display = 'none'
-                         el.innerHTML='Для просмотра номера нужно <a href = "/user/lk/?tab=tab-tarif">сменить тариф </a>'
+                        el.innerHTML='Для просмотра номера нужно <a href = "/user/lk/?tab=tab-tarif">сменить тариф </a>'
                     }
                     getChats(1);
 
                 })
 
-    }
+        }
     </script>
-      <!--getPhone -->
+    <!--getPhone -->
+    <script>
+        function get_notifications() {
+            let body = {id: '{{ request.user.id }}'}
+            fetch('/user/get_notifications/', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: { "X-CSRFToken": '{{ csrf_token  }}' },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+                })
+
+        }
+    </script>
 {% endblock %}
 </body>
 </html>

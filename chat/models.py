@@ -4,7 +4,7 @@ from technique.models import TechniqueItem
 from techniqueOrder.models import TechniqueOrder
 
 class Chat(models.Model):
-    users = models.ManyToManyField(User, blank=True, null=True, verbose_name='Пользователи',
+    users = models.ManyToManyField(User, blank=True,  verbose_name='Пользователи',
                                     related_name='chatusers')
 
     techniqueitem = models.ForeignKey(TechniqueItem, blank=True, null=True, on_delete=models.CASCADE,
