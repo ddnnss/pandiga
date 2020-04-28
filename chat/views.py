@@ -203,6 +203,7 @@ def get_chats(request):
 
         if chat.techniqueitem :
             readChats.append({
+                'is_read': chat.isNewMessages,
                 'chat_id': chat.id,
                 'chat_from': user_name,
                 'user_avatar': user_avatar,
@@ -217,6 +218,7 @@ def get_chats(request):
         if chat.order :
             if request.user.is_customer:
                 readChats.append({
+                    'is_read': chat.isNewMessages,
                     'chat_id': chat.id,
                     'chat_from': user_name,
                     'user_avatar': user_avatar,
@@ -230,6 +232,7 @@ def get_chats(request):
                 })
             else:
                 readChats.append({
+                    'is_read': chat.isNewMessages,
                     'chat_id': chat.id,
                     'chat_from': user_name,
                     'user_avatar': user_avatar,

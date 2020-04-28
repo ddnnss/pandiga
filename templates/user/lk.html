@@ -127,6 +127,7 @@
 
 
         function getChats(page=curPage) {
+            let read=''
             let body = {
                 page: page,
             }
@@ -141,11 +142,17 @@
                     console.log(res)
                     if (res['readChats'].length > 0){
                         for (chat of res['readChats']){
+                            if(!chat['is_read']){
+                                read = 'style="opacity: 0.7;"'
+                            }
+                            else {
+                                read=''
+                            }
                             paginator.innerHTML = ''
                             if(chat['technique_img']){
                                  readChatsList.innerHTML = readChatsList.innerHTML + `
                                  <li>
-                                        <div data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
+                                        <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
                                             <div  class="lk-tab-chat-item-img ">
                                                 <img src="${chat['user_avatar']}" alt="">
                                             </div>
@@ -174,7 +181,7 @@
                             else{
                                  readChatsList.innerHTML = readChatsList.innerHTML + `
                                  <li>
-                                        <div data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
+                                        <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
                                             <div  class="lk-tab-chat-item-img ">
                                                 <img src="${chat['user_avatar']}" alt="">
                                             </div>
