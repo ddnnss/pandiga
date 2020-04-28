@@ -6,6 +6,7 @@ class PaymentType(models.Model):
     icon = models.ImageField('Иконка', upload_to='payment/', blank=False, null=True)
     name = models.CharField('Название платежа', max_length=255, blank=True, null=True)
     method = models.CharField('Метод платежа', max_length=255, blank=True, null=True)
+    is_active = models.BooleanField('Отображать?', default=True)
 
     def __str__(self):
         return self.name or ''
