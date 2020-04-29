@@ -221,28 +221,28 @@ class TechniqueItemImage(models.Model):
 
     image_tag.short_description = 'Изображение'
 
-    # def save(self, *args, **kwargs):
-    #     fill_color = '#fff'
-    #     base_image = Image.open(self.image)
-    #
-    #     if base_image.mode in ('RGBA', 'LA'):
-    #         background = Image.new(base_image.mode[:-1], base_image.size, fill_color)
-    #         background.paste(base_image, base_image.split()[-1])
-    #         base_image = background
-    #     #os.makedirs('media/items/{}'.format(self.item.id), exist_ok=True)
-    #     watermark = Image.open('static/img/wm.png')
-    #     blob = BytesIO()
-    #     width, height = base_image.size
-    #     transparent = Image.new('RGB', (width, height), (0, 0, 0, 0))
-    #     transparent.paste(base_image, (0, 0))
-    #     transparent.thumbnail((800, 800), Image.ANTIALIAS)
-    #     transparent.paste(watermark, (50, 50), mask=watermark)
-    #    # transparent.show()
-    #     transparent.save(blob, 'JPEG')
-    #     self.image.save(f'{self.techniqueitem.name_slug}.jpg',File(blob), save=False)
-    #
-    #
-    #     super(TechniqueItemImage, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        fill_color = '#fff'
+        base_image = Image.open(self.image)
+
+        if base_image.mode in ('RGBA', 'LA'):
+            background = Image.new(base_image.mode[:-1], base_image.size, fill_color)
+            background.paste(base_image, base_image.split()[-1])
+            base_image = background
+        #os.makedirs('media/items/{}'.format(self.item.id), exist_ok=True)
+        watermark = Image.open('static/img/wm.png')
+        blob = BytesIO()
+        width, height = base_image.size
+        transparent = Image.new('RGB', (width, height), (0, 0, 0, 0))
+        transparent.paste(base_image, (0, 0))
+        transparent.thumbnail((800, 800), Image.ANTIALIAS)
+        transparent.paste(watermark, (50, 50), mask=watermark)
+       # transparent.show()
+        transparent.save(blob, 'JPEG')
+        self.image.save(f'{self.techniqueitem.name_slug}.jpg',File(blob), save=False)
+
+
+        super(TechniqueItemImage, self).save(*args, **kwargs)
 
 
 class TechniqueItemDoc(models.Model):
