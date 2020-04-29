@@ -18,6 +18,7 @@ urlpatterns = [
     path('<type_slug>/<section_slug>/', views.technique_section_catalog, name='technique_section_catalog'),
     path('<type_slug>/<section_slug>/<subsection_slug>/', views.technique_subsection_catalog, name='technique_subsection_catalog'),
     path('<type_slug>/<section_slug>/<subsection_slug>/<technique_slug>', views.technique, name='technique'),
+    path('section_subscribe', views.section_subscribe, name='section_subscribe'),
 
 
 ]

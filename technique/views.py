@@ -206,6 +206,15 @@ def technique_type_catalog(request, type_slug):
 def technique_section_catalog(request, type_slug, section_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
     current_technique_section = get_object_or_404(TechniqueSection, name_slug=section_slug)
+    is_subscribed = False
+    if request.user.is_authenticated:
+        try:
+            subscribes = SectionSubcribes.objects.get(section=current_technique_section)
+
+            if request.user in subscribes.users.all():
+                is_subscribed = True
+        except:
+            pass
     seo_text = current_technique_section.seo_text
     all_technique_qs = TechniqueItem.objects.filter(section=current_technique_section, is_moderated=True, is_active=True)
     filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
@@ -254,6 +263,7 @@ def technique_subsection_catalog(request, type_slug, section_slug, subsection_sl
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
     current_technique_section = get_object_or_404(TechniqueSection, name_slug=section_slug)
     current_technique_subsection = get_object_or_404(TechniqueSubSection, name_slug=subsection_slug)
+
     seo_text = current_technique_subsection.seo_text
     all_technique_qs = TechniqueItem.objects.filter(sub_section=current_technique_subsection, is_moderated=True, is_active=True)
     filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
@@ -303,3 +313,22 @@ def technique(request, type_slug, section_slug, subsection_slug,technique_slug):
     techniqueItem = get_object_or_404(TechniqueItem, name_slug=technique_slug)
     otherTechnique = TechniqueItem.objects.filter(owner=techniqueItem.owner).exclude(id=techniqueItem.id)
     return render(request, 'catalog/technique.html', locals())
+
+
+def section_subscribe(request):
+    request_unicode = request.body.decode('utf-8')
+    request_body = json.loads(request_unicode)
+    print(request_body)
+    try:
+        sect_subscribe = SectionSubcribes.objects.get(section_id=request_body['section_id'])
+        print('subcribe found')
+    except:
+        print('subcribe not found')
+        sect_subscribe = SectionSubcribes.objects.create(section_id=request_body['section_id'])
+    if (request_body['action'] == 'subscribe'):
+        sect_subscribe.users.add(request.user)
+        print('user added')
+    if (request_body['action'] == 'unsubscribe'):
+        sect_subscribe.users.remove(request.user)
+        print('user removed')
+    return JsonResponse({'status':'ok'}, safe=False)

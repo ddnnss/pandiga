@@ -301,3 +301,8 @@ def auto_delete_doc_file_on_change_itemimage(sender, instance, **kwargs):
 
 post_delete.connect(auto_delete_doc_file_on_delete, sender=TechniqueItemDoc)
 pre_save.connect(auto_delete_doc_file_on_change_itemimage, sender=TechniqueItemDoc)
+
+
+class SectionSubcribes(models.Model):
+    section = models.ForeignKey(TechniqueSection,blank=False,null=True,on_delete=models.CASCADE)
+    users = models.ManyToManyField(User)

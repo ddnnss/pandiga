@@ -49,7 +49,7 @@
                                                         <a {% if current_technique_section.id == section.id%}
                                                             class="menu-item-active"
                                                         {% endif %}
-                                                            href="{% url 'technique_section_catalog' current_technique_type.name_slug section.name_slug%}">
+                                                            href="{% url 'technique_section_catalog' type.name_slug section.name_slug%}">
                                                             {{ section.name }}
                                                         </a>
                                                         <div  class="category-menu-inner">
@@ -59,7 +59,7 @@
                                                                         <a {% if current_technique_subsection.id == subsection.id%}
                                                                             class="menu-item-active"
                                                                         {% endif %}
-                                                                            href="{% url 'technique_subsection_catalog' current_technique_type.name_slug section.name_slug subsection.name_slug%}">
+                                                                            href="{% url 'technique_subsection_catalog' type.name_slug section.name_slug subsection.name_slug%}">
                                                                             {{ subsection.name }}
                                                                         </a>
                                                                     </li>
@@ -68,7 +68,6 @@
                                                         </div>
                                                     </li>
                                                 {% endfor %}
-
                                             </ul>
                                         </div>
                                     </li>
@@ -175,12 +174,21 @@
                     </div><!--//items-block-left-->
                     <div class="items-block-right">
                         <div class="items-block-right-sorting">
-                            <div class="items-block-right-sorting-inner">
+                            <div style="display: flex; justify-content: space-between;align-items: center;flex-wrap: wrap" class="items-block-right-sorting-inner">
                                 <div class="items-block-right-sorting-inner-display">
                                     <p>Вид отображения</p>
                                     <a class="selected-display" href=""><i class="fa fa-th"></i></a>
                                     <a href=""><i class="fa fa-list"></i></a>
                                 </div>
+                                {% if request.user.is_authenticated and current_technique_section and not current_technique_subsection %}
+                                    <div  class="">
+                                      <label class="custom-checkbox"> Подписаться на рассылку новой техники этой категории
+                                            <input type="checkbox" {% if is_subscribed %}checked{% endif %} onchange="updateSubscribe(this)">
+                                            <span class="checkmark"></span>
+                                        </label>
+
+                                    </div>
+                                {% endif %}
                             </div>
                         </div><!--//items-block-right-sorting-->
                         <div class="items-block-right-wrapper">
@@ -338,103 +346,73 @@
         }
     </script>
     <script>
-
         noUiSlider.create(slider_price, {
             start: [{% if filter_h_price_from %}{{ filter_h_price_from }}{% else %}0{% endif %},{% if filter_h_price_to %}{{ filter_h_price_to }}{% else %}10000{% endif %} ],
             connect: true,
             range: {
                 'min': [0],
-
                 'max': [10000]
             }
-
         });
-
         noUiSlider.create(slider_h, {
             start: [{% if filter_h_from %}{{ filter_h_from }}{% else %}0{% endif %},{% if filter_h_to %}{{ filter_h_to }}{% else %}24{% endif %} ],
             connect: true,
             range: {
                 'min': [0],
-
                 'max': [24]
             }
-
         });
-
         noUiSlider.create(slider_d, {
             start: [{% if filter_d_from %}{{ filter_d_from }}{% else %}0{% endif %},{% if filter_d_to %}{{ filter_d_to }}{% else %}30{% endif %}],
             connect: true,
             range: {
                 'min': [0],
-
                 'max': [30]
             }
-
         });
-
         noUiSlider.create(slider_price_d, {
             start: [{% if filter_d_price_from %}{{ filter_d_price_from }}{% else %}0{% endif %},{% if filter_d_price_to %}{{ filter_d_price_to }}{% else %}10000{% endif %}],
             connect: true,
             range: {
                 'min': [0],
-
                 'max': [10000]
             }
-
         });
-
         slider_price.noUiSlider.on('update', function (values, handle) {
             priceValues[handle].value = Math.floor(values[handle]);
-
         });
         priceValues[0].addEventListener('input', function () {
             slider_price.noUiSlider.set([this.value,null]);
-
         });
         priceValues[1].addEventListener('input', function () {
             slider_price.noUiSlider.set([null,this.value]);
-
         });
-
-
         slider_h.noUiSlider.on('update', function (values, handle) {
             hValues[handle].value = Math.floor(values[handle]);
-
         });
         hValues[0].addEventListener('input', function () {
             slider_h.noUiSlider.set([this.value,null]);
-
         });
         hValues[1].addEventListener('input', function () {
             slider_h.noUiSlider.set([null,this.value]);
-
         });
-
-
         slider_d.noUiSlider.on('update', function (values, handle) {
             dValues[handle].value = Math.floor(values[handle]);
-
         });
         dValues[0].addEventListener('input', function () {
             slider_d.noUiSlider.set([this.value,null]);
-
         });
         dValues[1].addEventListener('input', function () {
             slider_d.noUiSlider.set([null,this.value]);
-
         });
-
         slider_price_d.noUiSlider.on('update', function (values, handle) {
             dPriceValues[handle].value = Math.floor(values[handle]);
-
         });
         dPriceValues[0].addEventListener('input', function () {
             slider_price_d.noUiSlider.set([this.value,null]);
-
         });
         dPriceValues[1].addEventListener('input', function () {
             slider_price_d.noUiSlider.set([null,this.value]);
-
         });
     </script>
     <script>
@@ -456,7 +434,6 @@
                 let panel = this.nextElementSibling;
                 lastPanel = panel
                 if (panel.style.maxHeight) {
-
                     panel.style.maxHeight = null;
                     panel.classList.remove('panel-active')
                 } else {
@@ -497,7 +474,7 @@
             fetch('/catalog/get_type_sublists/', {
                 method: 'post',
                 body: JSON.stringify(body),
-                headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                headers: { "X-CSRFToken": '{{ csrf_token }}' },
                 credentials: 'same-origin'
             }).then(res=>res.json())
                 .then(res => {
@@ -531,4 +508,31 @@
         })
     </script>
     <!-- //get section && subsection-->
+    <!-- section un\subscribe-->
+    <script>
+    function updateSubscribe(el) {
+        let action = '',
+            section_id = '{{ current_technique_section.id }}'
+        if (el.checked){
+            console.log('subcribe')
+            action = 'subscribe'
+        }else{
+            console.log('unsubcribe')
+            action = 'unsubscribe'
+        }
+        fetch('/catalog/section_subscribe', {
+                method: 'post',
+                body: JSON.stringify({'action':action,'section_id':section_id}),
+                headers: { "X-CSRFToken": '{{ csrf_token }}' },
+                credentials: 'same-origin'
+            }).then(res=>res.json())
+                .then(res => {
+                    console.log(res)
+
+                })
+
+    }
+
+    </script>
+    <!-- section un\subscribe-->
 {% endblock %}
