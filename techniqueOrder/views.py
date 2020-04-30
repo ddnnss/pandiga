@@ -66,6 +66,7 @@ def technique_order(request):
         all_types = TechniqueType.objects.filter(is_active=True)
         form = TechniqueOrderForm()
         addTechniqueOrderActive = 'menu-link-active '
+
         return render(request, 'techniqueOrder/technique-order.html', locals())
     else:
         return HttpResponseRedirect('/')

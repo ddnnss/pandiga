@@ -11,4 +11,5 @@ urlpatterns = [
    path('user_phone/', views.user_phone, name='user_phone'),
    path('mark_notify_read/', views.mark_notify_read, name='mark_notify_read'),
    path('get_notifications/', views.get_notifications, name='get_notifications'),
+
 ]

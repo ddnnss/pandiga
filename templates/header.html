@@ -53,16 +53,16 @@
                         <li class="user-menu">
                             <a class="user-menu-link" href="javascript: void(0)">{{ request.user.first_name }}</a>
                             <a class="user-menu-link user-menu-mail" href="{% url 'lk_page' %}?tab=tab-chat">
-                                <i class="fa fa-envelope">
+                                <i id="allUnreadChats_count" class="fa fa-envelope">
                                     {% if allUnreadChats.count > 0 %}
-                                        <span>{{ allUnreadChats.count }}</span>
+                                        <span >{{ allUnreadChats.count }}</span>
                                     {% endif %}
                                 </i>
                             </a>
                             <a class="user-menu-link user-menu-mail" href="{% url 'lk_page' %}?tab=tab-notification">
-                                <i class="fa fa-bell">
+                                <i id="allNotificatons_count" class="fa fa-bell">
                                     {% if allNotificatons.count > 0 %}
-                                        <span>{{ allNotificatons.count }}</span>
+                                        <span >{{ allNotificatons.count }}</span>
                                     {% endif %}
                                 </i>
                             </a>
@@ -90,10 +90,10 @@
                                 {% if request.user.is_customer %}
                                     <ul class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
                                         <li class="user-menu-dropdown-item">
-                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-notification">оповещения ({{ allNotificatons.count }})</a>
+                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-notification">оповещения (<span id="menu_allNotificatons_count">{{ allNotificatons.count }}</span>)</a>
                                         </li>
                                         <li class="user-menu-dropdown-item">
-                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }})</a>
+                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }}/<span id="menu_allUnreadChats_count">{{ allUnreadChats.count }}</span>)</a>
                                         </li>
                                         <li class="user-menu-dropdown-item">
                                             <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-fav">избранное ({{ techniqueItemsFavorite.count }})</a>
@@ -129,7 +129,7 @@
                                 {% else %}
                                     <ul  class="user-menu-dropdown-wrapper"><!-- меню исполнителя-->
                                         <li class="user-menu-dropdown-item">
-                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-notification">оповещения ({{ allNotificatons.count }})</a>
+                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-notification">оповещения (<span id="menu_allNotificatons_count">{{ allNotificatons.count }}</span>)</a>
                                         </li>
                                         <li class="user-menu-dropdown-item">
                                             <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-balance">баланс: {{ my_balance }} <i class="fa fa-rub"></i></a>
@@ -140,7 +140,7 @@
                                             <a class="user-menu-dropdown-link link-small" href="">изменить</a>
                                         </li>
                                         <li class="user-menu-dropdown-item">
-                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }} )</a>
+                                            <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-chat">диалоги ({{ allChats.count }}/<span id="menu_allUnreadChats_count">{{ allUnreadChats.count }}</span> )</a>
                                         </li>
                                         <li class="user-menu-dropdown-item">
                                             <a  class="user-menu-dropdown-link" href="{% url 'lk_page' %}?tab=tab-my-cars">моя техника ({{ my_technique.count }})</a>

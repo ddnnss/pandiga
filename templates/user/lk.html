@@ -108,9 +108,7 @@
             let url = new URL(location.href);
             let tab = url.searchParams.get("tab");
             opentab(event, tab, 'link-active')
-            console.log('notify')
             markNotificationRead()
-
         });
     </script>
     <!--//tabs-->
@@ -127,11 +125,12 @@
 
 
         function getChats(page=curPage) {
-            let read=''
+            let read='',
+                temp_chats=''
             let body = {
                 page: page,
             }
-            readChatsList.innerHTML=''
+
             fetch('/chat/get_chats/', {
                 method: 'post',
                 body: JSON.stringify(body),
@@ -149,10 +148,11 @@
                                 read=''
                             }
                             paginator.innerHTML = ''
+
                             if(chat['technique_img']){
-                                 readChatsList.innerHTML = readChatsList.innerHTML + `
+                                 temp_chats = `
                                  <li>
-                                        <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
+                                        <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(${chat['chat_id']})>
                                             <div  class="lk-tab-chat-item-img ">
                                                 <img src="${chat['user_avatar']}" alt="">
                                             </div>
@@ -179,9 +179,9 @@
                                 `
                             }
                             else{
-                                 readChatsList.innerHTML = readChatsList.innerHTML + `
+                                 temp_chats = `
                                  <li>
-                                        <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(this)>
+                                        <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(${chat['chat_id']})>
                                             <div  class="lk-tab-chat-item-img ">
                                                 <img src="${chat['user_avatar']}" alt="">
                                             </div>
@@ -207,7 +207,8 @@
                                     </li>
                                 `
                             }
-
+                            readChatsList.innerHTML=''
+                            readChatsList.innerHTML=temp_chats
                         }
                         if ( res['pages']['last_page'] > 1){
                             for(var i = 1; i <= res['pages']['last_page']; i++){
@@ -230,6 +231,9 @@
 
         function sendMsg() {
             let msg = msgTextArea.value
+            if (msg===''){
+                return
+            }
             let body = {
                 chatId: curChat,
                 msgFrom: {{ request.user.id }},
@@ -282,16 +286,14 @@
             getChats(curPage)
             document.getElementById('chat-messages').classList.remove('show-messages')
         }
-        function openChat(el){
-
-            chatMsgWrapper.innerHTML = ''
+        function openChat(chat_id){
             msgTextArea.value = ''
-
+            temp_msg=''
             let chatUserAvatar = document.getElementById('chat_user_avatar')
             let chatUserName = document.getElementById('chat_user_name')
             let chatThemeImg = document.getElementById('chat_theme_img')
             let chatTheme = document.getElementById('chat_theme')
-            let chat_id = el.dataset.chat_id
+
             let body = {
                 chat_id: chat_id
             }
@@ -319,19 +321,21 @@
                         console.log(msg)
 
                         if (msg['own']){
-                            chatMsgWrapper.innerHTML=chatMsgWrapper.innerHTML + `
+                            temp_msg=temp_msg+`
                                     <div class="lk-tab-chat-messages-bottom__message-from-me">
                                         <p>${msg['own'][0]}</p>
                                         <span>${msg['own'][1]}</span>
                                     </div>`
                         }else{
-                            chatMsgWrapper.innerHTML=chatMsgWrapper.innerHTML + `
+                            temp_msg=temp_msg+`
                                     <div class="lk-tab-chat-messages-bottom__message-to-me">
                                         <p>${msg['from'][0]}</p>
                                         <span>${msg['from'][1]}</span>
                                     </div>
                                `
                         }
+                    chatMsgWrapper.innerHTML = ''
+                        chatMsgWrapper.innerHTML = temp_msg
                     }
                 }).then(()=>{
                     chatDiv.classList.add('show-messages')
@@ -352,10 +356,18 @@
                 .then(res => {
                     console.log(res)
                 })
-
     }
+    </script>
+    <script>
+    function update_chats(){
+           setInterval(() => getChats(curPage), 5000)
 
-
+        }
+    function update_chat(){
+         setInterval(() => openChat(curChat), 5000)
+    }
+        update_chat()
+        update_chats()
     </script>
 
 {% endblock %}

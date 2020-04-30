@@ -9,6 +9,7 @@ from .forms import UpdateForm
 from customuser.models import *
 from django.http import JsonResponse, HttpResponseRedirect
 from twilio.rest import Client
+from chat.models import Chat
 from ya_payment.models import *
 from partner.models import *
 import uuid
@@ -171,13 +172,18 @@ def get_notifications(request):
     request_unicode = request.body.decode('utf-8')
     request_body = json.loads(request_unicode)
     user_id = request_body['id']
-    all_notify = Notification.objects.filter(user_id=user_id,is_read=False,is_user_notified=False)
-    for notify in all_notify:
+    allChats = Chat.objects.filter(users__in=[user_id])
+    all_notify = Notification.objects.filter(user_id=user_id,is_read=False)
+    all_notify_not_notified = all_notify.filter(is_user_notified=False)
+    for notify in all_notify_not_notified:
         notify.is_user_notified = True
-        # notify.save()
+        notify.save()
         notifications.append({
            'text':notify.text,
             'url':notify.redirect_url
         })
     response_dict['notify'] = notifications
+    response_dict['notifications_count'] = all_notify.filter(is_chat_notification=False).count()
+    response_dict['unread_chat_count'] = allChats.filter(isNewMessages=True).exclude(lastMsgBy_id=user_id).count()
     return JsonResponse(response_dict)
+

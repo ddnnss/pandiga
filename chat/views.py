@@ -81,7 +81,7 @@ def new_msg(request):
                                message=body['msg'])
     # Message.objects.create(messageTo_id=body['msgTo'],messageFrom_id=body['msgFrom'],message=body['msg'])
     return_dict['result'] = 'ok'
-    Notification.objects.create(user=request.user,
+    Notification.objects.create(user_id=body['msgTo'],
                                 text='Новое сообщение в чате',
                                 is_chat_notification=True)
     return JsonResponse(return_dict, safe=False)
@@ -291,10 +291,11 @@ def to_rent(request,item_id):
         chat.save()
         Notification.objects.create(user=techniqueItem.owner,
                                     text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}',
-                                    redirect_url='/user/lk/?tab=tab-chat')
+                                    redirect_url='/user/lk/?tab=tab-notification')
     else:
         print('chat not found')
-        Notification.objects.create(user=techniqueItem.owner,text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}')
+        Notification.objects.create(user=techniqueItem.owner,text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}',
+                                    redirect_url='/user/lk/?tab=tab-notification')
         newChat = Chat.objects.create(techniqueitem=techniqueItem)
         newChat.users.add(request.user, techniqueItem.owner)
         # if int(body['msgFrom']) == request.user.id:

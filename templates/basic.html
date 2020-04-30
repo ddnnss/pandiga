@@ -30,6 +30,12 @@
     <script src="{% static 'js/toastify.js' %}"></script>
     <script>
         let csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+        let allNotificatons_count=document.getElementById('allNotificatons_count'),
+            allUnreadChats_count=document.getElementById('allUnreadChats_count'),
+            menu_allNotificatons_count=document.getElementById('menu_allNotificatons_count'),
+            menu_allUnreadChats_count=document.getElementById('menu_allUnreadChats_count')
+
         let cityId = document.getElementById('city_id')
         function openModal() {
             document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
@@ -114,7 +120,6 @@
             }
             document.getElementById(TabName).style.display = "block";
             if (TabName==='tab-notification'){
-                console.log('nottify')
                 markNotificationRead()
             }
             console.log(evt)
@@ -191,6 +196,7 @@
     <!--getPhone -->
     {% if request.user.is_authenticated %}
     <script>
+
         function get_notifications() {
             let body = {id: '{{ request.user.id }}'}
             fetch('/user/get_notifications/', {
@@ -200,12 +206,27 @@
                 credentials: 'same-origin'
             }).then(res=>res.json())
                 .then(res => {
-                    console.log(res['notify'])
-                    for (n of res['notify']){
+                    console.log(res['notifications_count'])
+                    if(res['notifications_count'] > 0){
+                        allNotificatons_count.innerHTML=` <span >${res['notifications_count']}</span>`
+                        menu_allNotificatons_count.innerText=` ${res['notifications_count']}`
+                    }else{
+                       allNotificatons_count.innerHTML=''
+                        menu_allNotificatons_count.innerText='0'
+                    }
+                 if(res['unread_chat_count'] > 0){
+                        allUnreadChats_count.innerHTML=` <span >${res['unread_chat_count']}</span>`
+                        menu_allUnreadChats_count.innerText=`${res['unread_chat_count']}`
+                    }else{
+                       allUnreadChats_count.innerHTML=''
+                        menu_allUnreadChats_count.innerText='0'
+                    }
+
+                              for (n of res['notify']){
                         console.log(n)
                         Toastify({
                           text: `${n['text']}`,
-                          duration: 5000,
+                          duration: 0,
                           destination: `${n['url']}`,
                           newWindow: false,
                           close: true,
@@ -215,12 +236,14 @@
                           stopOnFocus: true, // Prevents dismissing of toast on hover
                           onClick: function(){} // Callback after click
                         }).showToast();
+                        new Audio('{% static 'inflicted.ogg' %}').play()
                     }
                 })
 
         }
         function get_info(){
            setInterval(() => get_notifications(), 5000)
+
         }
         get_info()
     </script>
