@@ -1,22 +1,18 @@
 <div id="tab-notification" class="lk-tab ">
     <div class="lk-tab-my-cars">
-    {% if not all_notificatons %}
-        <p class="mb-20"> Новых оповещений нет</p>
-    {% endif %}
+        {% if not all_notificatons %}
+            <p class="mb-20"> Новых оповещений нет</p>
+        {% endif %}
         {% for notify in all_notificatons %}
-               <div  {% if notify.is_read %} style="opacity: .5" {% endif %}
-                                     class="technique-order-item block-bordered no-hover">
-                                <div style="max-width: 100%" class="technique-order-item-top">
-                                    <p><i class="fa fa-calendar"></i> {{ notify.createdAt |date:'Y-m-d H:i' }} </p>
-
-
-                                    <span style="cursor: pointer"><i class="fa fa-times"></i></span>
-                                </div>
-                                <div class="technique-order-item-middle">
-                                    <p>{{ notify.text }}</p>
-                                </div>
-
-               </div>
+            <div  {% if notify.is_read %} style="opacity: .5" {% endif %} class="technique-order-item block-bordered no-hover">
+                <div style="max-width: 100%" class="technique-order-item-top">
+                    <p><i class="fa fa-calendar"></i> {{ notify.createdAt |date:'Y-m-d H:i' }} </p>
+                    <span style="cursor: pointer"><a href="{% url 'del_notifications' notify.id %}"><i class="fa fa-times"></i></a></span>
+                </div>
+                <div class="technique-order-item-middle">
+                    <p>{{ notify.text }}</p>
+                </div>
+            </div>
         {% endfor %}
     </div>
 </div><!--//tab-my-cars-->

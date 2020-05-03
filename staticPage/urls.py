@@ -18,6 +18,7 @@ urlpatterns = [
     path('tariff/', views.tariff, name='tariff'),
     path('questions/', views.questions, name='questions'),
     path('contacts/', views.contacts, name='contacts'),
+    path('tarif/', views.tarif, name='tarif'),
     # path('create_city/', views.create_city, name='create_city'),
     # path('type/', views.type, name='create_city'),
     # path('section/', views.section, name='create_city'),

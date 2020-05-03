@@ -55,6 +55,9 @@ class TechniqueOrder(models.Model):
         else:
             return 'Ч'
 
+    def get_technique_name(self):
+        return f'{self.type.name} {self.section.name} {self.sub_section.name}'
+
     def get_location(self):
         if self.city:
             return f'{self.city.region}, {self.city.city}'

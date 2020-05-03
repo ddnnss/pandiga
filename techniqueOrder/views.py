@@ -9,7 +9,9 @@ from customuser.models import Notification
 
 def technique_all_orders(request):
     if request.user.is_authenticated and not request.user.is_customer:
-        all_orders = TechniqueOrder.objects.filter(is_active=True,is_moderated=True,worker__isnull=True).order_by('-created_at')
+        all_orders = TechniqueOrder.objects.filter(is_active=True,
+                                                   is_moderated=True,
+                                                   worker__isnull=True).exclude(customer_id=request.user.id).order_by('-created_at')
         all_techique_types = TechniqueType.objects.all
         return render(request, 'techniqueOrder/all-technique-orders.html', locals())
     else:
@@ -58,6 +60,13 @@ def technique_order(request):
                 newOrder.save()
                 print(newOrder.id)
                 messages.success(request, 'Спасибо, форма успешно отправлена')
+                tech = TechniqueItem.objects.filter(city=newOrder.city,sub_section=newOrder.sub_section)
+                for t in tech:
+                    if not t.owner.is_customer:
+                        Notification.objects.create(user=t.owner,
+                                                    text=f'Новая заявка на технику {newOrder.get_technique_name()}',
+                                    is_chat_notification=False,
+                                    redirect_url=f'/technique/orders/{newOrder.name_slug}')
             else:
                 print(form.errors)
                 messages.error(request, 'Все поля обязвтельны для заполнения')

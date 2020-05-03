@@ -144,8 +144,6 @@ def user_profile_update(request):
 
 
 def user_phone(request):
-    print(request.POST == request.method)
-
     if request.user.tarif.can_see_phone:
         request_unicode = request.body.decode('utf-8')
         request_body = json.loads(request_unicode)
@@ -187,3 +185,8 @@ def get_notifications(request):
     response_dict['unread_chat_count'] = allChats.filter(isNewMessages=True).exclude(lastMsgBy_id=user_id).count()
     return JsonResponse(response_dict)
 
+def del_notifications(request,n_id):
+    notify = get_object_or_404(Notification, id=n_id)
+    if notify.user == request.user:
+        notify.delete()
+    return HttpResponseRedirect("/user/lk/?tab=tab-notification")

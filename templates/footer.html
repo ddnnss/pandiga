@@ -14,53 +14,30 @@
                     <a href=""><img class="footer-top-contacts-mobile" src="{% static 'img/gp.png' %}" alt=""></a>
                     <a href=""><img class="footer-top-contacts-mobile" src="{% static 'img/as.png' %}" alt=""></a>
                 </div>
-                <div class="footer-top-menu">
+            <div style="display: flex" class="">
+                  <div style="margin-right: 50px" class="footer-top-menu">
                     <p>компания</p>
                     <ul>
-                        <li><a href="#">О проекте</a></li>
-                        <li><a href="#">Вакансии</a></li>
-                        <li><a href="#">Правила сервиса</a></li>
-                        <li><a href="#">Партнерская программа</a></li>
-                        <li><a href="#">Частые вопросы</a></li>
-                        <li><a href="#">Для заказчиков</a></li>
-                        <li><a href="#">Для исполнителей</a></li>
-                        <li><a href="#">Контакты</a></li>
+                        <li><a href="{% url 'about' %}">О проекте</a></li>
+                        <li><a href="{% url 'vacancies' %}">Вакансии</a></li>
+                        <li><a href="{% url 'servicerules' %}">Правила сервиса</a></li>
+                        <li><a href="{% url 'forpartners' %}">Партнерская программа</a></li>
+                        <li><a href="{% url 'questions' %}">Частые вопросы</a></li>
+                        <li><a href="{% url 'fortechniqueowners' %}">Для исполнителей</a></li>
+                        <li><a href="{% url 'contacts' %}">Контакты</a></li>
                     </ul>
                 </div>
                 <div class="footer-top-menu">
                     <p>каталог техники</p>
                     <ul>
-                        <li><a href="#/search-technique/1/Спецтехника">Спецтехника</a></li>
-                        <li><a href="#/search-technique/2/Грузовая техника">Грузовая техника</a></li>
-                        <li><a href="#/search-technique/3/Автобусы">Автобусы</a></li>
-                        <li><a href="#/search-technique/4/Автодома">Автодома</a></li>
-                        <li><a href="#/search-technique/5/Авто с водителем">Авто с водителем</a></li>
-                        <li><a href="#/search-technique/6/Авто без водителя">Авто без водителя</a></li>
-                        <li><a href="#/search-technique/7/Лимузины">Лимузины</a></li>
-                        <li><a href="#/search-technique/8/Скутеры и велосипеды">Скутеры и велосипеды</a></li>
-                        <li><a href="#/search-technique/9/Мототехника">Мототехника</a></li>
-                        <li><a href="#/search-technique/10/Водная техника">Водная техника</a></li>
-                        <li><a href="#/search-technique/11/Авиа техника">Авиа техника</a></li>
-                        <li><a href="#/search-technique/12/Строительные инструменты">Строительные инструменты</a></li>
+                          {% for technique in all_Technique %}
+                              <li> <a href="{% url 'technique_type_catalog' technique.name_slug %}">{{ technique.name }}</a>
+                        {% endfor %}
+
                     </ul>
                 </div>
-                <div class="footer-top-menu">
-                    <p>география работ</p>
-                    <ul>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Москва">Москва</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Санкт-Петербург">Санкт-Петербург</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Новосибирск">Новосибирск</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Екатеринбург">Екатеринбург</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Нижний Новгород">Нижний Новгород</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Казань">Казань</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Челябинск">Челябинск</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Омск">Омск</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Самара">Самара</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Ростов-на-Дону">Ростов-на-Дону</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=Уфа">Уфа</a></li>
-                        <li><a href="#/search-technique/0/Поиск%20техники/?city=0">И еще 123 города РФ</a></li>
-                    </ul>
-                </div>
+            </div>
+
 
             </div>
         </div>
@@ -69,12 +46,12 @@
         <div class="container">
             <div class="footer-bottom-wrapper">
                 <p>PANDIGA © 2020. All rights reserved.</p>
-                <div class="footer-bottom-social">
-                    <p>Мы в соц. сетях</p>
-                    <a href="" rel="nofollow"><i class="fa fa-facebook"></i></a>
-                    <a href="" rel="nofollow"><i class="fa fa-google-plus-official"></i></a>
-                    <a href="" rel="nofollow"><i class="fa fa-vk"></i></a>
-                </div>
+{#                <div class="footer-bottom-social">#}
+{#                    <p>Мы в соц. сетях</p>#}
+{#                    <a href="" rel="nofollow"><i class="fa fa-facebook"></i></a>#}
+{#                    <a href="" rel="nofollow"><i class="fa fa-google-plus-official"></i></a>#}
+{#                    <a href="" rel="nofollow"><i class="fa fa-vk"></i></a>#}
+{#                </div>#}
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@
                 <div class="lk-wrapper">
                     <div class="lk-menu">
                         <ul>
-                         <li class="tablinks" onclick="opentab(event, 'tab-notification', 'link-active')" >Оповещения ( {{ allNotificatons.count }} )</li>
+                            <li class="tablinks" onclick="opentab(event, 'tab-notification', 'link-active')" >Оповещения ( {{ allNotificatons.count }} )</li>
                             {% if request.user.is_customer %}
                                 <li class="tablinks" onclick="opentab(event, 'tab-chat', 'link-active')" >диалоги ( {{ allChats.count }} )</li>
                                 <li class="tablinks" onclick="opentab(event, 'tab-my-fav', 'link-active')" >избранное ({{ techniqueItemsFavorite.count }})</li>
@@ -80,8 +80,6 @@
                         <input class="mb-20" style="width: 100%" type="number" name="partner_code" required placeholder="ПРОМО-КОД">
                         <button type="submit" class="btn btn-link by-center">Подтвердить</button>
                     </form>
-
-
                 </div>
             </div>
         </div>
@@ -99,7 +97,6 @@
             }
             el.classList.add('payment-icon-active')
             typeInput.value = el.dataset.type
-
         }
     </script>
     <!--tabs-->
@@ -150,7 +147,7 @@
                             paginator.innerHTML = ''
 
                             if(chat['technique_img']){
-                                 temp_chats = `
+                                temp_chats = temp_chats+`
                                  <li>
                                         <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(${chat['chat_id']})>
                                             <div  class="lk-tab-chat-item-img ">
@@ -179,7 +176,7 @@
                                 `
                             }
                             else{
-                                 temp_chats = `
+                                temp_chats = temp_chats+`
                                  <li>
                                         <div ${read} data-chat_id="${chat['chat_id']}" class="lk-tab-chat-item " onclick=openChat(${chat['chat_id']})>
                                             <div  class="lk-tab-chat-item-img ">
@@ -269,7 +266,7 @@
     </script>
     <script>
         function deleteChat() {
-             let body = {id: curChat}
+            let body = {id: curChat}
             fetch('/chat/delete_chat/', {
                 method: 'post',
                 body: JSON.stringify(body),
@@ -278,15 +275,20 @@
             }).then(res=>res.json())
                 .then(res => {
                     console.log(res)
-                   closeChat()
+                    closeChat()
                 })
 
         }
         function closeChat(){
             getChats(curPage)
+            curChat = 0
             document.getElementById('chat-messages').classList.remove('show-messages')
         }
         function openChat(chat_id){
+            console.log('curChat',curChat)
+           // if(curChat != 0){
+           //     return
+           // }
             msgTextArea.value = ''
             temp_msg=''
             let chatUserAvatar = document.getElementById('chat_user_avatar')
@@ -310,9 +312,9 @@
                     chatUserName.innerText = res['userInfo']['user_name']
                     chatUserAvatar.setAttribute('src',res['userInfo']['user_avatar'])
                     if(res['userInfo']['technique_img']){
-                          chatThemeImg.setAttribute('src',res['userInfo']['technique_img'])
+                        chatThemeImg.setAttribute('src',res['userInfo']['technique_img'])
                     }else {
-                         chatThemeImg.setAttribute('src','http://placehold.it/50')
+                        chatThemeImg.setAttribute('src','http://placehold.it/50')
                     }
                     chatTheme.setAttribute('href',res['userInfo']['technique_url'])
                     chatTheme.innerText = res['userInfo']['technique_name']
@@ -334,7 +336,7 @@
                                     </div>
                                `
                         }
-                    chatMsgWrapper.innerHTML = ''
+                        chatMsgWrapper.innerHTML = ''
                         chatMsgWrapper.innerHTML = temp_msg
                     }
                 }).then(()=>{
@@ -345,8 +347,8 @@
         }
     </script>
     <script>
-    function markNotificationRead() {
-        let body = {id: '{{ request.user.id }}'}
+        function markNotificationRead() {
+            let body = {id: '{{ request.user.id }}'}
             fetch('/user/mark_notify_read/', {
                 method: 'post',
                 body: JSON.stringify(body),
@@ -356,18 +358,19 @@
                 .then(res => {
                     console.log(res)
                 })
-    }
+        }
     </script>
     <script>
-    function update_chats(){
-           setInterval(() => getChats(curPage), 5000)
+        function update_chats(){
+            setInterval(() => getChats(curPage), 5000)
 
         }
-    function update_chat(){
-         setInterval(() => openChat(curChat), 5000)
-    }
-        update_chat()
-        update_chats()
+        function update_chat(){
+
+            setInterval(() => openChat(curChat), 5000)
+        }
+          update_chat()
+          update_chats()
     </script>
 
 {% endblock %}

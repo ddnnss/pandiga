@@ -3,6 +3,8 @@ from .models import City
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
+from tariff.models import Tarif
+from technique.models import TechniqueItem
 #----
 # from openpyxl import load_workbook
 # from customuser.models import *
@@ -25,6 +27,7 @@ def get_city(request):
 
 def index(request):
     indexPage = True
+    all_technique = TechniqueItem.objects.random(8)
     return render(request, 'staticPage/index.html', locals())
 
 
@@ -53,6 +56,9 @@ def questions(request):
     return render(request, 'staticPage/questions.html', locals())
 def contacts(request):
     return render(request, 'staticPage/contacts.html', locals())
+def tarif(request):
+    all_tarif = Tarif.objects.all()
+    return render(request, 'staticPage/tarif_page.html', locals())
 def licenzionnoe_soglashenie(request):
     return render(request, 'staticPage/servicerules-licenzionnoe_soglashenie.html', locals())
 

@@ -12,6 +12,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from customuser.models import User
 from staticPage.models import City
 import os
+from django_random_queryset import RandomManager
 from pandiga.settings import BASE_DIR
 
 class TechniqueType(models.Model):
@@ -197,7 +198,10 @@ class TechniqueItem(models.Model):
     def __str__(self):
         return f'Еденица техники : {self.name}'
 
+    objects = RandomManager()
+
     class Meta:
+
         verbose_name = "Техника"
         verbose_name_plural = "Еденицы техники"
 

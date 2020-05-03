@@ -7,7 +7,7 @@ from .forms import *
 from django.contrib import messages
 
 def technique_catalog(request):
-    all_Technique = TechniqueType.objects.filter(is_active=True)
+
     catalogTechniqueActive = 'menu-link-active '
     return render(request, 'catalog/catalog.html', locals())
 

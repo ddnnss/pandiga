@@ -42,7 +42,8 @@
                         <label for="">фотографии</label>
                         <div class="upload-wrapper">
                             {#                            <label for="upload_img" class="upload-label">#}
-                            <input id="upload_img"  multiple name="item_images" accept="image/*"  type="file" >
+                            <input style="border: none;
+    background: none;" id="upload_img"  multiple name="item_images" accept="image/*"  type="file" >
                             {#                            </label>#}
                             <div id="preview" class="images-preview">
                                  {% for image in techniqueItem.images.all %}
@@ -134,7 +135,13 @@
 {% block js %}
     {{ block.super }}
     <!-- preview images-->
+     <script src="https://cdn.ckeditor.com/4.14.0/basic/ckeditor.js"></script>
+     <script>
+          CKEDITOR.replace( '{{ form.description.name }}' );
+          CKEDITOR.replace( '{{ form.features.name }}' );
+     </script>
     <script>
+
         let priceLabel = document.getElementById('price_label')
         let rentTimeInput = document.getElementById('rent_time_input')
         function changePrice(el) {

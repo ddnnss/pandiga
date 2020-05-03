@@ -62,42 +62,98 @@
         <div class="container">
             <div class="section-header mb-40"><h3 class="color-white">КАТАЛОГ ТЕХНИКИ</h3></div>
             <div class="home-catalog-wrapper">
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p><a href="#">строительные инструменты</a></p>
-                </div><!--//home-catalog-item-->
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p>автодома</p>
-                </div><!--//home-catalog-item-->
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p>строительные </p>
-                </div><!--//home-catalog-item-->
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p>строительные инструменты</p>
-                </div><!--//home-catalog-item-->
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p>строительные инструменты</p>
-                </div><!--//home-catalog-item-->
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p>автодома</p>
-                </div><!--//home-catalog-item-->
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p>строительные </p>
-                </div><!--//home-catalog-item-->
-                <div class="home-catalog-item">
-                    <img src="http://placehold.it/40x45" alt="">
-                    <p>строительные инструменты</p>
-                </div><!--//home-catalog-item-->
+                 {% for technique in all_Technique %}
+                            <div class="home-catalog-item">
+                    <img src="https://placehold.it/40x45" alt="">
+                    <p> <a href="{% url 'technique_type_catalog' technique.name_slug %}">{{ technique.name }}</a></p>
+                 </div><!--//home-catalog-item-->
+                        {% endfor %}
+
+
             </div><!--//home-catalog-wrapper-->
-            <a class="btn btn-link by-center" href="#">Добавить свою технику</a>
+            <a class="btn btn-link by-center" href="{% url 'add_technique' %}">Добавить свою технику</a>
         </div><!--//container-->
     </section><!--//home-catalog-->
+  <section class="work-request">
+        <div class="container">
+            <div class="section-header"><h3>Рекомендуемая техника</h3></div>
+            <div class="work-request-wrapper">
+                 {% for technique in all_technique %}
+                                <div class="item-grid">
+                                    <a href="{% url 'technique' technique.sub_section.section.type.name_slug technique.sub_section.section.name_slug technique.sub_section.name_slug technique.name_slug%}">
+                                        <div class="item-image" style="background: url({{ technique.get_main_image }})">
+                                            {% if technique.is_free %}
+                                                <span  class="item-free">свободен</span>
+                                            {% else %}
+                                                <span  class="item-busy">занят</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="item-info">
+                                            <div class="item-info-top">
+                                                <div class="rating item-rating">
+                                                    <p class="rating-value">{{ technique.get_rating }}</p>
+                                                    <div class="rating-inner">
+                                                        <ul class="rating-inner-stars">
+                                                            {% for r in rating%}
+
+                                                                <li class="rating-inner-star
+                                                               {% if forloop.counter <= technique.get_rating %}star-colored{% endif %}">
+                                                                    <i class="fa fa-star"></i></li>
+                                                            {% endfor %}
+
+
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="item-name">{{ technique.name }}</div>
+                                            </div>
+                                            <div class="item-info-bottom">
+                                                <div class="item-info-user">
+                                                    <div class="item-info-user-avatar"><img src="{{ technique.owner.get_avatar }}" alt=""></div>
+                                                    <div class="item-info-user-name"><p>
+                                                        <a href="#">
+                                                        {{ technique.owner.first_name }}
+                                                        {% if  technique.owner.last_name %}
+                                                            {{ technique.owner.last_name }}
+                                                        {% endif %}
+                                                    </a>
+                                                    </p></div>
+                                                </div>
+                                                <div class="item-info-price">
+                                                    <div class="item-info-price-time"><p class="item-info-price-time-value">от
+                                                        <span>{{ technique.min_rent_time }}</span>
+                                                        {% if technique.rent_type == 'hour' %}
+                                                            Ч
+                                                        {% elif technique.rent_type == 'day'%}
+                                                            Д
+                                                        {% endif %}
+                                                    </p>
+                                                    </div>
+                                                    <div class="item-info-price-money"><p class="item-info-price-money-value">
+                                                        <span>{{ technique.rent_price }}</span>
+                                                        {% if technique.rent_type == 'hour' %}
+                                                            <p>руб/час</p>
+                                                        {% elif technique.rent_type == 'day'%}
+                                                            <p>руб/день</p>
+                                                        {% endif %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </a>
+                                </div><!--//item-grid-->
+                            {% endfor %}
+
+
+            </div><!--//work-request-wrapper-->
+            
+        </div><!--//container-->
+    </section><!--//work-request-->
     <section class="how-it-work">
         <div class="container">
             <div class="section-header mb-60"><h3>КАК ЭТО РАБОТАЕТ</h3></div>
@@ -111,7 +167,7 @@
                     <p><a href="#">Создайте заявку</a> на нужную Вам технику или выбирайте ее в каталоге</p>
                     <p>Владельцы техники получат уведомления о Вашей заявке и отправлят Вам свои предложения</p>
                     <p class="mb-20">Вам останется только выбрать лучшего</p>
-                    <a href="" class="btn btn-outline">Узнать подробнее</a>
+                    <a href="" class="link-with-arrow">Узнать подробнее</a>
                 </div><!--//how-it-work-item-->
                 <div class="how-it-work-item">
                     <div class="how-it-work-item-icon">
@@ -133,23 +189,18 @@
             <div class="section-header"><h3>заявки на работу</h3></div>
             <div class="work-request-wrapper">
                 <div class="work-request-item">
-
-                    <img src="http://placehold.it/250x230" alt="">
-
+                    <img src="https://placehold.it/250x230" alt="">
                     <div>
                         <p class="work-request-item-name">Lorem ipsum dolor.</p>
                         <span class="work-request-item-description">Lorem ipsum dolor m ipsum dolor sit amet.</span>
-
                         <p class="work-request-item-price">
                             1000 <i class="fa fa-rub"></i>
                         </p>
                     </div>
-
-
                 </div><!--//work-request-item-->
                 <div class="work-request-item">
                     <a href="">
-                        <img src="http://placehold.it/250x230" alt="">
+                        <img src="https://placehold.it/250x230" alt="">
                     </a>
                     <a href="">
                         <p class="work-request-item-name">Lorem ipsum dolor.</p>
@@ -158,11 +209,10 @@
                     <p class="work-request-item-price">
                         1000 <i class="fa fa-rub"></i>
                     </p>
-
                 </div><!--//work-request-item-->
                 <div class="work-request-item">
                     <a href="">
-                        <img src="http://placehold.it/250x230" alt="">
+                        <img src="https://placehold.it/250x230" alt="">
                     </a>
                     <a href="">
                         <p class="work-request-item-name">Lorem ipsum dolor.</p>
@@ -171,11 +221,10 @@
                     <p class="work-request-item-price">
                         1000 <i class="fa fa-rub"></i>
                     </p>
-
                 </div><!--//work-request-item-->
                 <div class="work-request-item">
                     <a href="">
-                        <img src="http://placehold.it/250x230" alt="">
+                        <img src="https://placehold.it/250x230" alt="">
                     </a>
                     <a href="">
                         <p class="work-request-item-name">Lorem ipsum dolor.</p>
@@ -184,11 +233,10 @@
                     <p class="work-request-item-price">
                         1000 <i class="fa fa-rub"></i>
                     </p>
-
                 </div><!--//work-request-item-->
                 <div class="work-request-item">
                     <a href="">
-                        <img src="http://placehold.it/250x230" alt="">
+                        <img src="https://placehold.it/250x230" alt="">
                     </a>
                     <a href="">
                         <p class="work-request-item-name">Lorem ipsum dolor.</p>
@@ -197,11 +245,10 @@
                     <p class="work-request-item-price">
                         1000 <i class="fa fa-rub"></i>
                     </p>
-
                 </div><!--//work-request-item-->
                 <div class="work-request-item">
                     <a href="">
-                        <img src="http://placehold.it/250x230" alt="">
+                        <img src="https://placehold.it/250x230" alt="">
                     </a>
                     <a href="">
                         <p class="work-request-item-name">Lorem ipsum dolor.</p>
@@ -210,11 +257,10 @@
                     <p class="work-request-item-price">
                         1000 <i class="fa fa-rub"></i>
                     </p>
-
                 </div><!--//work-request-item-->
                 <div class="work-request-item">
                     <a href="">
-                        <img src="http://placehold.it/250x230" alt="">
+                        <img src="https://placehold.it/250x230" alt="">
                     </a>
                     <a href="">
                         <p class="work-request-item-name">Lorem ipsum dolor.</p>
@@ -223,9 +269,7 @@
                     <p class="work-request-item-price">
                         1000 <i class="fa fa-rub"></i>
                     </p>
-
                 </div><!--//work-request-item-->
-
             </div><!--//work-request-wrapper-->
             <a href="#" class="btn btn-link by-center">Создать заявку</a>
         </div><!--//container-->
@@ -255,7 +299,7 @@
             <div class="home-reviews-wrapper">
                 <div class="home-reviews-item">
                     <div class="home-reviews-item-user">
-                        <img src="http://placehold.it/100" alt="">
+                        <img src="https://placehold.it/100" alt="">
                         <div class="home-reviews-item-user-info">
                             <p>Татьяна</p>
                             <p>г. Курск</p>
@@ -268,7 +312,7 @@
                 </div><!--//home-reviews-item-->
                 <div class="home-reviews-item">
                     <div class="home-reviews-item-user">
-                        <img src="http://placehold.it/100" alt="">
+                        <img src="https://placehold.it/100" alt="">
                         <div class="home-reviews-item-user-info">
                             <p>Татьяна</p>
                             <p>г. Курск</p>
@@ -281,7 +325,7 @@
                 </div><!--//home-reviews-item-->
                 <div class="home-reviews-item">
                     <div class="home-reviews-item-user">
-                        <img src="http://placehold.it/100" alt="">
+                        <img src="https://placehold.it/100" alt="">
                         <div class="home-reviews-item-user-info">
                             <p>Татьяна</p>
                             <p>г. Курск</p>
@@ -294,7 +338,7 @@
                 </div><!--//home-reviews-item-->
                 <div class="home-reviews-item">
                     <div class="home-reviews-item-user">
-                        <img src="http://placehold.it/100" alt="">
+                        <img src="https://placehold.it/100" alt="">
                         <div class="home-reviews-item-user-info">
                             <p>Татьяна  Татьяна</p>
                             <p>г. ТатьянаТатьяна </p>
@@ -307,7 +351,7 @@
                 </div><!--//home-reviews-item-->
                 <div class="home-reviews-item">
                     <div class="home-reviews-item-user">
-                        <img src="http://placehold.it/100" alt="">
+                        <img src="https://placehold.it/100" alt="">
                         <div class="home-reviews-item-user-info">
                             <p>Татьяна</p>
                             <p>г. Курск</p>
@@ -320,7 +364,7 @@
                 </div><!--//home-reviews-item-->
                 <div class="home-reviews-item">
                     <div class="home-reviews-item-user">
-                        <img src="http://placehold.it/100" alt="">
+                        <img src="https://placehold.it/100" alt="">
                         <div class="home-reviews-item-user-info">
                             <p>Татьяна</p>
                             <p>г. Курск</p>
@@ -333,7 +377,7 @@
                 </div><!--//home-reviews-item-->
                 <div class="home-reviews-item">
                     <div class="home-reviews-item-user">
-                        <img src="http://placehold.it/100" alt="">
+                        <img src="https://placehold.it/100" alt="">
                         <div class="home-reviews-item-user-info">
                             <p>Татьяна</p>
                             <p>г. Курск</p>

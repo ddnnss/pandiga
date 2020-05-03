@@ -83,7 +83,8 @@ def new_msg(request):
     return_dict['result'] = 'ok'
     Notification.objects.create(user_id=body['msgTo'],
                                 text='Новое сообщение в чате',
-                                is_chat_notification=True)
+                                is_chat_notification=True,
+                                redirect_url='/user/lk/?tab=tab-chat')
     return JsonResponse(return_dict, safe=False)
 
 
@@ -93,57 +94,60 @@ def get_msg(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
-    chat = Chat.objects.get(id=body['chat_id'])
-
-    if not chat.lastMsgBy == request.user:
-        chat.isNewMessages = False
-        chat.save()
-    userInfo ={}
-    chatMsg = []
-    for user in chat.users.all():
-        if user.id != request.user.id:
-            user_qs = User.objects.get(id=user.id)
-            user_name = user_qs.first_name
-            user_avatar = user_qs.get_avatar()
-            if chat.techniqueitem:
-                userInfo = {
-                    'user_name': user_name,
-                    'user_avatar': user_avatar,
-                    'technique_img': chat.techniqueitem.images.first().image.url,
-                    'technique_name': chat.techniqueitem.name,
-                    'technique_url': chat.techniqueitem.get_absolute_url()
-                }
-            if chat.order:
-                if not request.user.is_customer:
+    try:
+        chat = Chat.objects.get(id=body['chat_id'])
+    except:
+        chat = None
+    if chat:
+        if not chat.lastMsgBy == request.user:
+            chat.isNewMessages = False
+            chat.save()
+        userInfo ={}
+        chatMsg = []
+        for user in chat.users.all():
+            if user.id != request.user.id:
+                user_qs = User.objects.get(id=user.id)
+                user_name = user_qs.first_name
+                user_avatar = user_qs.get_avatar()
+                if chat.techniqueitem:
                     userInfo = {
                         'user_name': user_name,
                         'user_avatar': user_avatar,
-                        'technique_img': False,
-                        'technique_name': f'Заявка № {chat.order.id}',
-                        'technique_url': f'/technique/orders/{chat.order.name_slug}'
+                        'technique_img': chat.techniqueitem.images.first().image.url,
+                        'technique_name': chat.techniqueitem.name,
+                        'technique_url': chat.techniqueitem.get_absolute_url()
                     }
-                else:
-                    userInfo = {
-                        'user_name': user_name,
-                        'user_avatar': user_avatar,
-                        'technique_img': False,
-                        'technique_name': f'Заявка № {chat.order.id}',
-                        'technique_url': f'/user/lk/?tab=tab-my-order-detail&order_id={chat.order.id}'
-                    }
-    for x in chat.message_set.all():
-        chatItem = {}
-        chatItemInner = []
-        print('user', x.user.id)
-        if x.user == request.user:
-            x.isUnread = False
-            x.save()
-        if x.user == request.user:
-            chatItem['own'] = [x.message, x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
-        else:
-            chatItem['from'] = [x.message, x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
-        chatMsg.append(chatItem)
-    return_dict['userInfo'] = userInfo
-    return_dict['chatMsg'] = chatMsg
+                if chat.order:
+                    if not request.user.is_customer:
+                        userInfo = {
+                            'user_name': user_name,
+                            'user_avatar': user_avatar,
+                            'technique_img': False,
+                            'technique_name': f'Заявка № {chat.order.id}',
+                            'technique_url': f'/technique/orders/{chat.order.name_slug}'
+                        }
+                    else:
+                        userInfo = {
+                            'user_name': user_name,
+                            'user_avatar': user_avatar,
+                            'technique_img': False,
+                            'technique_name': f'Заявка № {chat.order.id}',
+                            'technique_url': f'/user/lk/?tab=tab-my-order-detail&order_id={chat.order.id}'
+                        }
+        for x in chat.message_set.all():
+            chatItem = {}
+            chatItemInner = []
+            print('user', x.user.id)
+            if x.user == request.user:
+                x.isUnread = False
+                x.save()
+            if x.user == request.user:
+                chatItem['own'] = [x.message, x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
+            else:
+                chatItem['from'] = [x.message, x.createdAt.strftime("%d.%m.%Y,%H:%M:%S")]
+            chatMsg.append(chatItem)
+        return_dict['userInfo'] = userInfo
+        return_dict['chatMsg'] = chatMsg
     return JsonResponse(return_dict,safe=False)
 
 

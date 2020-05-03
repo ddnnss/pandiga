@@ -29,7 +29,7 @@
                     </p>
                 </div>
                 <p><i class="fa fa-map-marker"></i>{{ technique.city.region }}, {{ technique.city.city }}</p>
-                <div class="user-menu-dropdown-group">
+                <div style="width: 220px" class="user-menu-dropdown-group">
                                 {% if technique.is_free %}
                                     <a href="#" class="user-menu-dropdown-toggle user-menu-active">Свободен</a>
                                     <a href="{% url 'change_technique_status' technique.id %}" class="user-menu-dropdown-toggle">занят</a>
