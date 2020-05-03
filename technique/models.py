@@ -49,6 +49,12 @@ class TechniqueType(models.Model):
         verbose_name = "Тип техники"
         verbose_name_plural = "Типы техники"
 
+    def get_icon(self):
+        if self.icon:
+            return self.icon.url
+        else:
+            return ''
+
     def get_absolute_url(self):
         return f'/catalog/{self.name_slug}/'
 
