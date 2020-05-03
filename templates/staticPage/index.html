@@ -64,7 +64,7 @@
             <div class="home-catalog-wrapper">
                  {% for technique in all_Technique %}
                             <div class="home-catalog-item">
-                    <img src="https://placehold.it/40x45" alt="">
+                    <img src="{{ technique.icon.url }}" alt="">
                     <p> <a href="{% url 'technique_type_catalog' technique.name_slug %}">{{ technique.name }}</a></p>
                  </div><!--//home-catalog-item-->
                         {% endfor %}
