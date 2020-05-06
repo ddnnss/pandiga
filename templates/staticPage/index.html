@@ -80,72 +80,7 @@
             <div class="work-request-wrapper">
                  {% for technique in all_technique %}
                                 <div class="item-grid">
-                                    <a href="{% url 'technique' technique.sub_section.section.type.name_slug technique.sub_section.section.name_slug technique.sub_section.name_slug technique.name_slug%}">
-                                        <div class="item-image" style="background: url({{ technique.get_main_image }})">
-                                            {% if technique.is_free %}
-                                                <span  class="item-free">свободен</span>
-                                            {% else %}
-                                                <span  class="item-busy">занят</span>
-                                            {% endif %}
-                                        </div>
-                                        <div class="item-info">
-                                            <div class="item-info-top">
-                                                <div class="rating item-rating">
-                                                    <p class="rating-value">{{ technique.get_rating }}</p>
-                                                    <div class="rating-inner">
-                                                        <ul class="rating-inner-stars">
-                                                            {% for r in rating%}
-
-                                                                <li class="rating-inner-star
-                                                               {% if forloop.counter <= technique.get_rating %}star-colored{% endif %}">
-                                                                    <i class="fa fa-star"></i></li>
-                                                            {% endfor %}
-
-
-
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="item-name">{{ technique.name }}</div>
-                                            </div>
-                                            <div class="item-info-bottom">
-                                                <div class="item-info-user">
-                                                    <div class="item-info-user-avatar"><img src="{{ technique.owner.get_avatar }}" alt=""></div>
-                                                    <div class="item-info-user-name"><p>
-                                                        <a href="#">
-                                                        {{ technique.owner.first_name }}
-                                                        {% if  technique.owner.last_name %}
-                                                            {{ technique.owner.last_name }}
-                                                        {% endif %}
-                                                    </a>
-                                                    </p></div>
-                                                </div>
-                                                <div class="item-info-price">
-                                                    <div class="item-info-price-time"><p class="item-info-price-time-value">от
-                                                        <span>{{ technique.min_rent_time }}</span>
-                                                        {% if technique.rent_type == 'hour' %}
-                                                            Ч
-                                                        {% elif technique.rent_type == 'day'%}
-                                                            Д
-                                                        {% endif %}
-                                                    </p>
-                                                    </div>
-                                                    <div class="item-info-price-money"><p class="item-info-price-money-value">
-                                                        <span>{{ technique.rent_price }}</span>
-                                                        {% if technique.rent_type == 'hour' %}
-                                                            <p>руб/час</p>
-                                                        {% elif technique.rent_type == 'day'%}
-                                                            <p>руб/день</p>
-                                                        {% endif %}
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-                                    </a>
+                               {% include 'catalog/_technique-item-card.html' %}
                                 </div><!--//item-grid-->
                             {% endfor %}
 
