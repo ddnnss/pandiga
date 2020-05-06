@@ -18,13 +18,13 @@
                 <div class="item-block-wrapper">
                     <div class="item-block-left">
                         <div class="item-time-price block-bordered mb-10">
-                        {% if request.user.is_authenticated and not techniqueItem.owner == request.user and request.user.is_customer%}
-                            {% if techniqueItem.id in wishlist_ids %}
-                                <a href="{% url 'del_from_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">удалить из избранного</a>
-                            {% else %}
-                                <a href="{% url 'add_to_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">добавить в избранное</a>
+                            {% if request.user.is_authenticated and not techniqueItem.owner == request.user and request.user.is_customer%}
+                                {% if techniqueItem.id in wishlist_ids %}
+                                    <a href="{% url 'del_from_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">удалить из избранного</a>
+                                {% else %}
+                                    <a href="{% url 'add_to_favorite' techniqueItem.id %}" class="btn btn-outline btn-link mb-20 ">добавить в избранное</a>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
                             <div class="item-time-price-row">
                                 <img src="{% static 'img/money-icon.png' %}" alt="">
                                 <p>Стоимость: {{ techniqueItem.rent_price }} <i class="fa fa-rub"></i>/{{ techniqueItem.get_rent_type_long }} </p>
@@ -52,7 +52,7 @@
                             <div class="item-owner-contact">
                                 <p class="item-owner-contact-row">
                                     {% if request.user.is_authenticated %}
-                                              <i class="fa fa-phone"></i> <a id="user_phone" href="#">{{ techniqueItem.owner.phone | truncatechars:10 }}</a>
+                                        <i class="fa fa-phone"></i> <a id="user_phone" href="#">{{ techniqueItem.owner.phone | truncatechars:10 }}</a>
                                         <span onclick="getPhone({{ techniqueItem.owner.id}},this)">... показать номер</span>
                                     {% else %}
                                         <i class="fa fa-phone"></i> недоступно
@@ -127,7 +127,39 @@
                             <p>{{ techniqueItem.features | safe }}</p>
                         </div>
                         <div id="feedback_tab" class="h-tabcontent">
-                            <p>Отзывы</p>
+                            {% for feedback in all_feedbacks %}
+                                <div class="static-content-reviews-item mb-20">
+                                    <div class="static-content-reviews-item-top">
+                                        <div class="static-content-reviews-item-top-user">
+                                            <img src="{{ feedback.from_user.get_avatar }}" alt="">
+                                            <p>{{ feedback.from_user.get_full_name }}</p>
+                                        </div>
+                                        <div class="static-content-reviews-item-top-rating">
+                                            <p class="static-content-reviews-item-top-rating-value">Оценка</p>
+                                            <div class="static-content-reviews-item-top-rating-inner">
+                                                <ul class="static-content-reviews-item-top-rating-inner-stars">
+                                                    {% for r in rating%}
+                                                        <li class="static-content-reviews-item-top-rating-inner-star
+                                                            {% if forloop.counter <= feedback.rating %}
+                                                                star-colored
+                                                            {% endif %}">
+                                                            <i class="fa fa-star"></i>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="static-content-reviews-item-top-date">
+                                            <p>{{ feedback.createdAt | date }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="static-content-reviews-item-text">
+                                        {#                                        <h5>Оценка: {{ feedback.rating }}</h5>#}
+                                        <p>{{ feedback.text }}</p>
+                                    </div>
+                                </div><!--//static-content-reviews-item-->
+                            {% endfor %}
+
                         </div>
                     </div><!--//item-block-right-->
                 </div><!--//item-block-wrapper-->

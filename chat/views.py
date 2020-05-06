@@ -109,17 +109,20 @@ def get_msg(request):
                 user_qs = User.objects.get(id=user.id)
                 user_name = user_qs.first_name
                 user_avatar = user_qs.get_avatar()
+                user_id = user_qs.id
                 if chat.techniqueitem:
                     userInfo = {
+                        'user_id': user_id,
                         'user_name': user_name,
                         'user_avatar': user_avatar,
                         'technique_img': chat.techniqueitem.images.first().image.url,
-                        'technique_name': chat.techniqueitem.name,
+                        'technique_name': chat.techniqueitem.name[:10] + '...' if len(chat.techniqueitem.name) > 20 else chat.techniqueitem.name,
                         'technique_url': chat.techniqueitem.get_absolute_url()
                     }
                 if chat.order:
                     if not request.user.is_customer:
                         userInfo = {
+                            'user_id': user_id,
                             'user_name': user_name,
                             'user_avatar': user_avatar,
                             'technique_img': False,
@@ -128,6 +131,7 @@ def get_msg(request):
                         }
                     else:
                         userInfo = {
+                            'user_id': user_id,
                             'user_name': user_name,
                             'user_avatar': user_avatar,
                             'technique_img': False,
@@ -204,18 +208,20 @@ def get_chats(request):
                 user_qs = User.objects.get(id=user.id)
                 user_name = user_qs.first_name
                 user_avatar = user_qs.get_avatar()
+                user_id = user_qs.id
 
         if chat.techniqueitem :
             readChats.append({
                 'is_read': chat.isNewMessages,
                 'chat_id': chat.id,
+                'user_id': user_id,
                 'chat_from': user_name,
                 'user_avatar': user_avatar,
                 'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
                 'last_msg': chat.message_set.last().message,
                 'last_msg_time': chat.message_set.last().createdAt.strftime("%d.%m.%Y,%H:%M:%S"),
                 'technique_img': chat.techniqueitem.images.first().image.url,
-                'technique_name': chat.techniqueitem.name,
+                'technique_name': chat.techniqueitem.name[:10] + '...' if len(chat.techniqueitem.name) > 20 else chat.techniqueitem.name,
                 'technique_url': chat.techniqueitem.get_absolute_url()
 
             })
@@ -224,6 +230,7 @@ def get_chats(request):
                 readChats.append({
                     'is_read': chat.isNewMessages,
                     'chat_id': chat.id,
+                    'user_id': user_id,
                     'chat_from': user_name,
                     'user_avatar': user_avatar,
                     'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
@@ -238,6 +245,7 @@ def get_chats(request):
                 readChats.append({
                     'is_read': chat.isNewMessages,
                     'chat_id': chat.id,
+                    'user_id': user_id,
                     'chat_from': user_name,
                     'user_avatar': user_avatar,
                     'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),

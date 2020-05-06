@@ -12,6 +12,7 @@ from twilio.rest import Client
 from chat.models import Chat
 from ya_payment.models import *
 from partner.models import *
+from feedback.models import *
 import uuid
 from yandex_checkout import Configuration, Payment
 import settings
@@ -104,7 +105,10 @@ def lk_page(request):
     all_partners = Parnter.objects.filter(code=user.partner_code)
     all_partners_money = PartnerMoney.objects.filter(partner__code=user.partner_code)
     all_notificatons = Notification.objects.filter(user=user, is_chat_notification=False).order_by('-createdAt')
-
+    all_own_user_feedbacks = UserFeedback.objects.filter(from_user=user)
+    all_own_tech_feedbacks = TechniqueFeedback.objects.filter(from_user=user)
+    all_feedbacks_about_me = UserFeedback.objects.filter(about_user=user)
+    all_feedbacks_about_my_tech = TechniqueFeedback.objects.filter(techniqueitem__owner=user)
 
     form = UpdateForm()
     if user.is_customer and  my_order_id:
@@ -140,7 +144,6 @@ def user_profile_update(request):
     else:
         form = UpdateForm()
     return HttpResponseRedirect("/user/lk/?tab=tab-profile")
-
 
 
 def user_phone(request):
@@ -190,3 +193,7 @@ def del_notifications(request,n_id):
     if notify.user == request.user:
         notify.delete()
     return HttpResponseRedirect("/user/lk/?tab=tab-notification")
+
+def user_profile(request,user_id):
+    current_user = get_object_or_404(User, id=user_id)
+    return render(request, 'user/public-profile.html', locals())

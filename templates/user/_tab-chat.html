@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="lk-tab-chat-item-user">
-                    <p id="chat_user_name"></p>
+                    <a id="chat_user_url" href="#"><p id="chat_user_name"></p></a>
                     <span></span>
                 </div>
                 <div class="lk-tab-chat-item-theme-img">
@@ -34,7 +34,7 @@
             <div class="lk-tab-chat-messages-bottom">
             </div>
             <div class="lk-tab-chat-messages-new-message">
-                <input id="chat_message"  placeholder="Текст вашего сообщения">
+                <input id="chat_message"  placeholder="Текст вашего сообщения" onkeyup="tempMsg = this.value">
                 <div class="lk-tab-chat-messages-new-message-button"><a href="javascript: void(0)" onclick="sendMsg()"><i class="fa fa-telegram"></i></a></div>
 
             </div>

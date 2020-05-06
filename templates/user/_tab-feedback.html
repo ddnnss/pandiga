@@ -1,18 +1,156 @@
-   <div id="tab-feedback" class="lk-tab ">
-                            <div class="lk-tab-feedback">
-                                <div class="tab">
-                                    <button  class="h-tablinks htab-active" onclick="openHTab(event, 'my_feedback')">Мои отзывы (0)</button>
-                                    <button class="h-tablinks" onclick="openHTab(event, 'feedback_about_me')">Отзывы обо мне (0)</button>
-                                </div>
-                                <!-- Tab content -->
-                                <div id="my_feedback" class="h-tabcontent" style="display: block">
-                                    <p>Lorem ipsum dolor sit.</p>
-                                </div>
-                                <div id="feedback_about_me" class="h-tabcontent">
-                                    <p>Lorem ipsum dolor sit1.</p>
-                                </div>
+<div id="tab-feedback" class="lk-tab ">
+    <div class="lk-tab-feedback">
+        <div class="tab">
+            <button  class="h-tablinks htab-active" onclick="openHTab(event, 'my_feedback')">
+                Мои отзывы о пользователях({{ all_own_user_feedbacks.count }})</button>
+            <button  class="h-tablinks htab" onclick="openHTab(event, 'my_tech_feedback')">
+                Мои отзывы о технике({{ all_own_tech_feedbacks.count }})</button>
+            <button class="h-tablinks" onclick="openHTab(event, 'feedback_about_me')">
+                Отзывы обо мне ({{ all_feedbacks_about_me.count }})</button>
+            <button class="h-tablinks" onclick="openHTab(event, 'feedback_about_my_tech')">
+                Отзывы о моей технике ({{ all_feedbacks_about_my_tech.count }})</button>
+        </div>
+        <!-- Tab content -->
+        <div id="my_feedback" class="h-tabcontent" style="display: block">
+
+            {% for feedback in all_own_user_feedbacks %}
+                <div class="static-content-reviews-item mb-20">
+                    <div class="static-content-reviews-item-top">
+                        <div class="static-content-reviews-item-top-user">
+                            <img src="{{ feedback.about_user.get_avatar }}" alt="">
+                            <p>{{ feedback.about_user.get_full_name }}</p>
+                        </div>
+                        <div class="static-content-reviews-item-top-rating">
+                            <p class="static-content-reviews-item-top-rating-value">Оценка</p>
+                            <div class="static-content-reviews-item-top-rating-inner">
+                                <ul class="static-content-reviews-item-top-rating-inner-stars">
+                                    {% for r in rating%}
+                                        <li class="static-content-reviews-item-top-rating-inner-star
+                                                            {% if forloop.counter <= feedback.rating %}
+                                                                star-colored
+                                                            {% endif %}">
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="static-content-reviews-item-top-date">
+                            <p>{{ feedback.createdAt | date }}</p>
+                        </div>
+                    </div>
+                    <div class="static-content-reviews-item-text">
+                        {#                                        <h5>Оценка: {{ feedback.rating }}</h5>#}
+                        <p>{{ feedback.text }}</p>
+                    </div>
+                </div><!--//static-content-reviews-item-->
+            {% endfor %}
+        </div>
+        <div id="my_tech_feedback" class="h-tabcontent" >
+
+            {% for feedback in all_own_tech_feedbacks %}
+                <div class="static-content-reviews-item mb-20">
+                    <div class="static-content-reviews-item-top">
+                        <div class="static-content-reviews-item-top-user">
+                            <img src="{{ feedback.techniqueitem.get_main_image }}" alt="">
+                            <p>{{ feedback.techniqueitem.name }}</p>
+                        </div>
+                        <div class="static-content-reviews-item-top-rating">
+                            <p class="static-content-reviews-item-top-rating-value">Оценка</p>
+                            <div class="static-content-reviews-item-top-rating-inner">
+                                <ul class="static-content-reviews-item-top-rating-inner-stars">
+                                    {% for r in rating%}
+                                        <li class="static-content-reviews-item-top-rating-inner-star
+                                                            {% if forloop.counter <= feedback.rating %}
+                                                                star-colored
+                                                            {% endif %}">
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="static-content-reviews-item-top-date">
+                            <p>{{ feedback.createdAt | date }}</p>
+                        </div>
+                    </div>
+                    <div class="static-content-reviews-item-text">
+                        {#                                        <h5>Оценка: {{ feedback.rating }}</h5>#}
+                        <p>{{ feedback.text }}</p>
+                    </div>
+                </div><!--//static-content-reviews-item-->
+            {% endfor %}
+        </div>
+        <div id="feedback_about_me" class="h-tabcontent">
+            {% for feedback in all_feedbacks_about_me %}
+                <div class="static-content-reviews-item mb-20">
+                    <div class="static-content-reviews-item-top">
+                        <div class="static-content-reviews-item-top-user">
+                            <img src="{{ feedback.from_user.get_avatar }}" alt="">
+                            <p>{{ feedback.from_user.get_full_name }}</p>
+                        </div>
+                        <div class="static-content-reviews-item-top-rating">
+                            <p class="static-content-reviews-item-top-rating-value">Оценка</p>
+                            <div class="static-content-reviews-item-top-rating-inner">
+                                <ul class="static-content-reviews-item-top-rating-inner-stars">
+                                    {% for r in rating%}
+                                        <li class="static-content-reviews-item-top-rating-inner-star
+                                                            {% if forloop.counter <= feedback.rating %}
+                                                                star-colored
+                                                            {% endif %}">
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="static-content-reviews-item-top-date">
+                            <p>{{ feedback.createdAt | date }}</p>
+                        </div>
+                    </div>
+                    <div class="static-content-reviews-item-text">
+                        {#                                        <h5>Оценка: {{ feedback.rating }}</h5>#}
+                        <p>{{ feedback.text }}</p>
+                    </div>
+                </div><!--//static-content-reviews-item-->
+            {% endfor %}
+        </div>
+        <div id="feedback_about_my_tech" class="h-tabcontent">
+            {% for feedback in all_feedbacks_about_my_tech %}
+                <div class="static-content-reviews-item mb-20">
+                    <div class="static-content-reviews-item-top">
+                        <div class="static-content-reviews-item-top-user">
+                            <img src="{{ feedback.techniqueitem.get_main_image }}" alt="">
+                            <p>{{ feedback.techniqueitem.name }}</p>
+                        </div>
+                        <div class="static-content-reviews-item-top-rating">
+                            <p class="static-content-reviews-item-top-rating-value">Оценка</p>
+                            <div class="static-content-reviews-item-top-rating-inner">
+                                <ul class="static-content-reviews-item-top-rating-inner-stars">
+                                    {% for r in rating%}
+                                        <li class="static-content-reviews-item-top-rating-inner-star
+                                                            {% if forloop.counter <= feedback.rating %}
+                                                                star-colored
+                                                            {% endif %}">
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="static-content-reviews-item-top-date">
+                            <p>{{ feedback.createdAt | date }}</p>
+                        </div>
+                    </div>
+                    <div class="static-content-reviews-item-text">
+                        {#                                        <h5>Оценка: {{ feedback.rating }}</h5>#}
+                        <p>{{ feedback.text }}</p>
+                    </div>
+                </div><!--//static-content-reviews-item-->
+            {% endfor %}
+        </div>
 
 
-                            </div><!--lk-tab-feedback -->
+    </div><!--lk-tab-feedback -->
 
-                        </div><!--//tab-feedback-->
+</div><!--//tab-feedback-->

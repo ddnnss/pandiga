@@ -2,34 +2,34 @@
 <header class="header {% if indexPage %}home-header{% endif %}">
     <div class="header-inner">
         <div class="header-wrapper">
-        <div class="header-logo-wrapper">
-            <div class="header-dropdown">
-                <div class="header-dropdown-toggle">
-                    <i class="fa fa-navicon"></i>
-                </div><!-- //header-dropdown-toggle-->
-                <div class="header-dropdown-menu">
-                    <ul>
-                        <li><a href="{% url 'about' %}">как это работает</a></li>
-                        <li><a href="{% url 'forpartners' %}">партнерская программа</a></li>
-                        <li><a href="{% url 'servicerules' %}">правовая информация</a></li>
-                        <li><a href="{% url 'fortechniqueowners' %}">для владельцев техники</a></li>
-                        <li><a href="{% url 'tarif' %}">Тарифы</a></li>
-                        <li><a href="{% url 'questions' %}">Вопрос/ответ</a></li>
-                        <li><a href="{% url 'contacts' %}">Контакты</a></li>
-                    </ul>
-                </div><!-- //header-dropdown-menu-->
-            </div><!-- //header-dropdown-->
-            <div class="header-logo">
-                <a href="/"><img src="{% static 'img/logo.png' %}" alt=""></a>
-                {% if request.user.is_authenticated and request.user.is_customer %}
-                    <span>заказчик</span>
-                {% elif request.user.is_authenticated and not request.user.is_customer %}
-                    <span>исполнитель</span>
-                {% else %}
+            <div class="header-logo-wrapper">
+                <div class="header-dropdown">
+                    <div class="header-dropdown-toggle">
+                        <i class="fa fa-navicon"></i>
+                    </div><!-- //header-dropdown-toggle-->
+                    <div class="header-dropdown-menu">
+                        <ul>
+                            <li><a href="{% url 'about' %}">как это работает</a></li>
+                            <li><a href="{% url 'forpartners' %}">партнерская программа</a></li>
+                            <li><a href="{% url 'servicerules' %}">правовая информация</a></li>
+                            <li><a href="{% url 'fortechniqueowners' %}">для владельцев техники</a></li>
+                            <li><a href="{% url 'tarif' %}">Тарифы</a></li>
+                            <li><a href="{% url 'questions' %}">Вопрос/ответ</a></li>
+                            <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                        </ul>
+                    </div><!-- //header-dropdown-menu-->
+                </div><!-- //header-dropdown-->
+                <div class="header-logo">
+                    <a href="/"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                    {% if request.user.is_authenticated and request.user.is_customer %}
+                        <span>заказчик</span>
+                    {% elif request.user.is_authenticated and not request.user.is_customer %}
+                        <span>исполнитель</span>
+                    {% else %}
 
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
-        </div>
             <div class="header-nav">
                 <ul class="header-nav-wrapper">
                     {% if request.user.is_customer %}
@@ -66,15 +66,15 @@
                                     {% endif %}
                                 </i>
                             </a>
-                        {% if request.user.is_customer  %}
-                            <a class="user-menu-link user-menu-mail" href="{% url 'lk_page' %}?tab=tab-my-fav">
-                                <i class="fa fa-star">
-                                   {% if techniqueItemsFavorite > 0 %}
-                                        <span>{{ techniqueItemsFavorite.count }}</span>
-                                    {% endif %}
-                                </i>
-                            </a>
-                         {% endif %}
+                            {% if request.user.is_customer  %}
+                                <a class="user-menu-link user-menu-mail" href="{% url 'lk_page' %}?tab=tab-my-fav">
+                                    <i class="fa fa-star">
+                                        {% if techniqueItemsFavorite > 0 %}
+                                            <span>{{ techniqueItemsFavorite.count }}</span>
+                                        {% endif %}
+                                    </i>
+                                </a>
+                            {% endif %}
 
                             <div class="user-menu-dropdown">
                                 <div class="user-menu-dropdown-group">
@@ -199,8 +199,27 @@
                 </div>
                 <div class="header-offer-form">
                     <form action="">
-                        <input type="text" name="query" placeholder="Название техники или инструмента">
-                        <button class="btn" type="submit">найти</button>
+                        <div class="city-select">
+                            <input autocomplete="off" required id="city_select_input"
+                                   placeholder="Любой город" class="city-select-input"
+                                   onkeyup="getCities(this)"
+                                   onfocus="hideSearchResults()"
+                                   type="text">
+                            <div id="city_select_list" class="city-select-list ">
+
+                            </div>
+                        </div>
+                        <div class="city-select">
+                            <input autocomplete="off"  id="query_input"  type="text" name="query" required placeholder="Название техники или инструмента" onkeyup="fastSearch(this)">
+                            <div style="height: 335px;overflow: auto;" id="search_result" class="city-select-list ">
+
+                            </div>
+                        </div>
+                        <input id="city_id" type="hidden" name="city_id" value="all">
+                        <input id="type_id" type="hidden" name="type_id" value="0">
+                        <input id="section_id" type="hidden" name="section_id" value="0">
+                        <input id="sub_section_id" type="hidden" name="sub_section_id" value="0">
+{#                        <button class="btn" type="submit">найти</button>#}
                     </form>
                 </div>
             </div><!-- //header-offer-wrapper-->

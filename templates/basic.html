@@ -36,7 +36,14 @@
             menu_allNotificatons_count=document.getElementById('menu_allNotificatons_count'),
             menu_allUnreadChats_count=document.getElementById('menu_allUnreadChats_count')
 
-        let cityId = document.getElementById('city_id')
+        let cityId = document.getElementById('city_id'),
+            typeId = document.getElementById('type_id'),
+            sectionId = document.getElementById('section_id'),
+            sub_sectionId = document.getElementById('sub_section_id'),
+            search_result = document.getElementById('search_result'),
+            query_input = document.getElementById('query_input')
+
+
         function openModal() {
             document.getElementsByClassName('modal')[0].classList.toggle('modal-active')
         }
@@ -67,7 +74,6 @@
                         if (res.length >= 1){
                             citySelectList.innerHTML = ''
                             for(i of res){
-
                                 citySelectList.innerHTML = citySelectList.innerHTML +
                                     `<p data-id="${i['id']}" data-city="${i['city']}" data-region="${i['region']}" class="city-select-list-item" onclick="setCity(this)">
                                  ${i['city']}
@@ -93,6 +99,51 @@
         }
     </script>
     <!-- //getCities-->
+    <!-- //fastSearch-->
+    <script>
+        function hideSearchResults() {
+            search_result.classList.remove('list-active')
+            search_result.innerHTML = ''
+            query_input.value=''
+        }
+        function fastSearch(el) {
+            if (el.value.length <= 2){
+                console.log('too small')
+                return
+            }else{
+                el.disabled = true
+                let body = {'query':el.value,
+                    'city_id':cityId.value}
+                fetch("{% url 'fast_search' %}", {
+                    method: 'post',
+                    body: JSON.stringify(body),
+                    headers: { "X-CSRFToken": csrfmiddlewaretoken },
+                    credentials: 'same-origin'
+                }).then(res=>res.json())
+                    .then(res => {
+                        console.log(res)
+                        console.log('res_count', res.length)
+                        el.disabled = false
+                        el.focus()
+
+                        if (res.length >= 1){
+                            search_result.innerHTML = ''
+                            for(i of res){
+                                search_result.innerHTML = search_result.innerHTML +
+                                    `<p data-id="${i['id']}" data-city="${i['name']}" data-region="${i['region']}" class="city-select-list-item" onclick="window.location.href='${i['url']}'">
+                                 ${i['name']}
+                                 <span>${i['type']}, ${i['section']}, ${i['sub_section']}</span>
+                             </p>`
+                            }
+                            search_result.classList.add('list-active')
+                        }else{
+                            search_result.classList.remove('list-active')
+                        }
+                    })
+            }
+        }
+    </script>
+    <!-- //fastSearch-->
     <!-- tabs-->
     <script>
         function openHTab(evt, tabName) {
@@ -195,61 +246,58 @@
     </script>
     <!--getPhone -->
     {% if request.user.is_authenticated %}
-    <script>
+        <script>
 
-        function get_notifications() {
-            let body = {id: '{{ request.user.id }}'}
-            fetch('/user/get_notifications/', {
-                method: 'post',
-                body: JSON.stringify(body),
-                headers: { "X-CSRFToken": '{{ csrf_token  }}' },
-                credentials: 'same-origin'
-            }).then(res=>res.json())
-                .then(res => {
-                    console.log(res['notifications_count'])
-                    if(res['notifications_count'] > 0){
-                        allNotificatons_count.innerHTML=` <span >${res['notifications_count']}</span>`
-                        menu_allNotificatons_count.innerText=` ${res['notifications_count']}`
-                    }else{
-                       allNotificatons_count.innerHTML=''
-                        menu_allNotificatons_count.innerText='0'
-                    }
-                 if(res['unread_chat_count'] > 0){
-                        allUnreadChats_count.innerHTML=` <span >${res['unread_chat_count']}</span>`
-                        menu_allUnreadChats_count.innerText=`${res['unread_chat_count']}`
-                    }else{
-                       allUnreadChats_count.innerHTML=''
-                        menu_allUnreadChats_count.innerText='0'
-                    }
+            function get_notifications() {
+                let body = {id: '{{ request.user.id }}'}
+                fetch('/user/get_notifications/', {
+                    method: 'post',
+                    body: JSON.stringify(body),
+                    headers: { "X-CSRFToken": '{{ csrf_token  }}' },
+                    credentials: 'same-origin'
+                }).then(res=>res.json())
+                    .then(res => {
+                        console.log(res['notifications_count'])
+                        if(res['notifications_count'] > 0){
+                            allNotificatons_count.innerHTML=` <span >${res['notifications_count']}</span>`
+                            menu_allNotificatons_count.innerText=` ${res['notifications_count']}`
+                        }else{
+                            allNotificatons_count.innerHTML=''
+                            menu_allNotificatons_count.innerText='0'
+                        }
+                        if(res['unread_chat_count'] > 0){
+                            allUnreadChats_count.innerHTML=` <span >${res['unread_chat_count']}</span>`
+                            menu_allUnreadChats_count.innerText=`${res['unread_chat_count']}`
+                        }else{
+                            allUnreadChats_count.innerHTML=''
+                            menu_allUnreadChats_count.innerText='0'
+                        }
 
-                              for (n of res['notify']){
-                        console.log(n)
-                        Toastify({
-                          text: `${n['text']}`,
-                          duration: 0,
-                          destination: `${n['url']}`,
-                          newWindow: false,
-                          close: true,
-                          gravity: "bottom", // `top` or `bottom`
-                          position: 'right', // `left`, `center` or `right`
-                          backgroundColor: "#f80000",
-                          stopOnFocus: true, // Prevents dismissing of toast on hover
-                          onClick: function(){} // Callback after click
-                        }).showToast();
-                        new Audio('{% static 'inflicted.ogg' %}').play()
-                    }
-                })
+                        for (n of res['notify']){
+                            console.log(n)
+                            Toastify({
+                                text: `${n['text']}`,
+                                duration: 0,
+                                destination: `${n['url']}`,
+                                newWindow: false,
+                                close: true,
+                                gravity: "bottom", // `top` or `bottom`
+                                position: 'right', // `left`, `center` or `right`
+                                backgroundColor: "#f80000",
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                onClick: function(){} // Callback after click
+                            }).showToast();
+                            new Audio('{% static 'inflicted.ogg' %}').play()
+                        }
+                    })
 
-        }
-        function get_info(){
-           setInterval(() => get_notifications(), 5000)
+            }
+            function get_info(){
+                setInterval(() => get_notifications(), 5000)
 
-        }
-        get_info()
-    </script>
-
-
-
+            }
+            get_info()
+        </script>
     {% endif %}
 {% endblock %}
 </body>

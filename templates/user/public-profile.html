@@ -1,0 +1,166 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div class="main">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="/">главная</a></li>
+                    <li>Профиль пользователя {{ current_user.get_full_name }}</li>
+                </ul>
+            </div><!--//breadcrumbs-->
+            <section class="item-block">
+                <div class="section-header"><h1>Профиль пользователя {{ current_user.get_full_name }}</h1></div>
+                <div class="item-block-wrapper">
+                    <div class="item-block-left">
+
+                        <div class="item-owner block-bordered mb-10">
+                            <div class="item-owner-info">
+                                <img src="{{ current_user.get_avatar }}" alt="">
+                                <p style="flex-basis: 50%">{{ current_user.first_name }}</p>
+                                <span >зарегистрирован {{ current_user.date_joined | date }}</span>
+                            </div>
+                            <div class="item-owner-contact">
+                                <p class="item-owner-contact-row">
+                                    {% if request.user.is_authenticated %}
+                                              <i class="fa fa-phone"></i> <a id="user_phone" href="#">{{ current_user.phone | truncatechars:10 }}</a>
+                                        <span onclick="getPhone({{ current_user.id}},this)">... показать номер</span>
+                                    {% else %}
+                                        <i class="fa fa-phone"></i> недоступно
+                                    {% endif %}
+                                </p>
+                                <p class="item-owner-contact-row">
+                                    <i class="fa fa-map-marker"></i>
+                                    {% if current_user.city.city %}
+                                        {{ current_user.city.city }}, {{ current_user.city.region }}
+                                    {% else %}
+                                        не указано
+                                    {% endif %}
+                                </p>
+                            </div>
+                            {% if current_user.id != request.user.id %}
+                                {% if request.user.is_authenticated %}
+                                    {% if request.user.is_customer %}
+                                        <span id="message_toggle" class="btn btn-link " onclick="messageToggle()">отправить сообщение</span>
+                                        <div id="new_message" class="new-message " >
+                                            <textarea id="message" style="width: 100%" name="message" cols="30" rows="10"></textarea>
+                                            <span class="btn btn-link" onclick="sendMsg('tech',{{ techniqueItem.id }},{{ current_user.id }},{{ request.user.id }})">отправить</span>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="btn btn-link" onclick="openModal()">отправить сообщение</span>
+                                {% endif %}
+                            {% endif %}
+                        </div><!--//item-owner-->
+{#                        <div class="item-owner-other-technique block-bordered">#}
+{#                            <p class="text-center">ТЕХНИКА ПОЛЬЗОВАТЕЛЯ</p>#}
+{#                            <div class="hr"></div>#}
+{#                            {% for otherTechniqueItem in otherTechnique%}#}
+{#                                <div class="item-owner-other-technique-item">#}
+{#                                    <a href="{% url 'technique' otherTechniqueItem.sub_section.section.type.name_slug otherTechniqueItem.sub_section.section.name_slug otherTechniqueItem.sub_section.name_slug otherTechniqueItem.name_slug%}">#}
+{#                                        <p class="item-owner-other-technique-item-name">{{ otherTechniqueItem.name }}</p>#}
+{#                                        <p class="item-owner-other-technique-item-info">#}
+{#                                            <img src="{% static 'img/time-icon.png' %}" alt=""> <span>от {{ otherTechniqueItem.min_rent_time }} {{ otherTechniqueItem.get_rent_type_short }}</span>#}
+{#                                            <img src="{% static 'img/money-icon.png' %}" alt=""> <span>{{ otherTechniqueItem.rent_price }} <i class="fa fa-rub"></i>/{{ otherTechniqueItem.get_rent_type_long }}</span>#}
+{#                                        </p>#}
+{#                                    </a>#}
+{#                                </div><!--//item-owner-other-technique-item-->#}
+{#                            {% endfor %}#}
+{#                        </div><!--//item-owner-other-technique-->#}
+                    </div><!--//item-block-left-->
+                    <div class="item-block-right block-bordered">
+                       <div class="items-block-right-wrapper">
+                            {% for technique in current_user.techniques.all %}
+                                <div class="item-grid">
+                                    <a href="{% url 'technique' technique.sub_section.section.type.name_slug technique.sub_section.section.name_slug technique.sub_section.name_slug technique.name_slug%}">
+                                        <div class="item-image" style="background: url({{ technique.get_main_image }})">
+                                            {% if technique.is_free %}
+                                                <span  class="item-free">свободен</span>
+                                            {% else %}
+                                                <span  class="item-busy">занят</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="item-info">
+                                            <div class="item-info-top">
+                                                <div class="rating item-rating">
+                                                    <p class="rating-value">{{ technique.get_rating }}</p>
+                                                    <div class="rating-inner">
+                                                        <ul class="rating-inner-stars">
+                                                            {% for r in rating%}
+
+                                                                <li class="rating-inner-star
+                                                               {% if forloop.counter <= technique.get_rating %}star-colored{% endif %}">
+                                                                    <i class="fa fa-star"></i></li>
+                                                            {% endfor %}
+
+
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="item-name">{{ technique.name }}</div>
+                                            </div>
+                                            <div class="item-info-bottom">
+                                                <div class="item-info-user">
+                                                    <div class="item-info-user-avatar"><img src="{{ technique.owner.get_avatar }}" alt=""></div>
+
+                                                </div>
+                                                <div class="item-info-price">
+                                                    <div class="item-info-price-time"><p class="item-info-price-time-value">от
+                                                        <span>{{ technique.min_rent_time }}</span>
+                                                        {% if technique.rent_type == 'hour' %}
+                                                            Ч
+                                                        {% elif technique.rent_type == 'day'%}
+                                                            Д
+                                                        {% endif %}
+                                                    </p>
+                                                    </div>
+                                                    <div class="item-info-price-money"><p class="item-info-price-money-value">
+                                                        <span>{{ technique.rent_price }}</span>
+                                                        {% if technique.rent_type == 'hour' %}
+                                                            <p>руб/час</p>
+                                                        {% elif technique.rent_type == 'day'%}
+                                                            <p>руб/день</p>
+                                                        {% endif %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </a>
+                                </div><!--//item-grid-->
+                            {% endfor %}
+
+                        </div><!--//items-block-right-wrapper-->
+
+
+                    </div><!--//item-block-right-->
+                </div><!--//item-block-wrapper-->
+            </section><!--//item-->
+        </div><!--//container-->
+    </div><!--//main-->
+    {% if not request.user.is_authenticated %}
+        <div id="openModal" class="modal">
+            <div id="modal_login" class="modal-dialog " >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title section-header">Ошибка</h3>
+                        <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                    </div>
+                    <div  class="modal-body">
+                        <p class="modal-error-text">Необходима регистрация</p>
+                        <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+
+
+{% endblock %}

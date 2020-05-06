@@ -9,6 +9,7 @@ urlpatterns = [
    path('lk/', views.lk_page, name='lk_page'),
    path('update/', views.user_profile_update, name='user_profile_update'),
    path('user_phone/', views.user_phone, name='user_phone'),
+   path('profile/<user_id>/', views.user_profile, name='user_profile'),
    path('mark_notify_read/', views.mark_notify_read, name='mark_notify_read'),
    path('get_notifications/', views.get_notifications, name='get_notifications'),
    path('del_notifications/<n_id>', views.del_notifications, name='del_notifications'),

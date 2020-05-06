@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 from .forms import *
 from django.contrib import messages
+from feedback.models import TechniqueFeedback
 
 def technique_catalog(request):
 
@@ -312,6 +313,7 @@ def technique_subsection_catalog(request, type_slug, section_slug, subsection_sl
 def technique(request, type_slug, section_slug, subsection_slug,technique_slug):
     techniqueItem = get_object_or_404(TechniqueItem, name_slug=technique_slug)
     otherTechnique = TechniqueItem.objects.filter(owner=techniqueItem.owner).exclude(id=techniqueItem.id)
+    all_feedbacks = TechniqueFeedback.objects.filter(techniqueitem=techniqueItem)
     return render(request, 'catalog/technique.html', locals())
 
 
@@ -332,3 +334,29 @@ def section_subscribe(request):
         sect_subscribe.users.remove(request.user)
         print('user removed')
     return JsonResponse({'status':'ok'}, safe=False)
+
+
+def fast_search(request):
+    request_unicode = request.body.decode('utf-8')
+    request_body = json.loads(request_unicode)
+    print(request_body)
+    return_dict = list()
+    if request_body['city_id'] != 'all':
+        all_technique = TechniqueItem.objects.filter(is_moderated=True,
+                                                     is_active=True,
+                                                     city_id=request_body['city_id'],
+                                                     name_lower__contains=request_body['query'])
+    else:
+        all_technique = TechniqueItem.objects.filter(is_moderated=True,
+                                                     is_active=True,
+                                                     name_lower__contains=request_body['query'])
+    print(all_technique)
+    for i in all_technique:
+         return_dict.append({'id': i.id,
+                             'name': i.name,
+                             'url': i.get_absolute_url(),
+                             'type':i.type.name,
+                             'section':i.section.name,
+                             'sub_section':i.sub_section.name
+                             })
+    return JsonResponse(return_dict, safe=False)
