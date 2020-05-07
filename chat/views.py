@@ -265,60 +265,39 @@ def get_chats(request):
 
 
 
-def to_rent(request,item_id):
-    techniqueItem = get_object_or_404(TechniqueItem,id=item_id)
-    chat = None
-    try:
-        chat = Chat.objects.get(techniqueitem=techniqueItem)
-    except:
-        pass
-    print('chat=',chat)
-    me = request.user
-    me_f = False
-    other_user = None
-    other_user_f = False
-    chat_id = 0
-    # for x in chat.all():
-    #     print('x=',x.id)
-    #     c = Chat.objects.get(id = x.id)
-    #     print(c.users.all())
-    #     for u in c.users.all():
-    #         if u == me:
-    #             print('me')
-    #             me_f = True
-    #         if u == other_user:
-    #             other_user_f =True
-    #             if me_f:
-    #                 chat_id = x.id
-    #                 print('chat_id',chat_id)
+def to_rent(request):
+    if request.POST:
+        techniqueItem = get_object_or_404(TechniqueItem,id=request.POST.get('techniqueItem_id'))
+        chat = None
+        try:
+            chat = Chat.objects.get(techniqueitem=techniqueItem)
+        except:
+            pass
+        print('chat=',chat)
+        if chat:
+            print('chat found')
+            Message.objects.create(chat=chat,
+                                   user=request.user,
+                                   message=f'Привет, {request.POST.get("order_date")} хочу взять в аренду'
+                                           f' {techniqueItem.name}, на {request.POST.get("rent_time")} ')
+            chat.lastMsgBy = request.user
+            chat.save()
+            Notification.objects.create(user=techniqueItem.owner,
+                                        text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}',
+                                        redirect_url='/user/lk/?tab=tab-notification')
+        else:
+            print('chat not found')
+            Notification.objects.create(user=techniqueItem.owner,text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}',
+                                        redirect_url='/user/lk/?tab=tab-notification')
+            newChat = Chat.objects.create(techniqueitem=techniqueItem)
+            newChat.users.add(request.user, techniqueItem.owner)
 
+            newChat.lastMsgBy = request.user
+            newChat.save()
+            Message.objects.create(chat=newChat,user=request.user,
+                                   message='Привет, хочу взять технику в аренду')
 
-
-    if chat: #me_f and other_user_f:
-        print('chat found')
-        Message.objects.create(chat=chat,
-                               user=request.user,
-                               message='Привет, хочу взять технику в аренду')
-        chat.lastMsgBy = request.user
-        chat.save()
-        Notification.objects.create(user=techniqueItem.owner,
-                                    text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}',
-                                    redirect_url='/user/lk/?tab=tab-notification')
-    else:
-        print('chat not found')
-        Notification.objects.create(user=techniqueItem.owner,text=f'Запрос на аренду {techniqueItem.name} от {request.user.get_full_name()}',
-                                    redirect_url='/user/lk/?tab=tab-notification')
-        newChat = Chat.objects.create(techniqueitem=techniqueItem)
-        newChat.users.add(request.user, techniqueItem.owner)
-        # if int(body['msgFrom']) == request.user.id:
-        #     newChat.lastMessageOwn = True
-        #     newChat.save()
-        newChat.lastMsgBy = request.user
-        newChat.save()
-        Message.objects.create(chat=newChat,user=request.user,
-                               message='Привет, хочу взять технику в аренду')
-    # Message.objects.create(messageTo_id=body['msgTo'],messageFrom_id=body['msgFrom'],message=body['msg'])
-    return HttpResponseRedirect('/user/lk/?tab=tab-chat')
+        return HttpResponseRedirect('/user/lk/?tab=tab-chat')
 
 
 def delete_chat(request):

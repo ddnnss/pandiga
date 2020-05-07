@@ -25,6 +25,7 @@
             <section class="items-block">
                 <div class="section-header">
                     <h1>
+
                     {% if current_technique_section and not current_technique_subsection%}
                         {{ current_technique_section.name }}
                     {% elif current_technique_subsection%}
@@ -35,46 +36,46 @@
                 </h1></div>
                 <div class="items-block-wrapper">
                     <div class="items-block-left">
-                        <div class="category-menu mb-10">
-                            <ul class="category-menu-wrapper">
-                                {% for type in all_technique_types %}
-                                    <li class="category-menu-item" ><a {% if current_technique_type.id == type.id%}
-                                        class="menu-item-active"
-                                    {% endif %}
-                                        href="{% url 'technique_type_catalog' type.name_slug %}">{{ type.name }}</a>
-                                        <div  class="category-menu-inner">
-                                            <ul class="category-menu-inner-wrapper">
-                                                {% for section in type.sections.all %}
-                                                    <li class="category-menu-inner-item">
-                                                        <a {% if current_technique_section.id == section.id%}
-                                                            class="menu-item-active"
-                                                        {% endif %}
-                                                            href="{% url 'technique_section_catalog' type.name_slug section.name_slug%}">
-                                                            {{ section.name }}
-                                                        </a>
-                                                        <div  class="category-menu-inner">
-                                                            <ul class="category-menu-inner-wrapper">
-                                                                {% for subsection in section.subsections.all %}
-                                                                    <li class="category-menu-item link-item">
-                                                                        <a {% if current_technique_subsection.id == subsection.id%}
-                                                                            class="menu-item-active"
-                                                                        {% endif %}
-                                                                            href="{% url 'technique_subsection_catalog' type.name_slug section.name_slug subsection.name_slug%}">
-                                                                            {{ subsection.name }}
-                                                                        </a>
-                                                                    </li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-
-                            </ul>
-                        </div>
+{#                        <div class="category-menu mb-10">#}
+{#                            <ul class="category-menu-wrapper">#}
+{#                                {% for type in all_technique_types %}#}
+{#                                    <li class="category-menu-item" ><a {% if current_technique_type.id == type.id%}#}
+{#                                        class="menu-item-active"#}
+{#                                    {% endif %}#}
+{#                                        href="{% url 'technique_type_catalog' type.name_slug %}">{{ type.name }}</a>#}
+{#                                        <div  class="category-menu-inner">#}
+{#                                            <ul class="category-menu-inner-wrapper">#}
+{#                                                {% for section in type.sections.all %}#}
+{#                                                    <li class="category-menu-inner-item">#}
+{#                                                        <a {% if current_technique_section.id == section.id%}#}
+{#                                                            class="menu-item-active"#}
+{#                                                        {% endif %}#}
+{#                                                            href="{% url 'technique_section_catalog' type.name_slug section.name_slug%}">#}
+{#                                                            {{ section.name }}#}
+{#                                                        </a>#}
+{#                                                        <div  class="category-menu-inner">#}
+{#                                                            <ul class="category-menu-inner-wrapper">#}
+{#                                                                {% for subsection in section.subsections.all %}#}
+{#                                                                    <li class="category-menu-item link-item">#}
+{#                                                                        <a {% if current_technique_subsection.id == subsection.id%}#}
+{#                                                                            class="menu-item-active"#}
+{#                                                                        {% endif %}#}
+{#                                                                            href="{% url 'technique_subsection_catalog' type.name_slug section.name_slug subsection.name_slug%}">#}
+{#                                                                            {{ subsection.name }}#}
+{#                                                                        </a>#}
+{#                                                                    </li>#}
+{#                                                                {% endfor %}#}
+{#                                                            </ul>#}
+{#                                                        </div>#}
+{#                                                    </li>#}
+{#                                                {% endfor %}#}
+{#                                            </ul>#}
+{#                                        </div>#}
+{#                                    </li>#}
+{#                                {% endfor %}#}
+{##}
+{#                            </ul>#}
+{#                        </div>#}
                         <div class="item-filter">
                             <form id="filters_form" action="" method="get">
                                 <p>Поиск по категории</p>
@@ -86,10 +87,11 @@
 
                                     </div>
                                 </div>
-                                {#                            <p>Тип</p>#}
-                                <select style="display: none" name="" id="type_select">
+                                <p>Тип</p>
+
+                                <select onchange="window.location.href = `/catalog/${this.options[this.selectedIndex].value}` ">
                                     <option value="any">Любой</option>
-                                    {% for type in all_techique_types %}
+                                    {% for type in all_Technique %}
                                         <option {% if current_technique_type.id == type.id%}selected{% endif %} value="{{ type.name_slug }}">{{ type.name }}</option>
                                     {% endfor %}
 

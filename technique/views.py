@@ -354,9 +354,9 @@ def fast_search(request):
     result_array = []
 
 
-    sub_sections=TechniqueSubSection.objects.filter(name_lower__contains=request_body['query'])
-    sections = TechniqueSection.objects.filter(name_lower__contains=request_body['query'])
-    types = TechniqueType.objects.filter(name_lower__contains=request_body['query'])
+    sub_sections=TechniqueSubSection.objects.filter(name_lower__startswith=request_body['query'])
+    sections = TechniqueSection.objects.filter(name_lower__startswith=request_body['query'])
+    types = TechniqueType.objects.filter(name_lower__startswith=request_body['query'])
     print(sub_sections)
     print(sections)
     print(types)
@@ -378,6 +378,6 @@ def fast_search(request):
             'path': '',
             'url': f'{i.get_absolute_url()}'
         })
-            
+
     return_dict['result']=result_array
     return JsonResponse(return_dict, safe=False)

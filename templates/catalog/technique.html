@@ -36,10 +36,11 @@
                             {% if techniqueItem.owner.id != request.user.id %}
                                 {% if request.user.is_authenticated  %}
                                     {% if request.user.is_customer %}
-                                        <a href="{% url 'to_rent' techniqueItem.id %}" class="btn btn-link">взять в аренду</a>
+                                        {#                                        <a href="{% url 'to_rent' techniqueItem.id %}" class="btn btn-link">взять в аренду</a>#}
+                                        <span class="btn btn-link" onclick="openModal()">взять в аренду</span>
                                     {% endif %}
                                 {% else %}
-                                    <span class="btn btn-link" onclick="openModal()">взять в аренду</span>
+                                    <span class="btn btn-link btn-disabled" >взять в аренду</span>
                                 {% endif %}
                             {% endif %}
                         </div><!--//item-time-price-->
@@ -166,27 +167,64 @@
             </section><!--//item-->
         </div><!--//container-->
     </div><!--//main-->
-    {% if not request.user.is_authenticated %}
-        <div id="openModal" class="modal">
-            <div id="modal_login" class="modal-dialog " >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title section-header">Ошибка</h3>
-                        <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
-                    </div>
-                    <div  class="modal-body">
-                        <p class="modal-error-text">Необходима регистрация</p>
-                        <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
-                    </div>
+
+    <div id="openModal" class="modal">
+        <div id="modal_login" class="modal-dialog " >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title section-header">Укажите детали аренды</h3>
+                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                </div>
+                <div  class="modal-body">
+                    <form action="{% url 'to_rent' %}" method="post">{% csrf_token %}
+                        <div class="form-row">
+                            <label for="">Срок аренды</label>
+
+                            <input type="number" min="1" required name="rent_time">
+                            <select name="rent_type"  >
+                                <option selected value="hour" data-label="час">Часов</option>
+                                <option value="day" data-label="день">Дней</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="">Когда</label>
+
+                            <input type="date" name="order_date">
+                            <label class="custom-checkbox">На точное время
+                                <input type="checkbox" id="order_time_check" name="order_time_check" onchange="toggleTime(this)">
+                                <span class="checkmark"></span>
+                            </label>
+                            <input class="not-visible" id="order_time" disabled type="time" name="order_time">
+                            <input type="hidden" name="techniqueItem_id" value="{{ techniqueItem.id }}">
+                        </div>
+
+                        <button class="btn btn-link by-center mb-20" type="submit">Отправить запрос</button>
+                    </form>
+
+
                 </div>
             </div>
         </div>
-    {% endif %}
+    </div>
+
 {% endblock %}
 {% block js %}
     {{ block.super }}
     <script src="{% static 'js/tiny-slider.js' %}"></script>
     <script>
+    let timeInput = document.getElementById('order_time')
+        function toggleTime(el) {
+            timeInput.value=''
+            timeInput.classList.toggle('not-visible')
+            if (el.checked){
+
+               timeInput.removeAttribute('disabled')
+            }
+            else{
+                timeInput.setAttribute('disabled','disabled')
+            }
+        }
         var slider = tns({
             container: '.item-slider',
             items:1,
