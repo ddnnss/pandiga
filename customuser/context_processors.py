@@ -10,7 +10,7 @@ def check_profile(request):
     if request.user.is_authenticated:
         user = request.user
         profile_ok = False
-        can_add_technique = True
+        #can_add_technique = True
         techniqueItemsFavorite = TechniqueItemFavorite.objects.filter(user=user)
         wishlist_ids = []
         for i in techniqueItemsFavorite:
@@ -19,11 +19,11 @@ def check_profile(request):
         my_technique_orders = TechniqueOrder.objects.filter(customer=user)
         my_tarif = user.tarif
         my_balance = user.balance
-        try:
-            if my_tarif.technique_count <= user.technique_added:
-                can_add_technique = False
-        except:
-            pass
+        # try:
+        #     if my_tarif.technique_count <= user.technique_added:
+        #         can_add_technique = False
+        # except:
+        #     pass
         try:
             can_call = my_tarif.can_call
             can_chat = my_tarif.can_chat

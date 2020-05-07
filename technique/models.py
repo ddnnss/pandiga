@@ -71,6 +71,7 @@ class TechniqueSection(models.Model):
     page_keywords = models.TextField('Keywords SEO', blank=True, null=True)
     seo_text = RichTextUploadingField('СЕО текст на страницу', blank=True, null=True)
     views = models.IntegerField('Просмотров категории',blank=True, default=0)
+    base_price = models.IntegerField('Стоимость размещения',blank=True, default=1000)
     is_active = models.BooleanField('Отображается на сайте?', default=True)
     old_id = models.IntegerField(blank=True, null=True, editable=False)
     def save(self, *args, **kwargs):
@@ -128,7 +129,7 @@ class TechniqueSubSection(models.Model):
         verbose_name_plural = "Подразделы техники"
 
     def get_absolute_url(self):
-        return f'/catalog/{self.section.type.name_slug}//{self.section.name_slug}/{self.name_slug}/'
+        return f'/catalog/{self.section.type.name_slug}/{self.section.name_slug}/{self.name_slug}/'
 
 class TechniqueItem(models.Model):
     type = models.ForeignKey(TechniqueType, blank=True, null=True, on_delete=models.SET_NULL,
@@ -147,13 +148,14 @@ class TechniqueItem(models.Model):
     min_rent_time = models.IntegerField('Минимальное время аренды',blank=False,null=True)
     rent_type = models.CharField('Тип аренды по времени', max_length=10, blank=True, null=True)
     rent_price = models.IntegerField('Стоимость аренды',blank=False,null=True)
-    description = models.TextField('Описание', blank=False,null=True)
-    features = models.TextField('Характеристики', blank=False, null=True)
+    description = RichTextUploadingField('Описание', blank=False,null=True)
+    features = RichTextUploadingField('Характеристики', blank=False, null=True)
     rating = models.IntegerField('Рейтинг',default=0)
     rate_times = models.IntegerField('РейтингT',default=0)
     is_moderated = models.BooleanField('Проверена?', default=True)
     is_free = models.BooleanField('Статус свободен?', default=True)
     is_active = models.BooleanField('Учавстует в выдаче?', default=True)
+    views = models.IntegerField('Просмотров', default=0)
     created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
 
     def save(self, *args, **kwargs):
@@ -207,15 +209,29 @@ class TechniqueItem(models.Model):
     objects = RandomManager()
 
     class Meta:
-
         verbose_name = "Техника"
         verbose_name_plural = "Еденицы техники"
 
+class TechniqueItemHistory(models.Model):
+    techniqueitem = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,
+                                      verbose_name='Техника')
+    user = models.ForeignKey(User, blank=False, null=True, on_delete=models.SET_NULL,
+                                verbose_name='Пользователь')
+    summ = models.IntegerField('Сумма', default=0)
+    created_at = models.DateTimeField("Дата", auto_now_add=True)
+
+    def __str__(self):
+        return f'Списание за технику  : {self.techniqueitem.name}'
+
+    class Meta:
+        verbose_name = "История списание за технику"
+        verbose_name_plural = "История списание за технику"
+
 class TechniqueItemFavorite(models.Model):
     techniqueitem = models.ForeignKey(TechniqueItem, blank=False, null=True, on_delete=models.CASCADE,
-                                      verbose_name='Изображение для')
+                                      verbose_name='Техника')
     user = models.ForeignKey(User, blank=False, null=True, on_delete=models.SET_NULL,
-                                verbose_name='Владелец')
+                                verbose_name='Пользователь')
 
     def __str__(self):
         return f'Избранная техника полбзователем  : {self.user.first_name}'

@@ -75,7 +75,7 @@
                             citySelectList.innerHTML = ''
                             for(i of res){
                                 citySelectList.innerHTML = citySelectList.innerHTML +
-                                    `<p data-id="${i['id']}" data-city="${i['city']}" data-region="${i['region']}" class="city-select-list-item" onclick="setCity(this)">
+                                    `<p data-id="${i['id']}" data-coefficient="${i['coefficient']}" data-city="${i['city']}" data-region="${i['region']}" class="city-select-list-item" onclick="setCity(this)">
                                  ${i['city']}
                                  <span>${i['region']}</span>
                              </p>`
@@ -95,6 +95,7 @@
 
             citySelectList.classList.remove('list-active')
             citySelectInput.value = `${el.dataset.region}, ${el.dataset.city}`
+            cityId.setAttribute('data-coefficient',el.dataset.coefficient)
             cityId.value = el.dataset.id
         }
     </script>
@@ -112,8 +113,7 @@
                 return
             }else{
                 el.disabled = true
-                let body = {'query':el.value,
-                    'city_id':cityId.value}
+                let body = {'query':el.value}
                 fetch("{% url 'fast_search' %}", {
                     method: 'post',
                     body: JSON.stringify(body),
@@ -122,23 +122,26 @@
                 }).then(res=>res.json())
                     .then(res => {
                         console.log(res)
-                        console.log('res_count', res.length)
+
                         el.disabled = false
                         el.focus()
 
-                        if (res.length >= 1){
+                        if (res['result'].length >= 1){
                             search_result.innerHTML = ''
-                            for(i of res){
-                                search_result.innerHTML = search_result.innerHTML +
-                                    `<p data-id="${i['id']}" data-city="${i['name']}" data-region="${i['region']}" class="city-select-list-item" onclick="window.location.href='${i['url']}'">
-                                 ${i['name']}
-                                 <span>${i['type']}, ${i['section']}, ${i['sub_section']}</span>
-                             </p>`
+                            for(i of res['result']){
+                               // console.log(i)
+                                search_result.innerHTML = search_result.innerHTML + `
+                                <p><a href="${i['url']}">${i['name']}</a> ${i['path']}</p>
+                                `
                             }
                             search_result.classList.add('list-active')
                         }else{
                             search_result.classList.remove('list-active')
                         }
+
+
+
+
                     })
             }
         }

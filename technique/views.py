@@ -72,14 +72,20 @@ def change_technique_status(request,id):
 def add_technique(request):
     if request.POST:
         newItem = None
+        sub_section = TechniqueSubSection.objects.get(id=request.POST.get('sub_section'))
+        city = City.objects.get(id=request.POST.get('city'))
+        price = round(sub_section.section.base_price * city.coefficient)
+        print(price)
         form = AddTechniqueForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and request.user.balance >= price:
             newItem = form.save(commit=False)
             newItem.owner = request.user
             newItem.save()
             request.user.technique_added += 1
+            request.user.balance -= price
             request.user.save()
             print(newItem.id)
+            TechniqueItemHistory.objects.create(techniqueitem=newItem,user=request.user,summ=price)
             messages.success(request, 'Спасибо, форма успешно отправлена')
         else:
             print(form.errors)
@@ -92,6 +98,7 @@ def add_technique(request):
                 TechniqueItemDoc.objects.create(techniqueitem_id=newItem.id, image=f).save()
 
         return HttpResponseRedirect('/catalog/add-technique/')
+
     #----POST-------
     all_types = TechniqueType.objects.filter(is_active=True)
     form = AddTechniqueForm()
@@ -110,7 +117,7 @@ def get_type_sublists(request):
     if target == 'section':
         sections = TechniqueSection.objects.filter(type__name_slug=name_slug)
         for i in sections:
-            return_dict.append({'name_slug': i.name_slug, 'name': i.name})
+            return_dict.append({'name_slug': i.name_slug, 'name': i.name,'price':i.base_price})
         return JsonResponse(return_dict, safe=False)
     if target == 'subsection':
         subsections = TechniqueSubSection.objects.filter(section__name_slug=name_slug)
@@ -312,6 +319,9 @@ def technique_subsection_catalog(request, type_slug, section_slug, subsection_sl
 
 def technique(request, type_slug, section_slug, subsection_slug,technique_slug):
     techniqueItem = get_object_or_404(TechniqueItem, name_slug=technique_slug)
+    if techniqueItem.owner != request.user:
+        techniqueItem.views +=1
+        techniqueItem.save()
     otherTechnique = TechniqueItem.objects.filter(owner=techniqueItem.owner).exclude(id=techniqueItem.id)
     all_feedbacks = TechniqueFeedback.objects.filter(techniqueitem=techniqueItem)
     return render(request, 'catalog/technique.html', locals())
@@ -340,23 +350,34 @@ def fast_search(request):
     request_unicode = request.body.decode('utf-8')
     request_body = json.loads(request_unicode)
     print(request_body)
-    return_dict = list()
-    if request_body['city_id'] != 'all':
-        all_technique = TechniqueItem.objects.filter(is_moderated=True,
-                                                     is_active=True,
-                                                     city_id=request_body['city_id'],
-                                                     name_lower__contains=request_body['query'])
-    else:
-        all_technique = TechniqueItem.objects.filter(is_moderated=True,
-                                                     is_active=True,
-                                                     name_lower__contains=request_body['query'])
-    print(all_technique)
-    for i in all_technique:
-         return_dict.append({'id': i.id,
-                             'name': i.name,
-                             'url': i.get_absolute_url(),
-                             'type':i.type.name,
-                             'section':i.section.name,
-                             'sub_section':i.sub_section.name
-                             })
+    return_dict = {}
+    result_array = []
+
+
+    sub_sections=TechniqueSubSection.objects.filter(name_lower__contains=request_body['query'])
+    sections = TechniqueSection.objects.filter(name_lower__contains=request_body['query'])
+    types = TechniqueType.objects.filter(name_lower__contains=request_body['query'])
+    print(sub_sections)
+    print(sections)
+    print(types)
+    for i in sub_sections:
+        result_array.append({
+            'name': i.name,
+            'path':f'&#10151; {i.section.name} &#10151; {i.section.type.name}',
+            'url': f'{i.get_absolute_url()}'
+        })
+    for i in sections:
+        result_array.append({
+            'name': i.name,
+            'path':f'&#10151;  {i.type.name}',
+            'url': f'{i.get_absolute_url()}'
+        })
+    for i in types:
+        result_array.append({
+            'name': i.name,
+            'path': '',
+            'url': f'{i.get_absolute_url()}'
+        })
+            
+    return_dict['result']=result_array
     return JsonResponse(return_dict, safe=False)

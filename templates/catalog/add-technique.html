@@ -31,7 +31,8 @@
                     <div class="form-row">
                         <label for="">местоположение</label>
                         <div class="city-select">
-                            <input autocomplete="off" required id="city_select_input" placeholder="Начните вводить город" class="city-select-input" onkeyup="getCities(this)" type="text">
+                            <input autocomplete="off" required id="city_select_input" placeholder="Начните вводить город"
+                                   class="city-select-input" onkeyup="getCities(this)" onfocus="clearSection()" type="text">
                             <div id="city_select_list" class="city-select-list ">
 
                             </div>
@@ -59,7 +60,7 @@
                     </div><!--//form-row-->
                     <div class="form-row">
                         <label for="">раздел</label>
-                        <select id="section_select" required >
+                        <select id="section_select" required onchange="calculatePrice(this)">
                             <option disabled selected class="section-name" >Выберите тип</option>
 
                         </select>
@@ -108,28 +109,24 @@
 
 
                     </div><!--//form-row-->
-                    <input id="city_id" type="hidden" name="{{ form.city.name }}" value="0">
+                    <input data-coefficient="1" id="city_id" type="hidden" name="{{ form.city.name }}" value="0">
 
                     {% if request.user.is_authenticated %}
-                        {% if can_add_technique %}
+
 
                             {% if profile_ok %}
-                                <button type="submit" class="btn btn-link by-center">добавить технику</button>
+                                <button id="add_tech_button" type="submit" class="btn btn-link by-center">добавить технику</button>
+                                <p style="display: none" id="add_tech_error"></p>
                             {% else %}
                                 <p class="text-center mb-20">Ваш профиль не заполнен</p>
                                 <a class="btn btn-link by-center" href="{% url 'lk_page' %}?tab=tab-profile">Заполнить профиль</a>
                             {% endif %}
 
-                        {% else %}
 
-                            <p class="text-center mb-20">Вам доступно добавление {{ my_tarif.technique_count }} ед. техники.</p>
-                            <a class="btn btn-link by-center" href="{% url 'lk_page' %}?tab=tab-tarif">Изменить тариф</a>
-
-                        {% endif %}
 
                     {% else %}
 
-                        <span class="btn btn-link by-center" onclick="openModal()">добавить технику</span>
+                        <span id="add_tech_button" class="btn btn-link by-center" onclick="openModal()">добавить технику</span>
 
                     {% endif %}
                 </form>
@@ -149,7 +146,7 @@
                     </div>
                     <div  class="modal-body">
                         <p class="modal-error-text">Необходима регистрация</p>
-                        <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >закрыть</a>
+                        <a href="{% url 'login_page' %}" class="btn btn-link by-center mb-20" >Зарегистрироваться</a>
                     </div>
                 </div>
             </div>
@@ -165,13 +162,43 @@
           CKEDITOR.replace( '{{ form.features.name }}' );
      </script>
     <script>
-        let priceLabel = document.getElementById('price_label')
-        let rentTimeInput = document.getElementById('rent_time_input')
+        let priceLabel = document.getElementById('price_label'),
+             rentTimeInput = document.getElementById('rent_time_input'),
+             typeSelect = document.getElementById('type_select'),
+             sectionSelect = document.getElementById('section_select'),
+             subsectionSelect = document.getElementById('subsection_select'),
+             addTechButton = document.getElementById('add_tech_button'),
+             addTechError = document.getElementById('add_tech_error')
+
+
+
         function changePrice(el) {
             let selectedVal = el.options[el.selectedIndex]
             priceLabel.innerText = selectedVal.dataset.label
             rentTimeInput.setAttribute('max',selectedVal.dataset.time)
 
+        }
+        function calculatePrice(el) {
+            let selectedVal = el.options[el.selectedIndex]
+            base_price = parseInt(selectedVal.dataset.price)
+            coefficient = parseFloat(document.getElementById('city_id').dataset.coefficient)
+            total_price = (base_price * coefficient).toFixed(0)
+            console.log('total_price',total_price)
+            {% if request.user.is_authenticated %}
+            if({{ my_balance }} > total_price) {
+                addTechError.style.display='none'
+                addTechButton.innerHTML = `Добавить технику (${total_price}) <i class="fa fa-rub"></i>`
+                addTechButton.style.display='block'
+            }else{
+                addTechButton.style.display='none'
+                addTechError.innerHTML = `<a href="{% url 'lk_page' %}?tab=tab-balance">Пополните</a> Ваш баланс. Стоимость размещения ${total_price} <i class="fa fa-rub"></i>, а ваш баланс {{ my_balance }} <i class="fa fa-rub"></i>`
+                addTechError.style.display='block'
+            }
+            {% endif %}
+        }
+        function clearSection() {
+            sectionSelect.value='all'
+            addTechButton.innerHTML = 'Добавить технику'
         }
         function previewImages() {
             var preview = document.querySelector('#preview');
@@ -201,9 +228,7 @@
     <!-- preview images-->
     <!-- get section && subsection-->
     <script>
-        let typeSelect = document.getElementById('type_select')
-        let sectionSelect = document.getElementById('section_select')
-        let subsectionSelect = document.getElementById('subsection_select')
+
 
         function clearSelect(el){
             let elem = document.querySelectorAll(`.${el}`)
@@ -213,10 +238,13 @@
             })
         }
 
-        function createOption(name_slug,name,target,ro) {
+        function createOption(name_slug,name,target,ro,price=false) {
+            //console.log('price',price)
             let option = document.createElement("option")
             option.text = name
             option.value = name_slug
+            if (price){option.setAttribute('data-price',price)}
+
             if (ro){
                 option.setAttribute('disabled','disabled')
                 option.setAttribute('selected','selected')
@@ -238,8 +266,8 @@
                     if (target === 'section'){
                         sectionSelect.appendChild(createOption('all','Выберите раздел',target))
                         for (x of res) {
-                            //console.log(x['id'])
-                            sectionSelect.appendChild(createOption(x['name_slug'],x['name'],target))
+                            //console.log(x['price'])
+                            sectionSelect.appendChild(createOption(x['name_slug'],x['name'],target,false,x['price']))
                         }
                     }
                     if (target === 'subsection'){

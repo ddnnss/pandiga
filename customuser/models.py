@@ -93,8 +93,6 @@ class User(AbstractUser):
         else:
             return f'{self.first_name}'
 
-
-
     def get_avatar(self):
         if self.avatar:
             return self.avatar.url

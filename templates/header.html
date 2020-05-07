@@ -198,29 +198,16 @@
                     <p>СПЕЦТЕХНИКА, АВТО, МОТО, ВОДНАЯ ТЕХНИКА И МНОГО ДРУГОЕ</p>
                 </div>
                 <div class="header-offer-form">
-                    <form action="">
-                        <div class="city-select">
-                            <input autocomplete="off" required id="city_select_input"
-                                   placeholder="Любой город" class="city-select-input"
-                                   onkeyup="getCities(this)"
-                                   onfocus="hideSearchResults()"
-                                   type="text">
-                            <div id="city_select_list" class="city-select-list ">
 
-                            </div>
-                        </div>
+
                         <div class="city-select">
                             <input autocomplete="off"  id="query_input"  type="text" name="query" required placeholder="Название техники или инструмента" onkeyup="fastSearch(this)">
                             <div style="height: 335px;overflow: auto;" id="search_result" class="city-select-list ">
 
                             </div>
                         </div>
-                        <input id="city_id" type="hidden" name="city_id" value="all">
-                        <input id="type_id" type="hidden" name="type_id" value="0">
-                        <input id="section_id" type="hidden" name="section_id" value="0">
-                        <input id="sub_section_id" type="hidden" name="sub_section_id" value="0">
-{#                        <button class="btn" type="submit">найти</button>#}
-                    </form>
+
+
                 </div>
             </div><!-- //header-offer-wrapper-->
 

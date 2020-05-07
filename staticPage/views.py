@@ -21,7 +21,7 @@ def get_city(request):
 
     return_dict = list()
     for i in cities:
-        return_dict.append({'id' : i.id, 'city': i.city, 'region': i.region})
+        return_dict.append({'id' : i.id, 'city': i.city, 'region': i.region, 'coefficient': i.coefficient})
     return JsonResponse(return_dict, safe=False)
 
 

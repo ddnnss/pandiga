@@ -1,5 +1,5 @@
  <div id="tab-tarif" class="lk-tab ">
-                            <div class="section-header "><h3>тарифные планы</h3></div>
+                            <div class="section-header "><h3>Статусы профиля</h3></div>
                             <div class="lk-tab-content-tarif">
                                 {% for tarif in all_tarif %}
                                 <div class="tarif-item">
@@ -18,7 +18,7 @@
                                         <li class="tarif-item-feature-item">Вознаграждение по партнерской программе <span class="color-red">{{ tarif.parter_bonus }}%</span></li>
                                     </ul>
                                 {% if tarif.id == user.tarif.id %}
-                                    <a href="" class="btn btn-disabled">текущий тариф</a>
+                                    <a href="" class="btn btn-disabled">текущий статус</a>
                                 {% else %}
                                     {% if user.balance >= tarif.price %}
                                     <a href="{% url 'change_tarif' tarif.id %}" class="btn btn-link">перейти</a>
