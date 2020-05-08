@@ -7,8 +7,6 @@
                                     <p class="tarif-item-price">{{ tarif.price }} <i class="fa fa-rub"></i></p>
                                     <p class="tarif-item-name">{{ tarif.name }}</p>
                                     <ul class="tarif-item-feature">
-                                        <li class="tarif-item-feature-item">Размещение техники в любой категории <span class="color-red">{{ tarif.technique_count }}</span></li>
-                                        <li class="tarif-item-feature-item">Размещение техники в категории строительный инструмент <span class="color-red">{{ tarif.other_count }}</span></li>
                                         <li class="tarif-item-feature-item">Получение уведомлений о новых заявках через <span class="color-red">{{ tarif.new_orders_delay }}</span> минут после публикации</li>
                                         <li class="tarif-item-feature-item">Доступ к разделу Работа <span class="color-red">{% if tarif.work_section %}ДА{% else %}НЕТ{% endif %}</span></li>
                                         <li class="tarif-item-feature-item">Получение уведомлений о новых предложениях работы <span class="color-red">{% if tarif.work_notify %}ДА{% else %}НЕТ{% endif %}</span></li>

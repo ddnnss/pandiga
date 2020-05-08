@@ -25,7 +25,23 @@
 {% block content %}
 {% endblock %}
 {% include 'footer.html' %}
+{% if request.user.is_authenticated and not profile_ok and not lkPage %}
+<div id="openModal" class="modal modal-active">
+        <div id="modal_login" class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title section-header">Заполните профиль</h3>
+                    <a href="#close" title="Close" onclick="openModal()" class="close">×</a>
+                </div>
+                <div class="modal-body">
+                   <p class="modal-error-text">Ваш профиль заполнен не полностью.</p>
+                    <a class="btn btn-link by-center" href="{% url 'lk_page' %}?tab=tab-profile">Заполнить профиль</a>
 
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
 {% block js %}
     <script src="{% static 'js/toastify.js' %}"></script>
     <script>
@@ -84,11 +100,10 @@
                         }else{
                             citySelectList.classList.remove('list-active')
                         }
-
                     })
             }
-
         }
+
         function setCity(el) {
             let citySelectInput = document.getElementById('city_select_input')
             let citySelectList = document.getElementById('city_select_list')
@@ -138,10 +153,6 @@
                         }else{
                             search_result.classList.remove('list-active')
                         }
-
-
-
-
                     })
             }
         }
@@ -212,9 +223,7 @@
                     console.log(res)
                     msg.value = ''
                     messageToggle()
-
                 })
-
         }
 
     </script>
@@ -242,15 +251,12 @@
                         el.innerHTML='Для просмотра номера нужно <a href = "/user/lk/?tab=tab-tarif">сменить тариф </a>'
                     }
                     getChats(1);
-
                 })
-
         }
     </script>
     <!--getPhone -->
     {% if request.user.is_authenticated %}
         <script>
-
             function get_notifications() {
                 let body = {id: '{{ request.user.id }}'}
                 fetch('/user/get_notifications/', {

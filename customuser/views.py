@@ -99,6 +99,7 @@ def change_status(request):
 def lk_page(request):
     user = request.user
     my_order_id = request.GET.get('order_id')
+    lkPage=True
     all_tarif = Tarif.objects.all()
     all_payments_types = PaymentType.objects.all()
     all_payments = PaymentObj.objects.filter(user=user)

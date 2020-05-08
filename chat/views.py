@@ -279,7 +279,7 @@ def to_rent(request):
             Message.objects.create(chat=chat,
                                    user=request.user,
                                    message=f'Привет, {request.POST.get("order_date")} хочу взять в аренду'
-                                           f' {techniqueItem.name}, на {request.POST.get("rent_time")} ')
+                                           f' {techniqueItem.name}, на {request.POST.get("rent_time")} {request.POST.get("rent_type")}')
             chat.lastMsgBy = request.user
             chat.save()
             Notification.objects.create(user=techniqueItem.owner,
@@ -295,7 +295,8 @@ def to_rent(request):
             newChat.lastMsgBy = request.user
             newChat.save()
             Message.objects.create(chat=newChat,user=request.user,
-                                   message='Привет, хочу взять технику в аренду')
+                                   message=f'Привет, {request.POST.get("order_date")} хочу взять в аренду'
+                                           f' {techniqueItem.name}, на {request.POST.get("rent_time")} {request.POST.get("rent_type")}')
 
         return HttpResponseRedirect('/user/lk/?tab=tab-chat')
 

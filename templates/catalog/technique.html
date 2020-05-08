@@ -182,8 +182,8 @@
 
                             <input type="number" min="1" required name="rent_time">
                             <select name="rent_type"  >
-                                <option selected value="hour" data-label="час">Часов</option>
-                                <option value="day" data-label="день">Дней</option>
+                                <option selected value="ч." data-label="час">Часов</option>
+                                <option value="д." data-label="день">Дней</option>
                             </select>
                         </div>
 
@@ -191,13 +191,12 @@
                             <label for="">Когда</label>
 
                             <input type="date" name="order_date">
-                            <label class="custom-checkbox">На точное время
-                                <input type="checkbox" id="order_time_check" name="order_time_check" onchange="toggleTime(this)">
-                                <span class="checkmark"></span>
-                            </label>
-                            <input class="not-visible" id="order_time" disabled type="time" name="order_time">
+
+
                             <input type="hidden" name="techniqueItem_id" value="{{ techniqueItem.id }}">
                         </div>
+
+                        <p class="mb-20">Также Вы можете <a href="{% url 'technique_order' %}">создать заявку</a> на интересующую технику и исполнители сами откликнутся, останется выбрать лучшего.</p>
 
                         <button class="btn btn-link by-center mb-20" type="submit">Отправить запрос</button>
                     </form>
@@ -213,18 +212,7 @@
     {{ block.super }}
     <script src="{% static 'js/tiny-slider.js' %}"></script>
     <script>
-    let timeInput = document.getElementById('order_time')
-        function toggleTime(el) {
-            timeInput.value=''
-            timeInput.classList.toggle('not-visible')
-            if (el.checked){
 
-               timeInput.removeAttribute('disabled')
-            }
-            else{
-                timeInput.setAttribute('disabled','disabled')
-            }
-        }
         var slider = tns({
             container: '.item-slider',
             items:1,

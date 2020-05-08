@@ -33,7 +33,7 @@ def check_profile(request):
 
 
 
-        if user.phone:
+        if user.phone and user.city and user.email:
             profile_ok = True
         allChats = Chat.objects.filter(users__in=[user.id])
         all_orders_apply = TechniqueOrderApply.objects.filter(user=user,is_choosen=False)

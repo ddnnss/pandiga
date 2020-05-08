@@ -76,11 +76,11 @@ class User(AbstractUser):
 
     def __str__(self):
         if self.phone:
-            return self.phone
+            return f'{self.get_full_name()} {self.phone}'
         elif self.email:
-            return self.email
+            return f'{self.get_full_name()} {self.email}'
         else:
-            return self.first_name
+            return f'{self.get_full_name()} {self.id}'
 
     def get_rating(self):
         try:
