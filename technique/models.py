@@ -21,12 +21,12 @@ class TechniqueType(models.Model):
     icon = models.ImageField('Иконка для главной (40x45)', upload_to='technique/type/', blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
-    page_h1 = models.CharField('Тег H1 (если не указан, выводится название типа)',
+    page_h1 = models.CharField('Тег H1 (если не указан, выводится название типа) Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%',
                                max_length=255, blank=True, null=True)
     page_title = models.CharField('Название страницы SEO', max_length=255, blank=True, null=True)
     page_description = models.CharField('Описание страницы SEO', max_length=255, blank=True, null=True)
     page_keywords = models.TextField('Keywords SEO', blank=True, null=True)
-    seo_text = RichTextUploadingField('СЕО текст на страницу', blank=True, null=True)
+    seo_text = RichTextUploadingField('СЕО текст на страницу. Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%', blank=True, null=True)
     views = models.IntegerField('Просмотров категории',blank=True, default=0)
     is_active =models.BooleanField('Отображается на сайте?', default=True)
     old_id = models.IntegerField(blank=True, null=True, editable=False)
@@ -64,12 +64,12 @@ class TechniqueSection(models.Model):
     name = models.CharField('Название раздела техники', max_length=255, blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
-    page_h1 = models.CharField('Тег H1 (если не указан, выводится название раздела)', max_length=255,
+    page_h1 = models.CharField('Тег H1 (если не указан, выводится название раздела) Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%', max_length=255,
                                blank=True, null=True)
     page_title = models.CharField('Название страницы SEO', max_length=255, blank=True, null=True)
     page_description = models.CharField('Описание страницы SEO', max_length=255, blank=True, null=True)
     page_keywords = models.TextField('Keywords SEO', blank=True, null=True)
-    seo_text = RichTextUploadingField('СЕО текст на страницу', blank=True, null=True)
+    seo_text = RichTextUploadingField('СЕО текст на страницу Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%', blank=True, null=True)
     views = models.IntegerField('Просмотров категории',blank=True, default=0)
     base_price = models.IntegerField('Стоимость размещения',blank=True, default=1000)
     is_active = models.BooleanField('Отображается на сайте?', default=True)
@@ -100,12 +100,12 @@ class TechniqueSubSection(models.Model):
     name = models.CharField('Название подраздела техники', max_length=255, blank=False, null=True)
     name_lower = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
     name_slug = models.CharField(max_length=255, blank=True, null=True, db_index=True, editable=False)
-    page_h1 = models.CharField('Тег H1 (если не указан, выводится название подраздела)',
+    page_h1 = models.CharField('Тег H1 (если не указан, выводится название подраздела) Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%',
                                max_length=255, blank=True, null=True)
     page_title = models.CharField('Название страницы SEO', max_length=255, blank=True, null=True)
     page_description = models.CharField('Описание страницы SEO', max_length=255, blank=True, null=True)
     page_keywords = models.TextField('Keywords SEO', blank=True, null=True)
-    seo_text = RichTextUploadingField('СЕО текст на страницу', blank=True, null=True)
+    seo_text = RichTextUploadingField('СЕО текст на страницу Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%', blank=True, null=True)
     views = models.IntegerField('Просмотров категории',blank=True, default=0)
     is_active = models.BooleanField('Отображается на сайте?', default=True)
     old_id = models.IntegerField(blank=True, null=True, editable=False)

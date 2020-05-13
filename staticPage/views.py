@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from tariff.models import Tarif
 from technique.models import TechniqueItem
+import settings
 #----
 # from openpyxl import load_workbook
 # from customuser.models import *
@@ -27,6 +28,9 @@ def get_city(request):
 
 def index(request):
     indexPage = True
+    page_title = 'PANDIGA - Клубная аренда техники'
+    page_description = ''
+
     all_technique = TechniqueItem.objects.random(8)
     return render(request, 'staticPage/index.html', locals())
 
@@ -39,7 +43,12 @@ def login_page(request):
         return HttpResponseRedirect('/')
 
 def robots(request):
-    robotsTxt = f"User-agent: *\nDisallow: /admin/\nHost: https://www.pandiga.ru/\nSitemap: https://www.pandiga.ru/sitemap.xml"
+    subdomain = request.subdomain
+    if subdomain and not request.homedomain:
+        robotsTxt = f"User-agent: *\nDisallow: /admin/\nUser-Agent: Googlebot\nDisallow: /\nHost: {settings.PROTOCOL}{subdomain.name}.{settings.MAIN_DOMAIN}.ru/\nSitemap:{settings.PROTOCOL}{subdomain.name}.{settings.MAIN_DOMAIN}.ru/sitemap.xml"
+    else:
+        robotsTxt = f"User-agent: *\nDisallow: /admin/\nHost: {settings.PROTOCOL}{settings.MAIN_DOMAIN}.ru/\nSitemap: {settings.PROTOCOL}{settings.MAIN_DOMAIN}.ru/sitemap.xml"
+
     return HttpResponse(robotsTxt, content_type="text/plain")
 
 def about(request):

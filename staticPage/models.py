@@ -25,14 +25,7 @@ class City(models.Model):
                                   blank=True,
                                   null=True,
                                   db_index=True)
-    title = models.CharField('Тэг Title',
-                            max_length=255,
-                            blank=True,
-                            null=True)
-    description = models.CharField('Тэг Description',
-                             max_length=255,
-                             blank=True,
-                             null=True)
+
 
     def __str__(self):
         return f'{self.city}'
@@ -42,13 +35,13 @@ class City(models.Model):
         verbose_name_plural = "Города и регионы"
 
 
-# class PageText(models.Model):
-#     domain = models.ForeignKey(City,blank=False,verbose_name='Для поддомена', null=True, on_delete=models.CASCADE, related_name='hometext')
-#     indexText = RichTextUploadingField('Текст для главной страницы. Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%', blank=True, null=True)
-#
-#     def __str__(self):
-#         return f'Тексты на страницы для города {self.domain.city}'
-#
-#     class Meta:
-#         verbose_name = "Текст на страницы"
-#         verbose_name_plural = "Тексты на страницы"
+class PageText(models.Model):
+    domain = models.ForeignKey(City,blank=False,verbose_name='Для поддомена', null=True, on_delete=models.CASCADE, related_name='hometext')
+    indexText = RichTextUploadingField('Текст для главной страницы. Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%', blank=True, null=True)
+
+    def __str__(self):
+        return f'Тексты на страницы для города {self.domain.city}'
+
+    class Meta:
+        verbose_name = "Текст на страницы"
+        verbose_name_plural = "Тексты на страницы"
