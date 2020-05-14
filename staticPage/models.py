@@ -25,7 +25,7 @@ class City(models.Model):
                                   blank=True,
                                   null=True,
                                   db_index=True)
-
+    is_default = models.BooleanField('Домен по умолчанию?',default=False)
 
     def __str__(self):
         return f'{self.city}'

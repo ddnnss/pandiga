@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'staticPage.middleware.check_domain.MyMiddleware'
 ]
 
 ROOT_URLCONF = 'pandiga.urls'

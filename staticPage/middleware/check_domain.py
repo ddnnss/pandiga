@@ -8,6 +8,7 @@ class MyMiddleware(MiddlewareMixin):
         print(request.get_host())
         domain_parts = request.get_host().split('.')
         domain_parts[0] = domain_parts[0].lower()
+        subDomain = None
         wwwPresent = False
         try:
             domain_parts.remove('www')
@@ -25,14 +26,12 @@ class MyMiddleware(MiddlewareMixin):
             else:
                 subdomain = None
 
-        subDomain = None
         if not subdomain:
-            subDomain = City.objects.first()
+            subDomain = City.objects.filter(is_default=True)
             homeDomain = True
-
         else:
             try:
-                subDomain = City.objects.get(name=subdomain)
+                subDomain = City.objects.get(sub_domain=subdomain)
                 homeDomain = False
             except:
                 return HttpResponseRedirect(settings.PROTOCOL + settings.MAIN_DOMAIN + '.ru')
