@@ -36,7 +36,7 @@ class City(models.Model):
 
 
 class PageText(models.Model):
-    domain = models.ForeignKey(City,blank=False,verbose_name='Для поддомена', null=True, on_delete=models.CASCADE, related_name='hometext')
+    domain = models.ForeignKey(City,blank=True,verbose_name='Для поддомена', null=True, on_delete=models.CASCADE, related_name='hometext')
     indexText = RichTextUploadingField('Текст для главной страницы. Для вставки города используйте выражение %TOWN%, для склонения города %TOWN_ALIAS%', blank=True, null=True)
 
     def __str__(self):
