@@ -6,6 +6,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 from feedback.models import TechniqueFeedback
+from staticPage.models import *
 
 def technique_catalog(request):
 
@@ -164,7 +165,8 @@ def filter_qs(qs,filter_city=None,
 
 def technique_type_catalog(request, type_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
-    seo_text= current_technique_type.seo_text
+
+    seo_text, page_h1, page_title, page_description = current_technique_type.get_seo_text(request=request)
     all_technique_qs = TechniqueItem.objects.filter(type=current_technique_type, is_moderated=True, is_active=True)
 
     filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
@@ -215,15 +217,7 @@ def technique_section_catalog(request, type_slug, section_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
     current_technique_section = get_object_or_404(TechniqueSection, name_slug=section_slug)
     is_subscribed = False
-    if request.user.is_authenticated:
-        try:
-            subscribes = SectionSubcribes.objects.get(section=current_technique_section)
-
-            if request.user in subscribes.users.all():
-                is_subscribed = True
-        except:
-            pass
-    seo_text = current_technique_section.seo_text
+    seo_text, page_h1, page_title, page_description = current_technique_section.get_seo_text(request=request)
     all_technique_qs = TechniqueItem.objects.filter(section=current_technique_section, is_moderated=True, is_active=True)
     filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
     # filter_type = request.GET.get('type') if request.GET.get('type') != 'all' else None

@@ -26,13 +26,14 @@
                 <div class="section-header">
                     <h1>
 
-                    {% if current_technique_section and not current_technique_subsection%}
-                        {{ current_technique_section.name }}
-                    {% elif current_technique_subsection%}
-                       {{ current_technique_subsection.name }}
-                    {% else %}
-                        {{ current_technique_type.name }}
-                    {% endif %}
+{#                    {% if current_technique_section and not current_technique_subsection%}#}
+{#                        {{ current_technique_section.name }}#}
+{#                    {% elif current_technique_subsection%}#}
+{#                       {{ current_technique_subsection.name }}#}
+{#                    {% else %}#}
+{#                        {{ current_technique_type.name }}#}
+{#                    {% endif %}#}
+                        {{ page_h1 }}
                 </h1></div>
                 <div class="items-block-wrapper">
                     <div class="items-block-left">

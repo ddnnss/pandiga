@@ -22,7 +22,7 @@ class TechniqueSitemap(Sitemap):
     changefreq = "monthly"
     priority = 0.5
     def items(self):
-        return TechniqueItem.objects.all()
+        return TechniqueItem.objects.filter(is_active=True, is_moderated=True)
 
     def lastmod(self, obj):
         return obj.created_at

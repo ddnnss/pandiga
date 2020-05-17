@@ -10,7 +10,7 @@ from random import choices
 import string
 from ckeditor_uploader.fields import RichTextUploadingField
 from customuser.models import User
-from staticPage.models import City
+from staticPage.models import *
 import os
 from django_random_queryset import RandomManager
 from pandiga.settings import BASE_DIR
@@ -49,6 +49,53 @@ class TechniqueType(models.Model):
         verbose_name = "Тип техники"
         verbose_name_plural = "Типы техники"
 
+    def get_seo_text(self,request):
+        seo_text = None
+        page_h1 = None
+        page_title = None
+        page_description = None
+        if not request.subdomain.is_default:
+            print('subdomain true', request.subdomain)
+            try:
+                temp_subdomain_info = TechniqueTypeText.objects.get(techniqueType=self)
+                seo_text = temp_subdomain_info.fullText.replace('%TOWN%',request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias) if temp_subdomain_info.fullText else self.seo_text.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_h1 = temp_subdomain_info.page_h1.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias) if temp_subdomain_info.page_h1 else self.page_h1.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_title = temp_subdomain_info.page_title.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%',
+                                request.subdomain.cityAlias) if temp_subdomain_info.page_title else self.page_title.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_description = temp_subdomain_info.page_description.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%',
+                            request.subdomain.cityAlias) if temp_subdomain_info.page_description else self.page_description.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+
+            except:
+                try:
+                    seo_text = self.seo_text.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%',
+                        request.subdomain.cityAlias)
+                    page_h1 = self.page_h1.replace('%TOWN%', request.subdomain.city).replace(
+                        '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                    page_title = self.page_title.replace('%TOWN%', request.subdomain.city).replace(
+                        '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                    page_description = self.page_description.replace('%TOWN%', request.subdomain.city).replace(
+                        '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                except:
+                    pass
+        else:
+            print('subdomain false')
+            try:
+                seo_text = self.seo_text.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%',
+                                                request.subdomain.cityAlias)
+                page_h1 = self.page_h1.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_title = self.page_title.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_description = self.page_description.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%', request.subdomain.cityAlias)
+            except:
+                page_h1 = self.name
+        return seo_text,page_h1,page_title,page_description
+
     def get_icon(self):
         if self.icon:
             return self.icon.url
@@ -74,6 +121,8 @@ class TechniqueSection(models.Model):
     base_price = models.IntegerField('Стоимость размещения',blank=True, default=1000)
     is_active = models.BooleanField('Отображается на сайте?', default=True)
     old_id = models.IntegerField(blank=True, null=True, editable=False)
+
+
     def save(self, *args, **kwargs):
         slug = slugify(self.name)
         if not self.name_slug:
@@ -85,12 +134,67 @@ class TechniqueSection(models.Model):
         self.name_lower = self.name.lower()
         super(TechniqueSection, self).save(*args, **kwargs)
 
+    def get_seo_text(self, request):
+        seo_text = None
+        page_h1 = None
+        page_title = None
+        page_description = None
+        if not request.subdomain.is_default:
+            print('subdomain true', request.subdomain)
+            try:
+                temp_subdomain_info = SubTechniqueTypeText.objects.get(sectionType=self)
+                seo_text = temp_subdomain_info.fullText.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%',
+                    request.subdomain.cityAlias) if temp_subdomain_info.fullText else self.seo_text.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_h1 = temp_subdomain_info.page_h1.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%',
+                                                                                                        request.subdomain.cityAlias) if temp_subdomain_info.page_h1 else self.page_h1.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_title = temp_subdomain_info.page_title.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%',
+                    request.subdomain.cityAlias) if temp_subdomain_info.page_title else self.page_title.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_description = temp_subdomain_info.page_description.replace('%TOWN%',
+                                                                                request.subdomain.city).replace(
+                    '%TOWN_ALIAS%',
+                    request.subdomain.cityAlias) if temp_subdomain_info.page_description else self.page_description.replace(
+                    '%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%', request.subdomain.cityAlias)
+
+            except:
+                try:
+                    seo_text = self.seo_text.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%',
+                                                                                               request.subdomain.cityAlias)
+                    page_h1 = self.page_h1.replace('%TOWN%', request.subdomain.city).replace(
+                        '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                    page_title = self.page_title.replace('%TOWN%', request.subdomain.city).replace(
+                        '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                    page_description = self.page_description.replace('%TOWN%', request.subdomain.city).replace(
+                        '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                except:
+                    pass
+        else:
+            print('subdomain false')
+            try:
+                seo_text = self.seo_text.replace('%TOWN%', request.subdomain.city).replace('%TOWN_ALIAS%',
+                                                                                           request.subdomain.cityAlias)
+                page_h1 = self.page_h1.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_title = self.page_title.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%', request.subdomain.cityAlias)
+                page_description = self.page_description.replace('%TOWN%', request.subdomain.city).replace(
+                    '%TOWN_ALIAS%', request.subdomain.cityAlias)
+            except:
+                page_h1 = self.name
+        return seo_text, page_h1, page_title, page_description
+
     def __str__(self):
         return f'Раздел техники : {self.name}'
 
     class Meta:
         verbose_name = "Раздел техники"
         verbose_name_plural = "Разделы техники"
+
+
     def get_absolute_url(self):
         return f'/catalog/{self.type.name_slug}/{self.name_slug}/'
 
