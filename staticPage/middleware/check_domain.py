@@ -27,7 +27,10 @@ class MyMiddleware(MiddlewareMixin):
                 subdomain = None
 
         if not subdomain:
-            subDomain = City.objects.get(is_default=True)
+            try:
+                subDomain = City.objects.get(is_default=True)
+            except:
+                subDomain = None
             homeDomain = True
         else:
             try:
