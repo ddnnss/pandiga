@@ -6,12 +6,20 @@ from django.contrib import messages
 import datetime
 from technique.models import TechniqueType
 from customuser.models import Notification
+from django.db.models import Q
+
 
 def technique_all_orders(request):
     if request.user.is_authenticated and not request.user.is_customer:
         all_orders = TechniqueOrder.objects.filter(is_active=True,
                                                    is_moderated=True,
                                                    worker__isnull=True).exclude(customer_id=request.user.id).order_by('-created_at')
+        owned_technique = TechniqueItem.objects.filter(owner=request.user)
+        temp=[]
+        for i in owned_technique:
+            temp.append(i.sub_section.id)
+        # all_orders = all_orders.exclude(sub_section__in=temp)
+        all_orders = all_orders.exclude(~Q(sub_section__in=temp))
         all_techique_types = TechniqueType.objects.all
         return render(request, 'techniqueOrder/all-technique-orders.html', locals())
     else:

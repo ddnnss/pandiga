@@ -380,7 +380,7 @@
     </script>
         <!-- get section && subsection-->
     <script>
-        let typeSelect = document.getElementById('type_select')
+      //  let typeSelect = document.getElementById('type_select')
         let sectionSelect = document.getElementById('section_select')
         let subsectionSelect = document.getElementById('subsection_select')
 
@@ -431,12 +431,11 @@
                 })
         }
 
-        typeSelect.addEventListener('change',()=>{
-            clearSelect('section-name')
-            clearSelect('subsection-name')
-            getSubcat(typeSelect.options[typeSelect.selectedIndex].value,'section')
-
-        })
+      //  typeSelect.addEventListener('change',()=>{
+      //      clearSelect('section-name')
+      //      clearSelect('subsection-name')
+      //      getSubcat(typeSelect.options[typeSelect.selectedIndex].value,'section')
+      //        })
         sectionSelect.addEventListener('change',()=>{
             clearSelect('subsection-name')
             getSubcat(sectionSelect.options[sectionSelect.selectedIndex].value,'subsection')

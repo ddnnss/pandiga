@@ -167,6 +167,7 @@ def technique_type_catalog(request, type_slug):
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
 
     seo_text, page_h1, page_title, page_description = current_technique_type.get_seo_text(request=request)
+
     all_technique_qs = TechniqueItem.objects.filter(type=current_technique_type, is_moderated=True, is_active=True)
 
     filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
