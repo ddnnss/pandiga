@@ -20,7 +20,9 @@ import settings
 from technique.models import *
 from techniqueOrder.models import *
 
-
+import datetime as dt
+from datetime import datetime
+from django.utils import timezone
 
 def logout_page(request):
     logout(request)
@@ -174,9 +176,17 @@ def get_notifications(request):
     request_unicode = request.body.decode('utf-8')
     request_body = json.loads(request_unicode)
     user_id = request_body['id']
+    user = User.objects.get(id=user_id)
     allChats = Chat.objects.filter(users__in=[user_id])
-    all_notify = Notification.objects.filter(user_id=user_id,is_read=False)
-    all_notify_not_notified = all_notify.filter(is_user_notified=False)
+    all_notify = Notification.objects.filter(user=user, is_read=False)
+    for n in all_notify:
+        if n.is_delayed and timezone.now()  > n.show_time:
+            print('can see')
+            n.is_delayed=False
+            n.save()
+        else:
+            print('NOT SEE')
+    all_notify_not_notified = all_notify.filter(is_user_notified=False, is_delayed=False)
     for notify in all_notify_not_notified:
         notify.is_user_notified = True
         notify.save()
@@ -185,7 +195,7 @@ def get_notifications(request):
             'url':notify.redirect_url
         })
     response_dict['notify'] = notifications
-    response_dict['notifications_count'] = all_notify.filter(is_chat_notification=False).count()
+    response_dict['notifications_count'] = all_notify.filter(is_chat_notification=False, is_delayed=False).count()
     response_dict['unread_chat_count'] = allChats.filter(isNewMessages=True).exclude(lastMsgBy_id=user_id).count()
     return JsonResponse(response_dict)
 

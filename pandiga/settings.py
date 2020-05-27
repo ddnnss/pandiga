@@ -9,6 +9,12 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'customuser.User'
 
+EMAIL_HOST = settings.SMTP_HOST
+EMAIL_HOST_USER = settings.SMTP_LOGIN
+EMAIL_HOST_PASSWORD = settings.SMTP_PASSWORD
+EMAIL_PORT = settings.SMTP_PORT
+EMAIL_USE_TLS = True
+
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 

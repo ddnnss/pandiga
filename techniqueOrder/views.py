@@ -7,7 +7,7 @@ import datetime
 from technique.models import TechniqueType
 from customuser.models import Notification
 from django.db.models import Q
-
+from django.utils import timezone
 
 def technique_all_orders(request):
     if request.user.is_authenticated and not request.user.is_customer:
@@ -71,10 +71,22 @@ def technique_order(request):
                 tech = TechniqueItem.objects.filter(city=newOrder.city,sub_section=newOrder.sub_section)
                 for t in tech:
                     if not t.owner.is_customer:
-                        Notification.objects.create(user=t.owner,
-                                                    text=f'Новая заявка на технику {newOrder.get_technique_name()}',
-                                    is_chat_notification=False,
-                                    redirect_url=f'/technique/orders/{newOrder.name_slug}')
+                        print('DELAY=', t.owner.tarif.new_orders_delay)
+                        if not t.owner.tarif.new_orders_delay:
+                            print('NOT DELAY')
+                            Notification.objects.create(user=t.owner,
+                                                        text=f'Новая заявка на технику {newOrder.get_technique_name()}',
+                                        is_chat_notification=False,
+                                        redirect_url=f'/technique/orders/{newOrder.name_slug}')
+                        else:
+                            print('SET DELAY', t.owner.tarif.new_orders_delay)
+                            Notification.objects.create(user=t.owner,
+                                                        text=f'Новая заявка на технику {newOrder.get_technique_name()}',
+                                                        is_chat_notification=False,
+                                                        is_delayed=True,
+                                                        show_time= timezone.now() + timezone.timedelta(minutes=t.owner.tarif.new_orders_delay),
+                                                        redirect_url=f'/technique/orders/{newOrder.name_slug}')
+
             else:
                 print(form.errors)
                 messages.error(request, 'Все поля обязвтельны для заполнения')

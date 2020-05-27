@@ -169,8 +169,14 @@ def technique_type_catalog(request, type_slug):
     seo_text, page_h1, page_title, page_description = current_technique_type.get_seo_text(request=request)
 
     all_technique_qs = TechniqueItem.objects.filter(type=current_technique_type, is_moderated=True, is_active=True)
-
-    filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
+    if not request.user.is_authenticated:
+        filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
+    else:
+        print('filter_city for auth=', request.user.city.id)
+        filter_city = request.GET.get('city') if request.GET.get('city') != 'all' else None
+        if not filter_city:
+            filter_city = request.user.city.id
+    print('filter_city=',filter_city)
     #filter_type = request.GET.get('type') if request.GET.get('type') != 'all' else None
     filter_section = request.GET.get('section') if request.GET.get('section') != 'all' else None
     filter_subsection = request.GET.get('subsection') if request.GET.get('subsection') != 'all' else None

@@ -4,8 +4,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from staticPage.models import City
 from tariff.models import Tarif
-
-
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -110,6 +110,8 @@ class Notification(models.Model):
     is_user_notified = models.BooleanField(default=False)
     redirect_url = models.CharField(max_length=255,blank=True,null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    is_delayed = models.BooleanField(default=False)
+    show_time = models.DateTimeField(blank=True, null=True)
 
 
 def user_post_save(sender, instance, created, **kwargs):
@@ -120,4 +122,21 @@ def user_post_save(sender, instance, created, **kwargs):
         instance.tarif = default_tarif
         instance.save()
 
+def notify_post_save(sender, instance, created, **kwargs):
+    if created and not instance.is_delayed:
+        msg_html = render_to_string('email/notify.html', {'created': instance.createdAt,
+                                                            'text': instance.text,
+                                                            'url': instance.redirect_url})
+        send_mail('Новое оповещение на сайте pandiga.ru', None, 'info@pandiga.ru',
+                  [instance.user.email],
+                  fail_silently=False, html_message=msg_html)
+    elif not instance.is_delayed:
+        msg_html = render_to_string('email/notify.html', {'created': instance.createdAt,
+                                                          'text': instance.text,
+                                                          'url': instance.redirect_url})
+        send_mail('Новое оповещение на сайте pandiga.ru', None, 'info@pandiga.ru',
+                  [instance.user.email],
+                  fail_silently=False, html_message=msg_html)
+
 post_save.connect(user_post_save, sender=User)
+post_save.connect(notify_post_save, sender=Notification)

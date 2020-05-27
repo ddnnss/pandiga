@@ -18,6 +18,7 @@ def check_profile(request):
         my_technique = TechniqueItem.objects.filter(owner=user)
         my_technique_orders = TechniqueOrder.objects.filter(customer=user)
         my_tarif = user.tarif
+        print('TARIF DELAY=',user.tarif.new_orders_delay)
         my_balance = user.balance
         # try:
         #     if my_tarif.technique_count <= user.technique_added:
