@@ -333,8 +333,11 @@ def technique(request, type_slug, section_slug, subsection_slug,technique_slug):
     if techniqueItem.owner != request.user:
         techniqueItem.views +=1
         techniqueItem.save()
+    page_title = f'{techniqueItem.name} в аренду в %TOWN_ALIAS% по выгодным ценам, стоимость за час, за смену'
+    page_description = f'{techniqueItem.name} в аренду в %TOWN_ALIAS% по низким ценам. Профессиональные водители, заправленная спецтехника и быстрая подача.'
     otherTechnique = TechniqueItem.objects.filter(owner=techniqueItem.owner).exclude(id=techniqueItem.id)
     all_feedbacks = TechniqueFeedback.objects.filter(techniqueitem=techniqueItem)
+
     return render(request, 'catalog/technique.html', locals())
 
 
