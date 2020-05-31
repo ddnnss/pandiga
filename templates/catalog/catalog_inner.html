@@ -91,7 +91,7 @@
                                 <p>Тип</p>
 
                                 <select onchange="window.location.href = `/catalog/${this.options[this.selectedIndex].value}` ">
-                                    <option value="any">Любой</option>
+                                   
                                     {% for type in all_Technique %}
                                         <option {% if current_technique_type.id == type.id%}selected{% endif %} value="{{ type.name_slug }}">{{ type.name }}</option>
                                     {% endfor %}
