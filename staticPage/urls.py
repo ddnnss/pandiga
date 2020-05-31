@@ -25,7 +25,7 @@ urlpatterns = [
     # path('subsection/', views.subsection, name='create_city'),
     # path('item/', views.tech, name='create_city'),
     # path('user/', views.user, name='create_city'),
-    # path('get_city/', views.get_city, name='get_city'),
+    path('get_city/', views.get_city, name='get_city'),
     path('index.html', RedirectView.as_view(url='/', permanent=False), name='index1'),
     path('index.php', RedirectView.as_view(url='/', permanent=False), name='index2'),
     path('robots.txt', views.robots, name='robots'),
