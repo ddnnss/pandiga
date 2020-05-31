@@ -4,26 +4,23 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
 from tariff.models import Tarif
-from technique.models import TechniqueItem
+from technique.models import * #TechniqueItem
 import settings
 #----
 # from openpyxl import load_workbook
 # from customuser.models import *
 # from technique.models import *
-
 #
+# #
 
 
-def get_city(request):
-    request_unicode = request.body.decode('utf-8')
-    request_body = json.loads(request_unicode)
-    print(request_body)
-    cities = City.objects.filter(city__startswith=request_body['query'].capitalize())
-
-    return_dict = list()
-    for i in cities:
-        return_dict.append({'id' : i.id, 'city': i.city, 'region': i.region, 'coefficient': i.coefficient})
-    return JsonResponse(return_dict, safe=False)
+# def get_city(request):
+#    all_type = TechniqueSection.objects.all()
+#    for t in all_type:
+#        t.page_h1 = f'{t.name} в аренду в %TOWN_ALIAS%'
+#        t.page_title = f'{t.name} в аренду в %TOWN_ALIAS% по выгодным ценам, стоимость за час, за смену '
+#        t.page_description = f'{t.name} в аренду в %TOWN_ALIAS% по низким ценам. Профессиональные водители, заправленная спецтехника и быстрая подача.'
+#        t.save()
 
 
 def index(request):
