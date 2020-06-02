@@ -158,6 +158,7 @@ def get_msg(request):
 def add_msg(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
+    print(body)
     Message.objects.create(chat_id=body['chatId'], user_id=body['msgFrom'], message=body['msg'])
     # if int(body['msgFrom']) == request.user.id:
     #     chat_qs = Chat.objects.get(id=int(body['chatId']))
@@ -209,12 +210,14 @@ def get_chats(request):
                 user_name = user_qs.first_name
                 user_avatar = user_qs.get_avatar()
                 user_id = user_qs.id
+                user_activity = user_qs.get_user_activity(),
 
         if chat.techniqueitem :
             readChats.append({
                 'is_read': chat.isNewMessages,
                 'chat_id': chat.id,
                 'user_id': user_id,
+                'activity': user_activity,
                 'chat_from': user_name,
                 'user_avatar': user_avatar,
                 'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
@@ -231,6 +234,7 @@ def get_chats(request):
                     'is_read': chat.isNewMessages,
                     'chat_id': chat.id,
                     'user_id': user_id,
+                    'activity': user_activity,
                     'chat_from': user_name,
                     'user_avatar': user_avatar,
                     'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
@@ -247,6 +251,7 @@ def get_chats(request):
                     'chat_id': chat.id,
                     'user_id': user_id,
                     'chat_from': user_name,
+                    'activity': user_activity,
                     'user_avatar': user_avatar,
                     'unread_mgs_count': len(chat.message_set.all().filter(isUnread=True)),
                     'last_msg': chat.message_set.last().message,

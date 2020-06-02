@@ -13,13 +13,15 @@ def technique_all_orders(request):
     if request.user.is_authenticated and not request.user.is_customer:
         all_orders = TechniqueOrder.objects.filter(is_active=True,
                                                    is_moderated=True,
-                                                   worker__isnull=True).exclude(customer_id=request.user.id).order_by('-created_at')
+                                                   worker__isnull=True,
+                                                   city=request.user.city
+                                                   ).exclude(customer_id=request.user.id).order_by('-created_at')
         owned_technique = TechniqueItem.objects.filter(owner=request.user)
-        temp=[]
+        temp_tech=[]
         for i in owned_technique:
-            temp.append(i.sub_section.id)
+            temp_tech.append(i.sub_section.id)
         # all_orders = all_orders.exclude(sub_section__in=temp)
-        all_orders = all_orders.exclude(~Q(sub_section__in=temp))
+        all_orders = all_orders.exclude(~Q(sub_section__in=temp_tech))
         all_techique_types = TechniqueType.objects.all
         return render(request, 'techniqueOrder/all-technique-orders.html', locals())
     else:

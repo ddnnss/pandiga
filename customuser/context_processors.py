@@ -9,6 +9,7 @@ def check_profile(request):
     all_Technique = TechniqueType.objects.filter(is_active=True)
     if request.user.is_authenticated:
         user = request.user
+        user.save()
         profile_ok = False
         #can_add_technique = True
         techniqueItemsFavorite = TechniqueItemFavorite.objects.filter(user=user)

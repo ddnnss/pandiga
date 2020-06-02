@@ -6,6 +6,9 @@ from staticPage.models import City
 from tariff.models import Tarif
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+import datetime as dt
+from datetime import datetime
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -68,6 +71,7 @@ class User(AbstractUser):
     technique_added = models.IntegerField(default=0)
     rate_times = models.IntegerField(default=0)
     other_added = models.IntegerField(default=0)
+    last_activity = models.DateTimeField(auto_now=True)
     old_id = models.IntegerField(blank=True,null=True,editable=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -81,6 +85,13 @@ class User(AbstractUser):
             return f'{self.get_full_name()} {self.email}'
         else:
             return f'{self.get_full_name()} {self.id}'
+
+    def get_user_activity(self):
+        if (timezone.now() - self.last_activity) > dt.timedelta(seconds=10):
+            return f'Был {self.last_activity.strftime("%d.%m.%Y,%H:%M:%S")}'
+        else:
+            return 'В сети'
+
 
     def get_rating(self):
         try:

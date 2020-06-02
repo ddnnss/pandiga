@@ -112,6 +112,7 @@
     <script>
         let curChat = 0
         let curPage = 1
+        let chatOpen = false
         let readChatsList = document.getElementById('read-chats-list')
         let unreadChats = document.getElementById('unread-chats')
         let chatDiv = document.getElementById('chat-messages')
@@ -156,7 +157,7 @@
                                             </div>
 
                                             <div class="lk-tab-chat-item-user">
-                                                <p><a href="/user/profile/${chat['user_id']}/">${chat['chat_from']}</a></p>
+                                                <p><a href="/user/profile/${chat['user_id']}/">${chat['chat_from']}</a> ${chat['activity']}</p>
                                                 <span>${chat['last_msg']}</span>
                                             </div>
                                               <div class="lk-tab-chat-item-theme-img">
@@ -185,7 +186,7 @@
                                             </div>
 
                                             <div class="lk-tab-chat-item-user">
-                                                <p><a href="/user/profile/${chat['user_id']}/">${chat['chat_from']}</a></p>
+                                                <p><a href="/user/profile/${chat['user_id']}/">${chat['chat_from']}</a> ${chat['activity']}</p>
                                                 <span>${chat['last_msg']}</span>
                                             </div>
                                               <div class="lk-tab-chat-item-theme-img">
@@ -288,10 +289,11 @@
             document.getElementById('chat-messages').classList.remove('show-messages')
         }
         function openChat(chat_id){
+            curChat = chat_id
             console.log('curChat',curChat)
-           // if(curChat != 0){
-           //     return
-           // }
+               if(curChat === 0){
+                   return
+                }
             msgTextArea.value = tempMsg
             temp_msg=''
             let chatUserAvatar = document.getElementById('chat_user_avatar')
@@ -303,7 +305,7 @@
             let body = {
                 chat_id: chat_id
             }
-            curChat = chat_id
+           // curChat = chat_id
             fetch('/chat/get_msg/', {
                 method: 'post',
                 body: JSON.stringify(body),
