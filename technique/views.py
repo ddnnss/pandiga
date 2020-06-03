@@ -282,6 +282,7 @@ def technique_subsection_catalog(request, type_slug, section_slug, subsection_sl
     current_technique_type = get_object_or_404(TechniqueType, name_slug=type_slug)
     current_technique_section = get_object_or_404(TechniqueSection, name_slug=section_slug)
     current_technique_subsection = get_object_or_404(TechniqueSubSection, name_slug=subsection_slug)
+    page_h1 = f'Аренда {current_technique_subsection.name}  в {request.subdomain.cityAlias}'
     page_title = f'{current_technique_subsection.name} в аренду в {request.subdomain.cityAlias} по выгодным ценам, стоимость за час, за смену'
     page_description = f'{current_technique_subsection.name} в аренду в {request.subdomain.cityAlias} по низким ценам. Профессиональные водители, заправленная спецтехника и быстрая подача.'
 
