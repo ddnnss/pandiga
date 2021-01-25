@@ -24,7 +24,7 @@ urlpatterns = [
     path('partner/', include('partner.urls')),
     path('tarif/', include('tariff.urls')),
     path('feedback/', include('feedback.urls')),
-    path('', include('social_django.urls')),
+    # path('', include('social_django.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('sitemap.xml', sitemap, {'sitemaps':sitemaps}),
 

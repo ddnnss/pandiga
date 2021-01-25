@@ -12,7 +12,7 @@ import settings
 # from technique.models import *
 #
 # #
-
+from customuser.models import User
 
 
 def get_city(request):
@@ -31,7 +31,10 @@ def index(request):
     indexPage = True
     page_title = 'PANDIGA - Клубная аренда техники'
     page_description = ''
-
+    u = User.objects.all()
+    for i in u:
+        if i.email:
+            print(i.email)
     all_technique = TechniqueItem.objects.random(8)
     return render(request, 'staticPage/index.html', locals())
 
